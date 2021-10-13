@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "453834550390",
+    "project_id": "stepaw",
+    "storage_bucket": "stepaw.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453834550390:android:42beb604e1fbf902858357",
+        "android_client_info": {
+          "package_name": "com.butterflies.stepaw"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "453834550390-lp9us4vc9t4r9klb309rbn8pih8qb7vg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.butterflies.stepaw",
+            "certificate_hash": "791282187b8eac2acc88d222581e337cdaff1e4e"
+          }
+        },
+        {
+          "client_id": "453834550390-mj5grg861p562kv5pcagra2tnuu6t5nr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXPK95J6uBmGHg7he03LgGUlNzsR8-TW8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "453834550390-mj5grg861p562kv5pcagra2tnuu6t5nr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
