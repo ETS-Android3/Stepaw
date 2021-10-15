@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Stepaw">
         <activity
+            android:name=".authentication.OneTapLogin"
+            android:exported="false" />
+        <activity
             android:name=".authentication.LoginActivity"
             android:exported="true" />
         <activity
