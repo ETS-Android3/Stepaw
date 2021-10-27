@@ -1,3 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="ModalBottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="backgroundTint">@color/white</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.App.LargeComponent</item>
+    </style>
+
+    <style name="ShapeAppearance.App.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">10dp</item>
+    </style>
+
+
+    <style name="CustomEditText" parent="@style/Widget.AppCompat.EditText">
+        <item name="android:padding">10dp</item>
+        <item name="android:background">@drawable/rounded_edittext</item>
+    </style>
+
+
+    <style name="RoundedButton" parent="@style/Widget.AppCompat.Button">
+        <item name="android:background">@drawable/rounded_button</item>
+    </style>
 </resources>
