@@ -86,7 +86,7 @@ class OneTapLogin : AppCompatActivity() {
             }
             .addOnFailureListener(this) { e ->
                 // No Google Accounts found. Just continue presenting the signed-out UI.
-                Log.d("onetap", e.localizedMessage)
+                Log.d("onetap   ", e.localizedMessage)
             }
 
 

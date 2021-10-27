@@ -12,10 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Stepaw">
         <activity
+            android:name=".Reminder"
+            android:exported="false" />
+        <activity
+            android:name=".ReminderActivity"
+            android:exported="false" />
+        <activity
             android:name=".authentication.OneTapLogin"
             android:exported="false" />
         <activity
-            android:name=".authentication.LoginActivity"
+            android:name=".authentication.Signin"
             android:exported="true" />
         <activity
             android:name=".MainActivity"
