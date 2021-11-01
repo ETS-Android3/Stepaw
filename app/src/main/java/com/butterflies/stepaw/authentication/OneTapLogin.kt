@@ -5,6 +5,7 @@ import android.content.IntentSender
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import com.butterflies.stepaw.R
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
@@ -26,7 +27,7 @@ class OneTapLogin : AppCompatActivity() {
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)
                     // Your server's client ID, not your Android client ID.
-                    .setServerClientId("453834550390-o3k8dfbrjq57nutdsjm5ijuqs9ha2fug.apps.googleusercontent.com")
+                    .setServerClientId("598844256855-s9c5mjpt9kmpnmu04a11egq188t491qo.apps.googleusercontent.com")
                     // Show all accounts on the device.
                     .setFilterByAuthorizedAccounts(false)
                     .build())
@@ -45,7 +46,7 @@ class OneTapLogin : AppCompatActivity() {
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)
                     // Your server's client ID, not your Android client ID.
-                    .setServerClientId("453834550390-o3k8dfbrjq57nutdsjm5ijuqs9ha2fug.apps.googleusercontent.com")
+                    .setServerClientId("598844256855-s9c5mjpt9kmpnmu04a11egq188t491qo.apps.googleusercontent.com")
                     // Only show accounts previously used to sign in.
                     .setFilterByAuthorizedAccounts(true)
                     .build()
@@ -109,7 +110,8 @@ class OneTapLogin : AppCompatActivity() {
                         idToken != null -> {
                             // Got an ID token from Google. Use it to authenticate
                             // with your backend.
-                            Log.d("onetap", "Got ID token.")
+                            Log.d("onetapid", "Got ID token.")
+
                         }
                         password != null -> {
                             // Got a saved username and password. Use them to authenticate

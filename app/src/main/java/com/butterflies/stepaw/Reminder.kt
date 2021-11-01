@@ -15,13 +15,16 @@ class Reminder : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reminder)
         val standardBottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.bottomSheet))
+//       Disabling Bottom sheet draggable status
+        standardBottomSheetBehavior.isDraggable=false
+        standardBottomSheetBehavior.state=BottomSheetBehavior.STATE_HALF_EXPANDED
 
 //Callback for slide changes
         val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 // Do something for new state.
-              Log.d("sheet",newState.toString())
+
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
