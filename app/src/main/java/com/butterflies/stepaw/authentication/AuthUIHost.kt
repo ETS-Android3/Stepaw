@@ -4,19 +4,20 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
+import android.view.View
 import android.widget.Toast
 import com.butterflies.stepaw.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class Signin : AppCompatActivity() {
+class AuthUIHost : AppCompatActivity(), signin.Signin, signup.SignUp {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
@@ -26,21 +27,32 @@ class Signin : AppCompatActivity() {
 //    For signup call signUp(email,password)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_signin)
+        setContentView(R.layout.activity_authuihost)
+        val standardBottomSheetBehavior =
+            BottomSheetBehavior.from(findViewById(R.id.bottom_sheet_signin))
+//       Disabling Bottom sheet draggable status
+        standardBottomSheetBehavior.isDraggable = false
+        standardBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
 
-//        Event handler
+//        Bottom sheet
+        val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
 
-        findViewById<TextView>(R.id.forgot_password).also {
-            it.setOnClickListener {
-                Toast.makeText(this, "Maneesh", Toast.LENGTH_SHORT).show()
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                // Do something for new state.
+
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                // Do something for slide offset.
             }
         }
+
 
 //
 
         //Configure signin
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken("453834550390-mj5grg861p562kv5pcagra2tnuu6t5nr.apps.googleusercontent.com")
+            .requestIdToken("598844256855-s9c5mjpt9kmpnmu04a11egq188t491qo.apps.googleusercontent.com")
             .requestEmail()
             .build()
 
@@ -80,7 +92,7 @@ class Signin : AppCompatActivity() {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)!!
-                Log.d("login", "firebaseAuthWithGoogle:" + account.id)
+                Log.d("login", "firebaseAuthWithGoogle:" + account.toString())
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
@@ -97,10 +109,11 @@ class Signin : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("login", "signInWithCredential:success")
                     val user = auth.currentUser
+                    Toast.makeText(this,"Success",Toast.LENGTH_SHORT).show()
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("login", "signInWithCredential:failure", task.exception)
-
+                    Toast.makeText(this,"failed",Toast.LENGTH_SHORT).show()
                 }
             }
     }
@@ -113,6 +126,7 @@ class Signin : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
+        Log.d("userdetails",currentUser.toString())
         currentUser?.displayName?.let { Log.d("onStart", it) }
     }
 
@@ -121,7 +135,6 @@ class Signin : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-
                     val user = auth.currentUser
 
                 } else {
@@ -132,7 +145,34 @@ class Signin : AppCompatActivity() {
             }
     }
 
+    private fun passwordReset(password: String){
+        val user = auth.currentUser
+        user!!.updatePassword(password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("password", "User password updated.")
+                }
+            }
+    }
+
     private fun logout() {
         Firebase.auth.signOut()
+    }
+
+    override fun signin(email: String, password: String) {
+
+        if (email.length <= 1 || password.length <= 1) {
+            Toast.makeText(this, "Password or email is incorrect", Toast.LENGTH_SHORT).show()
+            return
+        }
+        signinWithPassword(email, password)
+    }
+
+    override fun Signup(email: String, password: String) {
+        signUp(email, password)
+    }
+
+    override fun googlesignin() {
+        signIn()
     }
 }
