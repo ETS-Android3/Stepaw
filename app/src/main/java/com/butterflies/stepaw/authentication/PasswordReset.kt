@@ -1,5 +1,6 @@
 package com.butterflies.stepaw.authentication
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,9 +9,15 @@ import android.view.ViewGroup
 import com.butterflies.stepaw.R
 
 
-class password_reset : Fragment() {
-
-
+class PasswordReset : Fragment() {
+    lateinit var password_reset_activity:PasswordResetService
+    interface PasswordResetService{
+        fun resetPassword(email:String,Password:String);
+    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        password_reset_activity=context as PasswordResetService
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

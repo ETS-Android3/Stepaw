@@ -10,16 +10,16 @@ import com.butterflies.stepaw.R
 import com.butterflies.stepaw.databinding.FragmentSignupBinding
 
 
-class signup : Fragment() {
-    lateinit var signup_in_with_activity:SignUp
+class Signup : Fragment() {
+    lateinit var signup_in_with_activity:SignUpService
     private lateinit var binding:FragmentSignupBinding
-    interface SignUp{
+    interface SignUpService{
         fun Signup(email:String,password:String)
         fun googlesignin()
     }
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        signup_in_with_activity=context as SignUp
+        signup_in_with_activity=context as SignUpService
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
