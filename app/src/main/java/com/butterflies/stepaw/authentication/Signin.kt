@@ -11,9 +11,9 @@ import com.butterflies.stepaw.R
 import com.butterflies.stepaw.databinding.FragmentSigninBinding
 
 
-class signin : Fragment() {
-lateinit var sign_in_with_activity:Signin
-    interface Signin{
+class Signin : Fragment() {
+lateinit var sign_in_with_activity:SigninService
+    interface SigninService{
         fun signin(email:String,password:String)
         fun googlesignin()
     }
@@ -21,7 +21,7 @@ lateinit var sign_in_with_activity:Signin
     private lateinit var binding: FragmentSigninBinding
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        sign_in_with_activity=context as Signin
+        sign_in_with_activity=context as SigninService
     }
 
     override fun onCreateView(

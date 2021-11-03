@@ -17,7 +17,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class AuthUIHost : AppCompatActivity(), signin.Signin, signup.SignUp {
+class AuthUIHost : AppCompatActivity(), Signin.SigninService, Signup.SignUpService,PasswordReset.PasswordResetService {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
@@ -31,8 +31,9 @@ class AuthUIHost : AppCompatActivity(), signin.Signin, signup.SignUp {
         val standardBottomSheetBehavior =
             BottomSheetBehavior.from(findViewById(R.id.bottom_sheet_signin))
 //       Disabling Bottom sheet draggable status
-        standardBottomSheetBehavior.isDraggable = false
         standardBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        standardBottomSheetBehavior.isDraggable = false
+
 
 //        Bottom sheet
         val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
@@ -109,11 +110,11 @@ class AuthUIHost : AppCompatActivity(), signin.Signin, signup.SignUp {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("login", "signInWithCredential:success")
                     val user = auth.currentUser
-                    Toast.makeText(this,"Success",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("login", "signInWithCredential:failure", task.exception)
-                    Toast.makeText(this,"failed",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "failed", Toast.LENGTH_SHORT).show()
                 }
             }
     }
@@ -126,7 +127,7 @@ class AuthUIHost : AppCompatActivity(), signin.Signin, signup.SignUp {
     override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
-        Log.d("userdetails",currentUser.toString())
+        Log.d("userdetails", currentUser.toString())
         currentUser?.displayName?.let { Log.d("onStart", it) }
     }
 
@@ -145,7 +146,7 @@ class AuthUIHost : AppCompatActivity(), signin.Signin, signup.SignUp {
             }
     }
 
-    private fun passwordReset(password: String){
+    private fun passwordReset(password: String) {
         val user = auth.currentUser
         user!!.updatePassword(password)
             .addOnCompleteListener { task ->
@@ -174,5 +175,9 @@ class AuthUIHost : AppCompatActivity(), signin.Signin, signup.SignUp {
 
     override fun googlesignin() {
         signIn()
+    }
+
+    override fun resetPassword(email: String, Password: String) {
+        passwordReset(Password)
     }
 }
