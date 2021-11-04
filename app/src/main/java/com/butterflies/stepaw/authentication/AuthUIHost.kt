@@ -47,7 +47,7 @@ class AuthUIHost : AppCompatActivity(), Signin.SigninService, Signup.SignUpServi
                 // Do something for slide offset.
             }
         }
-
+standardBottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
 
 //
 
@@ -70,7 +70,7 @@ class AuthUIHost : AppCompatActivity(), Signin.SigninService, Signup.SignUpServi
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("signin", "signInWithEmail:success")
-                    val user = auth.currentUser
+//                    val user = auth.currentUser
 
                 } else {
                     // If sign in fails, display a message to the user.
@@ -140,7 +140,6 @@ class AuthUIHost : AppCompatActivity(), Signin.SigninService, Signup.SignUpServi
 
                 } else {
                     // If sign in fails, display a message to the user.
-
 
                 }
             }
