@@ -3,6 +3,7 @@ package com.butterflies.stepaw
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.butterflies.stepaw.WelcomeScreen.WelcomeScreenHost
 import com.butterflies.stepaw.authentication.AuthUIHost
 import com.butterflies.stepaw.authentication.OneTapLogin
 import com.butterflies.stepaw.databinding.ActivityMainBinding
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, AuthUIHost::class.java)
             startActivity(intent)
         }
+        binding.welcomeText.setOnClickListener { Intent(this,WelcomeScreenHost::class.java).run { startActivity(this) } }
        binding.button2.setOnClickListener { Intent(this,Reminder::class.java).also { startActivity(it) } }
     }
 
