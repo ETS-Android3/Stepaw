@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import com.butterflies.stepaw.R
 
 
-class PasswordReset : Fragment() {
+class PasswordReset_fragment : Fragment() {
     lateinit var password_reset_activity:PasswordResetService
     interface PasswordResetService{
         fun resetPassword(email:String,Password:String);

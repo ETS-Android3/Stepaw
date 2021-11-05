@@ -6,6 +6,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import com.butterflies.stepaw.DogOnboarding.OnBoardingHost
 import com.butterflies.stepaw.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -17,7 +21,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class AuthUIHost : AppCompatActivity(), Signin.SigninService, Signup.SignUpService,PasswordReset.PasswordResetService {
+class AuthUIHost : AppCompatActivity(), Signin_fragment.SigninService, Signup_fragment.SignUpService,PasswordReset_fragment.PasswordResetService {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
@@ -27,7 +31,14 @@ class AuthUIHost : AppCompatActivity(), Signin.SigninService, Signup.SignUpServi
 //    For signup call signUp(email,password)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_authuihost)
+        val navHostFragment: NavHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host) as NavHostFragment
+
+        navHostFragment.findNavController().setGraph(R.navigation.authentication_nav)
+
+
         val standardBottomSheetBehavior =
             BottomSheetBehavior.from(findViewById(R.id.bottom_sheet_signin))
 //       Disabling Bottom sheet draggable status
@@ -111,6 +122,7 @@ standardBottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
                     Log.d("login", "signInWithCredential:success")
                     val user = auth.currentUser
                     Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
+                    Intent(this@AuthUIHost,OnBoardingHost::class.java).also { startActivity(it) }
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("login", "signInWithCredential:failure", task.exception)

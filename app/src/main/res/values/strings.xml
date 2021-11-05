@@ -2,5 +2,16 @@
     <string name="app_name">Stepaw</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dog_name">Name</string>
+    <string name="dog_age">Age</string>
+    <string name="dog_weight">Weight</string>
+    <string name="dog_gender">Gender</string>
+    <string name="dog_age_hint">Please enter the dog age</string>
+    <string name="dog_name_hint">Please enter the name of the dog</string>
+    <string name="dog_weight_hint">Please enter the weight of the dog</string>
+    <string name="dog_male">Male</string>
+    <string name="dog_female">Female</string>
+    <string name="dog_save">Save</string>
+    <string name="dog_others">Others</string>
 
 </resources>
