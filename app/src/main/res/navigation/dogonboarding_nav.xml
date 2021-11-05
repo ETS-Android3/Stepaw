@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dogonboarding_nav"
+    app:startDestination="@id/add_Dog_fragment">
+
+    <fragment
+        android:id="@+id/add_Dog_fragment"
+        android:name="com.butterflies.stepaw.DogOnboarding.Add_Dog_fragment"
+        android:label="fragment_add__dog_fragment"
+        tools:layout="@layout/fragment_add__dog_fragment" />
+</navigation>

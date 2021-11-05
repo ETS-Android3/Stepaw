@@ -11,7 +11,7 @@ import com.butterflies.stepaw.R
 import com.butterflies.stepaw.databinding.FragmentSigninBinding
 
 
-class Signin : Fragment() {
+class Signin_fragment : Fragment() {
 lateinit var sign_in_with_activity:SigninService
     interface SigninService{
         fun signin(email:String,password:String)

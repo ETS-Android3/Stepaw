@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Stepaw">
         <activity
+            android:name=".DogOnboarding.OnBoardingHost"
+            android:exported="false" />
+        <activity
             android:name=".WelcomeScreen.WelcomeScreenHost"
             android:exported="false" />
         <activity
