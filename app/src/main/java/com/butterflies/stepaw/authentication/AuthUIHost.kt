@@ -1,5 +1,6 @@
 package com.butterflies.stepaw.authentication
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -114,6 +115,17 @@ standardBottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
+
+//        Store id token to shared preferences
+        val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
+        with (sharedPref.edit()) {
+            putString("com.butterflies.stepaw.idToken",idToken)
+            apply()
+        }
+
+
+//
+
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->

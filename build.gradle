@@ -2,9 +2,7 @@
 buildscript {
     repositories {
         google()
-        maven { url 'https://jitpack.io' }
         mavenCentral()
-
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.3'
@@ -14,15 +12,15 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
-//
-//allprojects {
-//    repositories {
-//        maven { url "https://jitpack.io" }
-//    }
-//    dependencies {
-//        classpath 'com.github.PhilJay:MPAndroidChart:v2.0.9'
-//    }
-//}
+
+allprojects {
+    repositories {
+
+    }
+    dependencies {
+
+    }
+}
 
 task clean(type: Delete) {
     delete rootProject.buildDir

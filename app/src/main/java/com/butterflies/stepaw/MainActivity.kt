@@ -3,6 +3,8 @@ package com.butterflies.stepaw
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import com.butterflies.stepaw.WelcomeScreen.WelcomeScreenHost
 import com.butterflies.stepaw.authentication.AuthUIHost
 import com.butterflies.stepaw.authentication.OneTapLogin
@@ -15,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
         setSupportActionBar(findViewById(R.id.my_toolbar))
         binding.send.setOnClickListener {
             val intent = Intent(this, OneTapLogin::class.java)

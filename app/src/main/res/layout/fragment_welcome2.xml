@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WelcomeScreen.WelcomeFragment2">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView
+        android:id="@+id/welcome_image2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Fragment2" />
+        android:layout_height="wrap_content"
+        android:contentDescription="Welcome Image" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/welcome_text2"
+        android:layout_width="match_parent"
+        android:text="Check your dog's step records visually"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/welcome_text22"
+        android:text="Track your best friends health with us"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

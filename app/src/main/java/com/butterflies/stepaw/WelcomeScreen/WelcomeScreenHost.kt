@@ -10,7 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.butterflies.stepaw.R
 import com.butterflies.stepaw.databinding.ActivityWelcomeScreenHostBinding
 
-private const val NUM_PAGES = 6
+private const val NUM_PAGES = 3
 
 class WelcomeScreenHost : FragmentActivity() {
     private lateinit var binding: ActivityWelcomeScreenHostBinding
@@ -46,7 +46,7 @@ class WelcomeScreenHost : FragmentActivity() {
         override fun getItemCount(): Int = NUM_PAGES
 
         override fun createFragment(position: Int): Fragment =
-            listOf<Fragment>(WelcomeFragment1(), WelcomeFragment2(),WelcomeFragment3(),WelcomeFragment4(),WelcomeFragment5(),WelcomeFragment6())[position]
+            listOf<Fragment>(WelcomeFragment1(), WelcomeFragment2(),WelcomeFragment3())[position]
     }
 
 }
