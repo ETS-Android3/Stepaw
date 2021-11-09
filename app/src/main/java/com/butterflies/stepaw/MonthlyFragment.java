@@ -17,6 +17,10 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import app.futured.donut.DonutProgressView;
+import app.futured.donut.DonutSection;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -71,11 +75,36 @@ public class MonthlyFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_monthly, container, false);
+
+        //generate monthly report - bar chart
         barChart = view.findViewById(R.id.barChart);
         barChart.setTouchEnabled(true);
         barChart.setPinchZoom(true);
         showBarChart();
         initBarChart();
+
+
+        //generate daily report - donut chart
+        //daily report chart generator - donut chart
+        DonutProgressView kmDonutChart = view.findViewById(R.id.kmDonutView);
+        DonutProgressView minDonutChart = view.findViewById(R.id.minDonutView);
+
+        DonutSection kmSection = new DonutSection("km",
+                Color.parseColor("#004E99"), 3f);
+
+        DonutSection minSection = new DonutSection("min",
+                Color.parseColor("#FBD617"),4f);
+
+        List<DonutSection> list = new ArrayList<>();
+        list.add(kmSection);
+        kmDonutChart.setCap(5f);
+        kmDonutChart.submitData(list);
+
+        list = new ArrayList<>();
+        list.add(minSection);
+        minDonutChart.setCap(5f);
+        minDonutChart.submitData(list);
+
         return view;
     }
 

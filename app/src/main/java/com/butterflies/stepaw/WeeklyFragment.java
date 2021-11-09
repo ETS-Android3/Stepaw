@@ -27,6 +27,10 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import app.futured.donut.DonutProgressView;
+import app.futured.donut.DonutSection;
 
 
 /**
@@ -82,6 +86,29 @@ public class WeeklyFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_weekly, container, false);
+
+        //daily report chart generator - donut chart
+        DonutProgressView kmDonutChart = view.findViewById(R.id.kmDonutView);
+        DonutProgressView minDonutChart = view.findViewById(R.id.minDonutView);
+
+        DonutSection kmSection = new DonutSection("km",
+                Color.parseColor("#004E99"), 3f);
+
+        DonutSection minSection = new DonutSection("min",
+                Color.parseColor("#FBD617"),4f);
+
+        List<DonutSection> list = new ArrayList<>();
+        list.add(kmSection);
+        kmDonutChart.setCap(5f);
+        kmDonutChart.submitData(list);
+
+        list = new ArrayList<>();
+        list.add(minSection);
+        minDonutChart.setCap(5f);
+        minDonutChart.submitData(list);
+
+
+        //weekly report - line chart generation
         mChart = view.findViewById(R.id.chart);
         mChart.setTouchEnabled(true);
         mChart.setPinchZoom(true);
