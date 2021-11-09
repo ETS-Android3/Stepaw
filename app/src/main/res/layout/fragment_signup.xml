@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:padding="16dp"
-    >
+    android:padding="16dp">
+
     <TextView
         android:id="@+id/welcome_text"
+        style="@style/textColorStyleSigninWelcome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:gravity="center"
-        android:text="Welcome"
-      />
+        android:text="Welcome" />
 
     <TextView
         android:id="@+id/signin_text"
+        style="@style/textColorStyleSignin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:gravity="center"
-        android:text="Signup"
-       />
+        android:text="Signup" />
+
     <EditText
         android:id="@+id/username"
         style="@style/CustomEditText"
@@ -30,8 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="Please enter your username"
-        android:minHeight="48dp"
-        />
+        android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/email"
@@ -40,8 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="Please enter your email"
-        android:minHeight="48dp"
-       />
+        android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/password"
@@ -51,8 +49,8 @@
         android:layout_marginTop="16dp"
         android:hint="Please enter your password"
         android:inputType="textPassword"
-        android:minHeight="48dp"
-  />
+        android:minHeight="48dp" />
+
     <EditText
         android:id="@+id/confirm_password"
         style="@style/CustomEditText"
@@ -61,17 +59,15 @@
         android:layout_marginTop="16dp"
         android:hint="Please enter your password"
         android:inputType="textPassword"
-        android:minHeight="48dp"
-        />
+        android:minHeight="48dp" />
 
     <Button
         android:id="@+id/Signup"
         style="@style/RoundedButton"
-       android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Signup"
-       />
+        android:layout_gravity="center"
+        android:text="Signup" />
 
     <include
         android:id="@+id/include"
@@ -85,10 +81,9 @@
         android:id="@+id/google_signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_gravity="center"
-        android:text="Sign up with google"
-       />
+        android:layout_marginTop="16dp"
+        android:text="Sign up with google" />
 
 
 </LinearLayout>

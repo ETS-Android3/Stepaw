@@ -1,5 +1,6 @@
 package com.butterflies.stepaw
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -18,19 +19,16 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
-        setSupportActionBar(findViewById(R.id.my_toolbar))
-        binding.send.setOnClickListener {
-            val intent = Intent(this, OneTapLogin::class.java)
-            startActivity(intent)
+//        setSupportActionBar(findViewById(R.id.my_toolbar)
+        val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
+        val token = sharedPref.getString("com.butterflies.stepaw.idToken", "invalid")
+        if (token == "invalid") {
+            Intent(this, AuthUIHost::class.java).run { startActivity(this) }
+        } else {
+            Intent(this, ChartReport::class.java).run { startActivity(this) }
         }
-        binding.button.setOnClickListener {
-            val intent = Intent(this, AuthUIHost::class.java)
-            startActivity(intent)
-        }
-        binding.welcomeText.setOnClickListener { Intent(this,WelcomeScreenHost::class.java).run { startActivity(this) } }
-       binding.button2.setOnClickListener { Intent(this,Reminder::class.java).also { startActivity(it) } }
-    }
 
+    }
 
 
 }
