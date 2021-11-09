@@ -43,10 +43,10 @@
             android:name=".MainActivity"
 
             android:name=".ChartReport"
-            android:exported="true" >
+            android:exported="true"
+            android:theme="@style/Theme.Stepaw.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
