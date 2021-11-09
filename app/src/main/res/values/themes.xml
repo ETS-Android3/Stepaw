@@ -14,4 +14,5 @@
         <!-- Customize your theme here. -->
 
     </style>
+    <style name="Theme.Stepaw.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 </resources>
