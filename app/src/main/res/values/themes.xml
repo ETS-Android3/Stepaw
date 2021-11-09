@@ -15,6 +15,7 @@
 
     </style>
 
+
     <style name="Theme.Stepaw.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -23,4 +24,7 @@
     <style name="Theme.Stepaw.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Stepaw.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.Stepaw.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
 </resources>

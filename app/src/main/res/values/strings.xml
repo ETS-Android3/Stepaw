@@ -12,6 +12,7 @@
     <string name="dog_female">Female</string>
     <string name="dog_save">Save</string>
     <string name="dog_others">Others</string>
+
     <string name="title_activity_main2">MainActivity2</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -24,6 +25,11 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="title_activity_navigation">Navigation</string>
+
+
+    <string name="daily_report">Day</string>
+    <string name="weekly_report">Week</string>
+    <string name="monthly_report">Month</string>
 
 
 </resources>
