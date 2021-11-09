@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="vertical">
+
     <ImageView
         android:id="@+id/welcome_image3"
         android:layout_width="match_parent"
@@ -12,11 +13,12 @@
     <TextView
         android:id="@+id/welcome_text3"
         android:layout_width="match_parent"
-        android:text="Your dog needs schedule for a playful life"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="Your dog needs schedule for a playful life" />
+
     <TextView
         android:id="@+id/welcome_text33"
         android:layout_width="match_parent"
-        android:text="Set a reminder for your furry friends"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="Set a reminder for your furry friends" />
 </LinearLayout>
