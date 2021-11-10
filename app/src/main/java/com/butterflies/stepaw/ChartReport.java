@@ -8,11 +8,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
 import android.view.View;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.FragmentKt;
 import androidx.navigation.fragment.NavHostFragment;
+
 import androidx.viewpager.widget.ViewPager;
 
 import com.butterflies.stepaw.databinding.ActivityChartReportBinding;
@@ -33,11 +35,19 @@ String timeText;
         super.onCreate(savedInstanceState);
         ActivityChartReportBinding binding = ActivityChartReportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
+        setSupportActionBar(findViewById(R.id.my_toolbar));
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
         ViewPager viewPager = binding.viewPager;
+
+        sectionsPagerAdapter.addFragment(new DailyFragment(), "Day");
+        sectionsPagerAdapter.addFragment(new WeeklyFragment(), "Week");
+        sectionsPagerAdapter.addFragment(new MonthlyFragment(), "Month");
         viewPager.setAdapter(sectionsPagerAdapter);
+
         TabLayout tabs = binding.chartTabLayout;
         tabs.setupWithViewPager(viewPager);
+
 
         Fragment fr = this.getSupportFragmentManager().findFragmentById(R.id.nav_host);
         if (fr == null) {
@@ -76,4 +86,9 @@ String timeText;
         Objects.requireNonNull(alarmManager).setExact(AlarmManager.RTC_WAKEUP,
                 c.getTimeInMillis(), pendingIntent);
     }
+
+   }
+
+
+
 }
