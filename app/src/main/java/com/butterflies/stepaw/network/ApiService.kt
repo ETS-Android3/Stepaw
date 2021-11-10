@@ -1,10 +1,9 @@
-package com.butterflies.stepaw.Network
+package com.butterflies.stepaw.network
 
-import com.butterflies.stepaw.Network.models.Dogs
-import com.butterflies.stepaw.Network.models.Users
+import com.butterflies.stepaw.network.models.Dogs
+import com.butterflies.stepaw.network.models.Users
 import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Headers
 
 interface ApiService {
 

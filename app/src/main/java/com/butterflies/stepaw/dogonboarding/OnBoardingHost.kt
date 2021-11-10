@@ -1,9 +1,8 @@
-package com.butterflies.stepaw.DogOnboarding
+package com.butterflies.stepaw.dogonboarding
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.butterflies.stepaw.R
@@ -40,6 +39,6 @@ class OnBoardingHost : AppCompatActivity(),Add_Dog_fragment.OnBoardingService {
         return true
     }
     override fun registerDog(name: String, age: Float, weight: Float, gender: String) {
-        Toast.makeText(this,name,Toast.LENGTH_SHORT).show()
+
     }
 }

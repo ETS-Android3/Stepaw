@@ -12,8 +12,7 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#0F9D58"
-        android:theme="@style/Theme.Stepaw.AppBarOverlay">
+        android:background="#0F9D58">
 
     <!--toolbar is one component which is necessary
         because if we not use this then title is not shown
@@ -46,6 +45,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <include layout="@layout/bottom_sheet_host" android:id="@+id/bottom_sheet_reminder" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

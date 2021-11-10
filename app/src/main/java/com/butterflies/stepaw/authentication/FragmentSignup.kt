@@ -10,7 +10,7 @@ import com.butterflies.stepaw.R
 import com.butterflies.stepaw.databinding.FragmentSignupBinding
 
 
-class Signup_fragment : Fragment() {
+class FragmentSignup : Fragment() {
     lateinit var signup_in_with_activity:SignUpService
     private lateinit var binding:FragmentSignupBinding
     interface SignUpService{

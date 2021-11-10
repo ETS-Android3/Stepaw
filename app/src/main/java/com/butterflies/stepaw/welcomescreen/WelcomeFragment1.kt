@@ -1,11 +1,10 @@
-package com.butterflies.stepaw.WelcomeScreen
+package com.butterflies.stepaw.welcomescreen
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.butterflies.stepaw.R
 import com.butterflies.stepaw.databinding.FragmentWelcome1Binding
 
 

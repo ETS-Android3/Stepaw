@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/signin"
-        android:name="com.butterflies.stepaw.authentication.Signin_fragment"
+        android:name="com.butterflies.stepaw.authentication.FragmentSignin"
         android:label="fragment_signin"
         tools:layout="@layout/fragment_signin" >
         <action
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/signup_fragment"
-        android:name="com.butterflies.stepaw.authentication.Signup_fragment"
+        android:name="com.butterflies.stepaw.authentication.FragmentSignup"
         android:label="fragment_signup"
         tools:layout="@layout/fragment_signup" >
         <action
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/password_reset_fragment"
-        android:name="com.butterflies.stepaw.authentication.PasswordReset_fragment"
+        android:name="com.butterflies.stepaw.authentication.FragmentPasswordReset"
         android:label="fragment_password_reset"
         tools:layout="@layout/fragment_password_reset" />
 </navigation>
