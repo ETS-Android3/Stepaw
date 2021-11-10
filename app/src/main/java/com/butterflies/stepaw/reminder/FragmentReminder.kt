@@ -36,11 +36,10 @@ class FragmentReminder : Fragment() {
         val standardBottomSheetBehavior =
             BottomSheetBehavior.from(requireActivity().findViewById(com.butterflies.stepaw.R.id.bottom_sheet_reminder))
         binding.imageView2.setOnClickListener {
-            if (binding.newreminder.visibility == View.VISIBLE) {
-                binding.newreminder.visibility = View.GONE
-            } else {
-                binding.newreminder.visibility = View.VISIBLE
-            }
+            addReminder()
+        }
+        binding.textView3.setOnClickListener {
+            addReminder()
         }
         binding.saveReminder.setOnClickListener {
             val time_picker = binding.timepicker
@@ -53,8 +52,14 @@ class FragmentReminder : Fragment() {
             binding.newreminder.visibility = View.GONE
             standardBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
-
         return binding.root
     }
 
+    private fun addReminder() {
+        if (binding.newreminder.visibility == View.VISIBLE) {
+            binding.newreminder.visibility = View.GONE
+        } else {
+            binding.newreminder.visibility = View.VISIBLE
+        }
+    }
 }
