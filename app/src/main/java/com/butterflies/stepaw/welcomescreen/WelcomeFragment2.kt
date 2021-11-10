@@ -1,4 +1,4 @@
-package com.butterflies.stepaw.WelcomeScreen
+package com.butterflies.stepaw.welcomescreen
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

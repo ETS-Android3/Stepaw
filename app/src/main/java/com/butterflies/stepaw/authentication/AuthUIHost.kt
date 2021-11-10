@@ -7,10 +7,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import com.butterflies.stepaw.DogOnboarding.OnBoardingHost
+import com.butterflies.stepaw.dogonboarding.OnBoardingHost
 import com.butterflies.stepaw.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -22,7 +21,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class AuthUIHost : AppCompatActivity(), Signin_fragment.SigninService, Signup_fragment.SignUpService,PasswordReset_fragment.PasswordResetService {
+class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSignup.SignUpService,FragmentPasswordReset.PasswordResetService {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
