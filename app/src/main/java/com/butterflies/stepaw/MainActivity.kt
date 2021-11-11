@@ -18,7 +18,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
         setSupportActionBar(findViewById(R.id.my_toolbar))
-        Intent(this,ChartReport::class.java).also { startActivity(it) }
+        Intent(this,ChartReport::class.java).also {
+            startActivity(it) }
         val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
         val token = sharedPref.getString("com.butterflies.stepaw.idToken", "invalid")
 //        if (token == "invalid") {
