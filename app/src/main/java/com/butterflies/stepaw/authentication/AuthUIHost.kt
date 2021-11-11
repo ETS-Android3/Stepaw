@@ -2,6 +2,7 @@ package com.butterflies.stepaw.authentication
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -23,14 +24,34 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.auth.GetTokenResult
 
 import androidx.annotation.NonNull
+import com.butterflies.stepaw.network.ApiService
+import com.butterflies.stepaw.network.models.UserModel
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 
 class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSignup.SignUpService,
     FragmentPasswordReset.PasswordResetService {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
+    lateinit var id: String;
+    lateinit var userName: String;
+    lateinit var firstName: String;
+    lateinit var lastName: String;
+    lateinit var email: String;
+
+    //    Build retrofit instance
+    val retrofit = Retrofit.Builder()
+        .baseUrl(ApiService.BASE_URL)
+        .addConverterFactory(MoshiConverterFactory.create())
+        .build()
+    val service = retrofit.create(ApiService::class.java)
 
     //    For signing in user with google call signin()
 //    For signing in with email password call signinwithpassword(email,password)
@@ -90,12 +111,15 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("signin", "signInWithEmail:success")
                     val user = auth.currentUser
+                    user?.uid?.let { storePreferences("com.butterflies.stepaw.uuid", it) }
                     user?.getIdToken(true)
                         ?.addOnCompleteListener { token ->
                             if (token.isSuccessful) {
                                 val idToken = token.getResult()?.token
-                                Toast.makeText(this@AuthUIHost, idToken, Toast.LENGTH_SHORT)
-                                    .show()
+                                if (idToken != null) {
+                                    storePreferences("com.butterflies.stepaw.idToken", idToken)
+                                }
+
                             } else {
                                 Log.d("failed", "Failed to generate idtoken")
                             }
@@ -125,7 +149,7 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
                 val account = task.getResult(ApiException::class.java)!!
                 Log.d("login", "firebaseAuthWithGoogle:" + account.toString())
                 firebaseAuthWithGoogle(account.idToken!!)
-                Log.d("idd", account.id)
+
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("login", "Google sign in failed", e)
@@ -136,14 +160,7 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
     private fun firebaseAuthWithGoogle(idToken: String) {
 
 //        Store id token to shared preferences
-        val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
-        with(sharedPref.edit()) {
-            putString("com.butterflies.stepaw.idToken", idToken)
-            apply()
-        }
-
-
-//
+        storePreferences("com.butterflies.stepaw.idToken", idToken)
 
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
@@ -151,8 +168,46 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("login", "signInWithCredential:success")
+
                     val user = auth.currentUser
-                    Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
+                    if (user?.uid !== null) {
+                        storePreferences("com.butterflies.stepaw.uid", user?.uid!!)
+                        id=user?.uid!!
+                    }
+                    if (user?.displayName !== null) {storePreferences(
+                        "com.butterflies.stepaw.displayName",
+                        user?.displayName!!
+                    )
+                    userName=user?.displayName!!
+                    }
+                    else storePreferences("com.butterflies.stepaw.displayName", "invalid")
+
+                    if (user?.displayName !== null) {storePreferences(
+                        "com.butterflies.stepaw.firstName",
+                        user?.displayName!!
+                    )
+                    firstName=user?.displayName!!
+                    }
+                    else storePreferences("com.butterflies.stepaw.firstName", "invalid")
+                    if (user?.displayName !== null){ storePreferences(
+                        "com.butterflies.stepaw.lastName",
+                        user?.displayName!!
+                    )
+                    lastName=user?.displayName!!
+                    }
+                    else storePreferences("com.butterflies.stepaw.lastName", "invalid")
+
+                    if (user?.email !== null) {storePreferences(
+                        "com.butterflies.stepaw.email",
+                        user?.email!!
+                    )
+                    email=user?.email!!
+                    }
+                    else storePreferences("com.butterflies.stepaw.email", "invalid")
+if(this::id.isInitialized&&this::userName.isInitialized&&this::email.isInitialized){
+    createNewUserCall(id,userName,userName,userName,email,"01")
+}
+
                     Intent(this@AuthUIHost, OnBoardingHost::class.java).also { startActivity(it) }
                 } else {
                     // If sign in fails, display a message to the user.
@@ -221,5 +276,36 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
 
     override fun resetPassword(email: String, Password: String) {
         passwordReset(Password)
+    }
+
+    private fun storePreferences(key: String, token: String) {
+        val sharedPreferences = getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putString(key, token)
+            apply()
+        }
+    }
+
+    //    Create a new user in the backend
+    fun createNewUserCall(
+        UserID: String,
+        UserName: String,
+        FirstName: String,
+        LastName: String,
+        EmailID: String,
+        BluetoothID: String
+    ) {
+        val usermodel = UserModel(UserID, UserName, FirstName, LastName, EmailID, BluetoothID)
+        val newUserRequest = service.createUser(usermodel)
+        newUserRequest.enqueue(object : Callback<UserModel> {
+            override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
+               Log.d("retrofit","Storedsuccessfully")
+            }
+
+            override fun onFailure(call: Call<UserModel>, t: Throwable) {
+
+            }
+
+        })
     }
 }
