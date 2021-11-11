@@ -20,8 +20,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.GetTokenResult
 
-class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSignup.SignUpService,FragmentPasswordReset.PasswordResetService {
+import androidx.annotation.NonNull
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
+
+
+class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSignup.SignUpService,
+    FragmentPasswordReset.PasswordResetService {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
@@ -58,7 +65,7 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
                 // Do something for slide offset.
             }
         }
-standardBottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
+        standardBottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
 
 //
 
@@ -66,6 +73,7 @@ standardBottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken("598844256855-s9c5mjpt9kmpnmu04a11egq188t491qo.apps.googleusercontent.com")
             .requestEmail()
+            .requestId()
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
@@ -81,7 +89,18 @@ standardBottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("signin", "signInWithEmail:success")
-//                    val user = auth.currentUser
+                    val user = auth.currentUser
+                    user?.getIdToken(true)
+                        ?.addOnCompleteListener { token ->
+                            if (token.isSuccessful) {
+                                val idToken = token.getResult()?.token
+                                Toast.makeText(this@AuthUIHost, idToken, Toast.LENGTH_SHORT)
+                                    .show()
+                            } else {
+                                Log.d("failed", "Failed to generate idtoken")
+                            }
+                        }
+
 
                 } else {
                     // If sign in fails, display a message to the user.
@@ -106,6 +125,7 @@ standardBottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
                 val account = task.getResult(ApiException::class.java)!!
                 Log.d("login", "firebaseAuthWithGoogle:" + account.toString())
                 firebaseAuthWithGoogle(account.idToken!!)
+                Log.d("idd", account.id)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("login", "Google sign in failed", e)
@@ -117,8 +137,8 @@ standardBottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
 
 //        Store id token to shared preferences
         val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
-        with (sharedPref.edit()) {
-            putString("com.butterflies.stepaw.idToken",idToken)
+        with(sharedPref.edit()) {
+            putString("com.butterflies.stepaw.idToken", idToken)
             apply()
         }
 
@@ -133,7 +153,7 @@ standardBottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
                     Log.d("login", "signInWithCredential:success")
                     val user = auth.currentUser
                     Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
-                    Intent(this@AuthUIHost,OnBoardingHost::class.java).also { startActivity(it) }
+                    Intent(this@AuthUIHost, OnBoardingHost::class.java).also { startActivity(it) }
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("login", "signInWithCredential:failure", task.exception)

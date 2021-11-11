@@ -9,7 +9,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.FragmentKt;
@@ -18,6 +20,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.butterflies.stepaw.databinding.ActivityChartReportBinding;
+import com.butterflies.stepaw.network.RetrofitObservable;
+import com.butterflies.stepaw.network.networkCall.NetworkCall;
 import com.butterflies.stepaw.reminder.FragmentReminder;
 import com.butterflies.stepaw.reminder.NotificationPublisher;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -26,9 +30,11 @@ import com.google.android.material.tabs.TabLayout;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Objects;
+import java.util.Observable;
+import java.util.Observer;
 
-public class ChartReport extends AppCompatActivity implements FragmentReminder.ReminderService {
-String timeText;
+public class ChartReport extends AppCompatActivity implements FragmentReminder.ReminderService, Observer {
+    String timeText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +43,6 @@ String timeText;
         setContentView(binding.getRoot());
         setSupportActionBar(findViewById(R.id.my_toolbar));
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
         ViewPager viewPager = binding.viewPager;
 
         sectionsPagerAdapter.addFragment(new DailyFragment(), "Day");
@@ -62,7 +67,13 @@ String timeText;
 
 
     }
+    @Override
+    protected void onStart() {
 
+        super.onStart();
+        NetworkCall n=new NetworkCall();
+        n.getAllUsersCall();
+    }
     @Override
     public void setReminder(@NonNull String hour, @NonNull String minute) {
         Calendar calendar = Calendar.getInstance();
@@ -72,10 +83,12 @@ String timeText;
         updateTimeText(calendar);
         startAlarm(calendar);
     }
+
     private void updateTimeText(Calendar c) {
         timeText = "Alarm set for: ";
         timeText += DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
     }
+
     private void startAlarm(Calendar c) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, NotificationPublisher.class);
@@ -86,6 +99,22 @@ String timeText;
         Objects.requireNonNull(alarmManager).setExact(AlarmManager.RTC_WAKEUP,
                 c.getTimeInMillis(), pendingIntent);
     }
+//Implementing observable interface for update of data from network callback
+    @Override
+    public void update(Observable o, Object arg) {
 
-   }
+    }
+    @Override
+    protected void onResume() {
+        RetrofitObservable r=new RetrofitObservable();
+        r.getInstance().addObserver(this);
+        super.onResume();
+    }
+@Override
+    protected void onPause() {
+    RetrofitObservable r=new RetrofitObservable();
+    r.deleteObserver(this);
+    super.onPause();
+}
+}
 
