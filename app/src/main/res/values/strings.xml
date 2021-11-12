@@ -30,6 +30,8 @@
     <string name="daily_report">Day</string>
     <string name="weekly_report">Week</string>
     <string name="monthly_report">Month</string>
+    <string name="dog_image">Dog Image</string>
+    <string name="frame">Frame</string>
 
 
 </resources>

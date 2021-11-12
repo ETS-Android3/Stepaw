@@ -7,36 +7,142 @@
     android:layout_height="match_parent"
     tools:context=".ChartReport">
 
-    <!--This appbarlayout covers the toolbar and tablayout-->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#0F9D58">
-
-    <!--toolbar is one component which is necessary
-        because if we not use this then title is not shown
-        when project executed-->
+        android:layout_height="wrap_content">
 
         <include layout="@layout/toolbar" />
-<!--    <androidx.appcompat.widget.Toolbar-->
-<!--        android:id="@+id/toolbar"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_scrollFlags="scroll|enterAlways"-->
-<!--        app:popupTheme="@style/Theme.Stepaw.PopupOverlay" />-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffff"
+            android:padding="5dp"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="50dp">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:contentDescription="@string/dog_image"
+                    app:srcCompat="@drawable/image_18"
+                    tools:ignore="ImageContrastCheck">
+
+                </ImageView>
+
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="Frank"
+                        android:textColor="#000000"
+                        android:textSize="24sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="3dp"
+                        android:contentDescription="@string/frame"
+                        app:srcCompat="@drawable/ic_frame" />
 
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/chartTabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/viewPager"
-        app:tabIndicatorColor="#3984F2"
-        app:tabIndicatorFullWidth="false"
-        app:tabTextColor="#000000" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3y / 1.2 kg"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layoutDirection="rtl"
+                android:orientation="horizontal"
+                android:padding="12sp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    app:cardCornerRadius="50dp">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:contentDescription="@string/dog_image"
+                        app:srcCompat="@drawable/image_18"
+                        tools:ignore="ImageContrastCheck">
+
+                    </ImageView>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    app:cardCornerRadius="50dp">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:contentDescription="@string/dog_image"
+                        app:srcCompat="@drawable/image_18"
+                        tools:ignore="ImageContrastCheck">
+
+                    </ImageView>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/chartTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/viewPager"
+            app:tabIndicatorColor="#3984F2"
+            app:tabIndicatorFullWidth="false"
+            app:tabTextColor="#000000"
+            tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.appbar.AppBarLayout>
 
 
@@ -44,7 +150,8 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <include layout="@layout/bottom_sheet_host" android:id="@+id/bottom_sheet_reminder" />
 

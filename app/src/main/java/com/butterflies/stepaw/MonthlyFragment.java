@@ -8,13 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,12 +109,12 @@ public class MonthlyFragment extends Fragment {
     }
 
     private void showBarChart(){
-        ArrayList<Double> valueList = new ArrayList<Double>();
+        ArrayList<Double> valueList = new ArrayList<>();
+
         ArrayList<BarEntry> entries = new ArrayList<>();
-        String title = "Title";
 
         //input data
-        for(int i = 0; i < 6; i++){
+        for(int i = 0; i <= 6; i++){
             valueList.add(i * 100.1);
         }
 
@@ -124,75 +124,59 @@ public class MonthlyFragment extends Fragment {
             entries.add(barEntry);
         }
 
-        BarDataSet barDataSet = new BarDataSet(entries, title);
-        barDataSet.setColor(Color.parseColor("#004E99"));
+        BarDataSet barDataSet = new BarDataSet(entries, "");
+        barDataSet.setDrawValues(false);
+        barDataSet.setColor(Color.parseColor("#DFE9F8"));
         BarData data = new BarData(barDataSet);
-        data.setBarWidth(0.5f);
+        data.setBarWidth(0.4f);
 
         barChart.setData(data);
         barChart.invalidate();
     }
 
+    private ArrayList<String> getXAxisValues()
+    {
+        ArrayList<String> labels = new ArrayList<> ();
+
+        labels.add( "SUN");
+        labels.add( "MON");
+        labels.add( "TUE");
+        labels.add( "WED");
+        labels.add( "THU");
+        labels.add( "FRI");
+        labels.add( "SAT");
+        return labels;
+    }
+
     private void initBarChart(){
-        //hiding the grey background of the chart, default false if not set
         barChart.setDrawGridBackground(false);
-        //remove the bar shadow, default false if not set
         barChart.setDrawBarShadow(false);
-        //remove border of the chart, default false if not set
         barChart.setDrawBorders(false);
 
-//        //remove the description label text located at the lower right corner
-//        Description description = new Description();
-//        description.setEnabled(false);
-//        barChart.setDescription(description);
-
-        //setting animation for y-axis, the bar will pop up from 0 to its value within the time we set
         barChart.animateY(1000);
-        //setting animation for x-axis, the bar will pop up separately within the time we set
         barChart.animateX(1000);
 
-
-//        barChart.getAxisRight().setEnabled(false);
         barChart.getAxisLeft().setEnabled(false);
         barChart.getLegend().setEnabled(false);
         barChart.getDescription().setEnabled(false);
 
         XAxis xAxis = barChart.getXAxis();
-        //change the position of x-axis to the bottom
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        //set the horizontal distance of the grid line
+        xAxis.setDrawLabels(true);
+        xAxis.setTextSize(12);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(getXAxisValues()));
         xAxis.setGranularity(1f);
-        //hiding the x-axis line, default true if not set
-        xAxis.setDrawAxisLine(true);
-        //hiding the vertical grid lines, default true if not set
+        xAxis.setDrawAxisLine(false);
         xAxis.setDrawGridLines(false);
 
         YAxis leftAxis = barChart.getAxisLeft();
-        //hiding the left y-axis line, default true if not set
         leftAxis.setDrawAxisLine(false);
-        leftAxis.enableGridDashedLine(7f, 7f, 0f);
+        leftAxis.setDrawLimitLinesBehindData(false);
+        //leftAxis.enableGridDashedLine(10f, 10f, 10f);
 
         YAxis rightAxis = barChart.getAxisRight();
-        //hiding the right y-axis line, default true if not set
         rightAxis.setDrawAxisLine(false);
         rightAxis.setDrawLabels(false);
-        rightAxis.enableGridDashedLine(7f, 7f, 0f);
-
-        Legend legend = barChart.getLegend();
-        //setting the shape of the legend form to line, default square shape
-        legend.setForm(Legend.LegendForm.LINE);
-
-        //setting the text size of the legend
-        legend.setTextSize(11f);
-        //setting the alignment of legend toward the chart
-        //legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
-        //setting the stacking direction of legend
-        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        //setting the location of legend outside the chart, default false if not set
-        legend.setDrawInside(false);
-
-
-
+        rightAxis.enableGridDashedLine(10f, 10f, 10f);
     }
 }
