@@ -1,13 +1,13 @@
 package com.butterflies.stepaw;
 
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -16,9 +16,13 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import app.futured.donut.DonutProgressView;
 import app.futured.donut.DonutSection;
@@ -40,6 +44,8 @@ public class WeeklyFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private List<DonutSection> kmDataList = new ArrayList<>();
+    private List<DonutSection> minDataList = new ArrayList<>();
 
     public WeeklyFragment() {
         // Required empty public constructor
@@ -82,22 +88,7 @@ public class WeeklyFragment extends Fragment {
         DonutProgressView kmDonutChart = view.findViewById(R.id.kmDonutView);
         DonutProgressView minDonutChart = view.findViewById(R.id.minDonutView);
 
-        DonutSection kmSection = new DonutSection("km",
-                Color.parseColor("#004E99"), 3f);
-
-        DonutSection minSection = new DonutSection("min",
-                Color.parseColor("#FBD617"),4f);
-
-        List<DonutSection> list = new ArrayList<>();
-        list.add(kmSection);
-        kmDonutChart.setCap(5f);
-        kmDonutChart.submitData(list);
-
-        list = new ArrayList<>();
-        list.add(minSection);
-        minDonutChart.setCap(5f);
-        minDonutChart.submitData(list);
-
+        renderDonutData(kmDonutChart, minDonutChart);
 
         //weekly report - line chart generation
         mChart = view.findViewById(R.id.chart);
@@ -105,11 +96,46 @@ public class WeeklyFragment extends Fragment {
         mChart.setPinchZoom(true);
         mChart.animateY(1000);
         mChart.animateX(1000);
-//        MyMarkerView mv = new MyMarkerView(getActivity().getApplicationContext(), R.layout.custom_marker_view);
-//        mv.setChartView(mChart);
-//        mChart.setMarker(mv);
+        mChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                Toast.makeText(getActivity(), "Value selected", Toast.LENGTH_SHORT).show();
+                renderDonutData(kmDonutChart, minDonutChart);
+                //System.out.println(e.getX()+ " " + e.getY());
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+
         renderData();
         return view;
+    }
+
+    private void renderDonutData(DonutProgressView kmDonutChart, DonutProgressView minDonutChart){
+
+        Random rn = new Random();
+        float answer = rn.nextInt(5) + 1;
+        DonutSection kmSection = new DonutSection("km",
+                Color.parseColor("#004E99"), answer);
+
+        DonutSection minSection = new DonutSection("min",
+                Color.parseColor("#FBD617"),answer);
+
+        kmDataList = new ArrayList<>();
+        kmDataList.add(kmSection);
+        kmDonutChart.setCap(5f);
+        kmDonutChart.submitData(kmDataList);
+        kmDonutChart.animate();
+
+        minDataList = new ArrayList<>();
+        minDataList.add(minSection);
+        minDonutChart.setCap(5f);
+        minDonutChart.submitData(minDataList);
+        minDonutChart.animate();
+
     }
 
 
@@ -141,7 +167,7 @@ public class WeeklyFragment extends Fragment {
 
     private ArrayList<String> getXAxisValues()
     {
-        ArrayList<String> labels = new ArrayList<String> ();
+        ArrayList<String> labels = new ArrayList<> ();
 
         labels.add( "SUN");
         labels.add( "MON");
@@ -187,6 +213,8 @@ public class WeeklyFragment extends Fragment {
             set1.setDrawFilled(false);
             set1.setFormLineWidth(.5f);
             set1.setFormSize(15f);
+            set1.setDrawHorizontalHighlightIndicator(true);
+            set1.setHighLightColor(Color.rgb(255,222,46));
             set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
 
             ArrayList<ILineDataSet> dataSets = new ArrayList<>();

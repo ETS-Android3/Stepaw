@@ -32,6 +32,8 @@
     <string name="monthly_report">Month</string>
     <string name="dog_image">Dog Image</string>
     <string name="frame">Frame</string>
+    <string name="txtGreetings">Start another fun date with your walk mates! Choose your partner below.</string>
+    <string name="add_new_dog">Add New Dog</string>
 
 
 </resources>

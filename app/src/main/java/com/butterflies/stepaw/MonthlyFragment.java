@@ -2,13 +2,13 @@ package com.butterflies.stepaw;
 
 import android.graphics.Color;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -79,6 +79,7 @@ public class MonthlyFragment extends Fragment {
         //generate monthly report - bar chart
         barChart = view.findViewById(R.id.barChart);
         barChart.setTouchEnabled(true);
+        barChart.setDrawBarShadow(false);
         barChart.setPinchZoom(true);
         showBarChart();
         initBarChart();
@@ -127,6 +128,7 @@ public class MonthlyFragment extends Fragment {
         BarDataSet barDataSet = new BarDataSet(entries, "");
         barDataSet.setDrawValues(false);
         barDataSet.setColor(Color.parseColor("#DFE9F8"));
+        barDataSet.setBarShadowColor(Color.rgb(255,222,46));
         BarData data = new BarData(barDataSet);
         data.setBarWidth(0.4f);
 
@@ -150,7 +152,7 @@ public class MonthlyFragment extends Fragment {
 
     private void initBarChart(){
         barChart.setDrawGridBackground(false);
-        barChart.setDrawBarShadow(false);
+
         barChart.setDrawBorders(false);
 
         barChart.animateY(1000);
@@ -159,6 +161,8 @@ public class MonthlyFragment extends Fragment {
         barChart.getAxisLeft().setEnabled(false);
         barChart.getLegend().setEnabled(false);
         barChart.getDescription().setEnabled(false);
+        barChart.setHighlightFullBarEnabled(true);
+        barChart.setRenderer(new RoundedBarChart(barChart, barChart.getAnimator(), barChart.getViewPortHandler(), 50));
 
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -172,11 +176,10 @@ public class MonthlyFragment extends Fragment {
         YAxis leftAxis = barChart.getAxisLeft();
         leftAxis.setDrawAxisLine(false);
         leftAxis.setDrawLimitLinesBehindData(false);
-        //leftAxis.enableGridDashedLine(10f, 10f, 10f);
 
         YAxis rightAxis = barChart.getAxisRight();
         rightAxis.setDrawAxisLine(false);
         rightAxis.setDrawLabels(false);
-        rightAxis.enableGridDashedLine(10f, 10f, 10f);
+        rightAxis.enableGridDashedLine(10f, 10f, 100f);
     }
 }
