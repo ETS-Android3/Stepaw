@@ -29,8 +29,8 @@ class MainActivity : AppCompatActivity() {
                 Log.d("sharedtoken",token)
             }
         }
-//        Intent(this,ChartReport::class.java).also {
-//            startActivity(it) }
+        Intent(this,ChartReport::class.java).also {
+            startActivity(it) }
 
 //        if (token == "invalid") {
 //            Intent(this, AuthUIHost::class.java).run { startActivity(this) }

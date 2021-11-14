@@ -62,12 +62,21 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
 
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+        homeIntent.addCategory( Intent.CATEGORY_HOME );
+        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(homeIntent);
+        System.exit(1);
+    }
+
     @Override
     protected void onStart() {
 
         super.onStart();
-        NetworkCall n=new NetworkCall();
-        n.getAllUsersCall();
+
     }
     @Override
     public void setReminder(@NonNull String hour, @NonNull String minute) {
