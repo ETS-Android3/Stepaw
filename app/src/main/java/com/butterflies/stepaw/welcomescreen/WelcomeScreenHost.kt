@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.butterflies.stepaw.databinding.ActivityWelcomeScreenHostBinding
+import com.google.android.material.tabs.TabLayoutMediator
 
 private const val NUM_PAGES = 3
 
@@ -19,6 +20,13 @@ class WelcomeScreenHost : FragmentActivity() {
         viewpager = binding.viewpager
         val pagerAdapter = ScreenSlidePagerAdapter(this)
         viewpager.adapter = pagerAdapter
+
+        val tabLayout=binding.tabLayout
+        TabLayoutMediator(tabLayout,viewpager){ _, _ ->
+
+
+        }.attach()
+
         viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)

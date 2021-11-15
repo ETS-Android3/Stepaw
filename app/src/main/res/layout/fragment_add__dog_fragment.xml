@@ -7,7 +7,11 @@
     android:orientation="vertical">
 
     <TextView
+        android:paddingTop="33dp"
+        android:textSize="18sp"
+        android:layout_marginBottom="5dp"
         android:id="@+id/dog_name"
+        android:fontFamily="@font/lato_bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dog_name" />
@@ -17,35 +21,50 @@
         android:id="@+id/dog_name_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/rounded_edittext"
+        style="@style/CustomEditText"
         android:autofillHints="name"
         android:hint="@string/dog_name_hint"
         android:inputType="textPersonName"
         android:minHeight="48dp"
+        android:layout_marginBottom="15dp"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/dog_age"
+        android:textSize="18sp"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/lato_bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dog_age" />
 
     <EditText
         android:id="@+id/dog_age_edit"
+        android:background="@drawable/rounded_edittext"
+        style="@style/CustomEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/dog_age_hint"
         android:inputType="numberDecimal"
+        android:layout_marginBottom="15dp"
         android:minHeight="48dp" />
 
     <TextView
+        android:textSize="18sp"
+        android:fontFamily="@font/lato_bold"
         android:id="@+id/dog_weight"
+        android:layout_marginBottom="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dog_weight" />
 
     <EditText
         android:id="@+id/dog_weight_edit"
+        android:background="@drawable/rounded_edittext"
+        style="@style/CustomEditText"
         android:layout_width="match_parent"
+        android:layout_marginBottom="15dp"
         android:layout_height="wrap_content"
         android:hint="@string/dog_weight_hint"
         android:inputType="numberDecimal"
@@ -53,6 +72,9 @@
 
     <TextView
         android:id="@+id/dog_gender"
+        android:fontFamily="@font/lato_bold"
+        android:textSize="18sp"
+        android:layout_marginBottom="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dog_gender" />
@@ -66,6 +88,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/dog_male"
+            android:buttonTint="@color/color_primary"
             android:checked="true"
             android:layout_weight="1"
             />
@@ -73,6 +96,7 @@
             android:id="@+id/dog_female"
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:buttonTint="@color/color_primary"
             android:layout_height="wrap_content"
             android:text="@string/dog_female"
             />
@@ -80,6 +104,7 @@
             android:id="@+id/dog_others"
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:buttonTint="@color/color_primary"
             android:layout_height="wrap_content"
             android:text="@string/dog_others"
             />
@@ -87,6 +112,9 @@
     <Button
         android:id="@+id/dog_save"
         android:text="@string/dog_save"
+        style="@style/RoundedButton"
+        android:background="@drawable/rounded_button"
+        android:layout_marginTop="37dp"
         android:layout_width="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"/>

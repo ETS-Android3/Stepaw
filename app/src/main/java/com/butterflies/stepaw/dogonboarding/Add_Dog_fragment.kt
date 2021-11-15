@@ -1,6 +1,7 @@
 package com.butterflies.stepaw.dogonboarding
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
@@ -38,28 +39,27 @@ class Add_Dog_fragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentAddDogFragmentBinding.inflate(layoutInflater, container, false)
         binding.dogSave.setOnClickListener {
-            val name = binding.dogNameEdit.text.toString()
-            val age = binding.dogAgeEdit.text.toString().toFloat()
-            val weight = binding.dogWeightEdit.text.toString().toFloat()
-            val gender_group_id = binding.dogGenderGroup.checkedRadioButtonId
-            val gender_id = binding.root.findViewById<RadioButton>(gender_group_id)
-            val gender = gender_id.text.toString()
-           if(TextUtils.isEmpty(name)){
-               with(binding.dogNameEdit){
-                   highlightColor=Color.RED
-               }
+            val colorlist=ColorStateList.valueOf(Color.RED)
+           if(TextUtils.isEmpty(binding.dogNameEdit.text)){
+               binding.dogNameEdit.backgroundTintList=colorlist
            }
-            else if(TextUtils.isEmpty(binding.dogAgeEdit.toString())){
+            else if(TextUtils.isEmpty(binding.dogAgeEdit.text)){
                 with(binding.dogAgeEdit){
-                    highlightColor=Color.RED
+                    backgroundTintList=colorlist
                 }
            }
-            else if(TextUtils.isEmpty(binding.dogWeightEdit.toString())){
+            else if(TextUtils.isEmpty(binding.dogWeightEdit.text)){
                 with(binding.dogAgeEdit){
-                    highlightColor=Color.RED
+                    backgroundTintList=colorlist
                 }
            }
             else{
+               val name = binding.dogNameEdit.text.toString()
+               val age = binding.dogAgeEdit.text.toString().toFloat()
+               val weight = binding.dogWeightEdit.text.toString().toFloat()
+               val gender_group_id = binding.dogGenderGroup.checkedRadioButtonId
+               val gender_id = binding.root.findViewById<RadioButton>(gender_group_id)
+               val gender = gender_id.text.toString()
                 onboard.registerDog(name, age, weight, gender)
            }
 

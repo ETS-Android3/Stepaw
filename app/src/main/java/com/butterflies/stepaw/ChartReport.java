@@ -61,6 +61,18 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                 BottomSheetBehavior.from(findViewById(R.id.bottom_sheet_reminder));
 
 
+        standardBottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+            }
+        });
+
+
     }
 
     @Override
@@ -84,6 +96,8 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour));
         calendar.set(Calendar.MINUTE, Integer.parseInt(minute));
         calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+        calendar.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
         updateTimeText(calendar);
         startAlarm(calendar);
     }
@@ -100,7 +114,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         if (c.before(Calendar.getInstance())) {
             c.add(Calendar.DATE, 1);
         }
-        Objects.requireNonNull(alarmManager).setExact(AlarmManager.RTC_WAKEUP,
+        Objects.requireNonNull(alarmManager).setInexactRepeating(AlarmManager.RTC_WAKEUP,AlarmManager.INTERVAL_DAY * 7,
                 c.getTimeInMillis(), pendingIntent);
     }
 //Implementing observable interface for update of data from network callback

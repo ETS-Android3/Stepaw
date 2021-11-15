@@ -35,7 +35,7 @@ class NotificationHelper extends ContextWrapper {
     public NotificationCompat.Builder getChannelNotification() {
         return new NotificationCompat.Builder(getApplicationContext(), channelID)
                 .setContentTitle("Scheduled Alert")
-                .setContentText("Your Alert is Ringing")
-                .setSmallIcon(R.drawable.ic_menu_gallery);
+                .setContentText("Dummy Notification")
+                .setSmallIcon(R.drawable.icon_title);
     }
 }
