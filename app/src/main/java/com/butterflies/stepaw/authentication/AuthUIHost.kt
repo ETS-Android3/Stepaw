@@ -29,6 +29,7 @@ import com.butterflies.stepaw.network.models.UserModel
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -167,47 +168,31 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d("login", "signInWithCredential:success")
-
                     val user = auth.currentUser
                     if (user?.uid !== null) {
-                        storePreferences("com.butterflies.stepaw.uid", user?.uid!!)
-                        id=user?.uid!!
+                        id = user.uid
                     }
-                    if (user?.displayName !== null) {storePreferences(
-                        "com.butterflies.stepaw.displayName",
-                        user?.displayName!!
-                    )
-                    userName=user?.displayName!!
-                    }
-                    else storePreferences("com.butterflies.stepaw.displayName", "invalid")
+                    if (user?.displayName !== null) {
 
-                    if (user?.displayName !== null) {storePreferences(
-                        "com.butterflies.stepaw.firstName",
-                        user?.displayName!!
-                    )
-                    firstName=user?.displayName!!
-                    }
-                    else storePreferences("com.butterflies.stepaw.firstName", "invalid")
-                    if (user?.displayName !== null){ storePreferences(
-                        "com.butterflies.stepaw.lastName",
-                        user?.displayName!!
-                    )
-                    lastName=user?.displayName!!
-                    }
-                    else storePreferences("com.butterflies.stepaw.lastName", "invalid")
+                        userName = user.displayName!!
+                    } else storePreferences("com.butterflies.stepaw.displayName", "invalid")
 
-                    if (user?.email !== null) {storePreferences(
-                        "com.butterflies.stepaw.email",
-                        user?.email!!
-                    )
-                    email=user?.email!!
-                    }
-                    else storePreferences("com.butterflies.stepaw.email", "invalid")
-if(this::id.isInitialized&&this::userName.isInitialized&&this::email.isInitialized){
-    createNewUserCall(id,userName,userName,userName,email,"01")
-}
+                    if (user?.displayName !== null) {
 
+                        firstName = user.displayName!!
+                    } else storePreferences("com.butterflies.stepaw.firstName", "invalid")
+                    if (user?.displayName !== null) {
+
+                        lastName = user.displayName!!
+                    } else storePreferences("com.butterflies.stepaw.lastName", "invalid")
+
+                    if (user?.email !== null) {
+
+                        email = user.email!!
+                    } else storePreferences("com.butterflies.stepaw.email", "invalid")
+                    if (this::id.isInitialized && this::userName.isInitialized && this::email.isInitialized) {
+                        createNewUserCall(id, userName, userName, userName, email, "01",idToken)
+                    }
                     Intent(this@AuthUIHost, OnBoardingHost::class.java).also { startActivity(it) }
                 } else {
                     // If sign in fails, display a message to the user.
@@ -287,23 +272,33 @@ if(this::id.isInitialized&&this::userName.isInitialized&&this::email.isInitializ
     }
 
     //    Create a new user in the backend
-    fun createNewUserCall(
+    private fun createNewUserCall(
         UserID: String,
         UserName: String,
         FirstName: String,
         LastName: String,
         EmailID: String,
-        BluetoothID: String
+        BluetoothID: String,
+        token:String
     ) {
         val usermodel = UserModel(UserID, UserName, FirstName, LastName, EmailID, BluetoothID)
-        val newUserRequest = service.createUser(usermodel)
+        val newUserRequest = service.createUser(token=" Bearer $token",usermodel)
         newUserRequest.enqueue(object : Callback<UserModel> {
             override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
-               Log.d("retrofit","Storedsuccessfully")
+                Log.d("retrofit", "Storedsuccessfully")
+//               Storing user data in shared preferences
+                val userdatapreferences =
+                    getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE)
+                with(userdatapreferences.edit()) {
+                    val gson = Gson()
+                    val json = gson.toJson(response.body())
+                    putString("com.butterflies.stepaw.user", json.toString())
+                    apply()
+                }
             }
 
             override fun onFailure(call: Call<UserModel>, t: Throwable) {
-
+                Log.d("retrofitFailure", t.message.toString())
             }
 
         })

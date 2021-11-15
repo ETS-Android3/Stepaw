@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
@@ -11,6 +12,7 @@
         android:layout_height="wrap_content"
         android:text="@string/dog_name" />
 
+
     <EditText
         android:id="@+id/dog_name_edit"
         android:layout_width="match_parent"
@@ -18,7 +20,8 @@
         android:autofillHints="name"
         android:hint="@string/dog_name_hint"
         android:inputType="textPersonName"
-        android:minHeight="48dp" />
+        android:minHeight="48dp"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/dog_age"
