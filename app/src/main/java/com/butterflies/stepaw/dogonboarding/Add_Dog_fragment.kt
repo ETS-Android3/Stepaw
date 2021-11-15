@@ -1,12 +1,15 @@
 package com.butterflies.stepaw.dogonboarding
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
+import android.text.TextUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
+import android.widget.Toast
 import com.butterflies.stepaw.databinding.FragmentAddDogFragmentBinding
 
 
@@ -41,7 +44,25 @@ class Add_Dog_fragment : Fragment() {
             val gender_group_id = binding.dogGenderGroup.checkedRadioButtonId
             val gender_id = binding.root.findViewById<RadioButton>(gender_group_id)
             val gender = gender_id.text.toString()
-            onboard.registerDog(name, age, weight, gender)
+           if(TextUtils.isEmpty(name)){
+               with(binding.dogNameEdit){
+                   highlightColor=Color.RED
+               }
+           }
+            else if(TextUtils.isEmpty(binding.dogAgeEdit.toString())){
+                with(binding.dogAgeEdit){
+                    highlightColor=Color.RED
+                }
+           }
+            else if(TextUtils.isEmpty(binding.dogWeightEdit.toString())){
+                with(binding.dogAgeEdit){
+                    highlightColor=Color.RED
+                }
+           }
+            else{
+                onboard.registerDog(name, age, weight, gender)
+           }
+
         }
         return binding.root
 
