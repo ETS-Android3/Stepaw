@@ -90,8 +90,7 @@ class OnBoardingHost : AppCompatActivity(), Add_Dog_fragment.OnBoardingService {
             val newPetRequest = service.createPet(token = " Bearer $idToken", petmodel)
             newPetRequest.enqueue(object : Callback<PetModel> {
                 override fun onResponse(call: Call<PetModel>, response: Response<PetModel>) {
-                    Log.d("newpet", response.isSuccessful.toString())
-                    Toast.makeText(this@OnBoardingHost,response.isSuccessful.toString(),Toast.LENGTH_SHORT).show()
+                    Log.d("newpet",response.isSuccessful.toString())
                 }
 
                 override fun onFailure(call: Call<PetModel>, t: Throwable) {
