@@ -3,14 +3,14 @@
 <item
     android:id="@+id/item1"
     android:icon="@drawable/icon_title"
-    android:title="i1"
+    android:title="Account"
     android:checked="true" />
 <item
     android:id="@+id/item2"
     android:icon="@drawable/icon_title"
-    android:title="i2" />
+    android:title="Notifications" />
 <item
     android:id="@+id/item3"
     android:icon="@drawable/icon_title"
-    android:title="i3" />
+    android:title="jk" />
     </menu>

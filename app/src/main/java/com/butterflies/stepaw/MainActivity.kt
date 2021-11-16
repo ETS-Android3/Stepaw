@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import com.butterflies.stepaw.authentication.AuthUIHost
+import com.butterflies.stepaw.ble.BleActivity
 import com.butterflies.stepaw.databinding.ActivityMainBinding
 import com.butterflies.stepaw.dogonboarding.OnBoardingHost
 import com.butterflies.stepaw.welcomescreen.WelcomeScreenHost
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 //                Log.d("sharedtoken",token)
 //            }
 //        }
-        Intent(this,OnBoardingHost::class.java).also {
+        Intent(this,BleActivity::class.java).also {
             startActivity(it) }
 
 //        if (token == "invalid") {

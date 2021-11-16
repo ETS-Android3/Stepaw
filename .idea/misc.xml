@@ -49,6 +49,8 @@
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/viewpager_selected.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/font/fonts.xml" value="0.20572916666666666" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/activity_authuihost.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/activity_ble.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/activity_ble_operations.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/activity_chart_report.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/activity_main.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/activity_main2.xml" value="0.17552083333333332" />
@@ -81,6 +83,7 @@
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/fragment_welcome5.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/fragment_welcome6.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/nav_header_main.xml" value="0.1" />
+        <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/row_scan_result.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/seperator_signin.xml" value="0.6666666666666666" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/toolbar.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/viewpager_indicators.xml" value="0.17552083333333332" />
