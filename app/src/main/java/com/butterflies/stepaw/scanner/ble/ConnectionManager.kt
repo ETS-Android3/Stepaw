@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.butterflies.stepaw.ble.ble
+package com.butterflies.stepaw.scanner.ble
 
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGatt
@@ -29,7 +29,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Handler
 import android.os.Looper
-import com.butterflies.stepaw.ble.ble.*
+import com.butterflies.stepaw.scanner.ble.*
 import timber.log.Timber
 import java.lang.ref.WeakReference
 import java.util.UUID

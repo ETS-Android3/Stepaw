@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 <item
-    android:id="@+id/item1"
-    android:icon="@drawable/icon_title"
-    android:title="Account"
-    android:checked="true" />
+    android:id="@+id/account"
+    android:icon="@drawable/accounticon"
+    android:title="@string/account"
+
+    />
 <item
-    android:id="@+id/item2"
-    android:icon="@drawable/icon_title"
-    android:title="Notifications" />
+    android:id="@+id/notifications"
+    android:icon="@drawable/notificationicon"
+    android:title="@string/notifications" />
 <item
-    android:id="@+id/item3"
-    android:icon="@drawable/icon_title"
-    android:title="jk" />
+    android:id="@+id/contactus"
+    android:icon="@drawable/contactusicon"
+    android:title="@string/contact_us" />
     </menu>

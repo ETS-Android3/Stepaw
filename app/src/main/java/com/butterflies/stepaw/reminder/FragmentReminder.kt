@@ -14,13 +14,9 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 class FragmentReminder : Fragment() {
     private lateinit var binding: FragmentReminderBinding
     private lateinit var reminder: ReminderService
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
 
     interface ReminderService {
-        fun setReminder(hour: String, minute: String,vararg days:Int)
+        fun setReminder(hour: String, minute: String, vararg days: Int)
     }
 
     override fun onAttach(context: Context) {
@@ -31,7 +27,7 @@ class FragmentReminder : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentReminderBinding.inflate(layoutInflater, container, false)
         val standardBottomSheetBehavior =
             BottomSheetBehavior.from(requireActivity().findViewById(com.butterflies.stepaw.R.id.bottom_sheet_reminder))
@@ -42,9 +38,18 @@ class FragmentReminder : Fragment() {
             addReminder()
         }
         binding.saveReminder.setOnClickListener {
-            val time_picker = binding.timepicker
-            val hour = time_picker.hour
-            reminder.setReminder(time_picker.hour.toString(), time_picker.minute.toString(),1,2,3,4,5,6,7)
+            val timePicker = binding.timepicker
+            reminder.setReminder(
+                timePicker.hour.toString(),
+                timePicker.minute.toString(),
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+            )
             binding.newreminder.visibility = View.GONE
             standardBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }

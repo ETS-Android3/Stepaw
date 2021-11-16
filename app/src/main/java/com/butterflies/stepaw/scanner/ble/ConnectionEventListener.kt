@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.butterflies.stepaw.ble.ble
+package com.butterflies.stepaw.scanner.ble
 
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGatt

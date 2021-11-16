@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.butterflies.stepaw.ble
+package com.butterflies.stepaw.scanner
 
 import android.bluetooth.le.ScanResult
 import android.view.View
@@ -30,7 +30,6 @@ class ScanResultAdapter(
     private val items: List<ScanResult>,
     private val onClickListener: ((device: ScanResult) -> Unit)
 ) : RecyclerView.Adapter<ScanResultAdapter.ViewHolder>() {
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = parent.context.layoutInflater.inflate(

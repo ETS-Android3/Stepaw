@@ -1,34 +1,28 @@
 package com.butterflies.stepaw.authentication
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import com.butterflies.stepaw.dogonboarding.OnBoardingHost
 import com.butterflies.stepaw.R
+import com.butterflies.stepaw.dogonboarding.OnBoardingHost
+import com.butterflies.stepaw.network.ApiService
+import com.butterflies.stepaw.network.models.UserModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.auth.GetTokenResult
-
-import androidx.annotation.NonNull
-import com.butterflies.stepaw.network.ApiService
-import com.butterflies.stepaw.network.models.UserModel
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
@@ -41,18 +35,18 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
     FragmentPasswordReset.PasswordResetService {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
-    lateinit var id: String;
-    lateinit var userName: String;
-    lateinit var firstName: String;
-    lateinit var lastName: String;
-    lateinit var email: String;
+    lateinit var id: String
+    private lateinit var userName: String
+    private lateinit var firstName: String
+    private lateinit var lastName: String
+    private lateinit var email: String
 
     //    Build retrofit instance
-    val retrofit = Retrofit.Builder()
+    private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(ApiService.BASE_URL)
         .addConverterFactory(MoshiConverterFactory.create())
         .build()
-    val service = retrofit.create(ApiService::class.java)
+    private val service: ApiService = retrofit.create(ApiService::class.java)
 
     //    For signing in user with google call signin()
 //    For signing in with email password call signinwithpassword(email,password)
@@ -105,6 +99,7 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
 
     }
 
+    @SuppressLint("LogNotTimber")
     private fun signinWithPassword(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
@@ -116,7 +111,7 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
                     user?.getIdToken(true)
                         ?.addOnCompleteListener { token ->
                             if (token.isSuccessful) {
-                                val idToken = token.getResult()?.token
+                                val idToken = token.result?.token
                                 if (idToken != null) {
                                     storePreferences("com.butterflies.stepaw.idToken", idToken)
                                 }
@@ -139,6 +134,7 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
             }
     }
 
+    @SuppressLint("LogNotTimber")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -148,7 +144,7 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)!!
-                Log.d("login", "firebaseAuthWithGoogle:" + account.toString())
+                Log.d("login", "firebaseAuthWithGoogle:$account")
                 firebaseAuthWithGoogle(account.idToken!!)
 
             } catch (e: ApiException) {
@@ -158,6 +154,7 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
         }
     }
 
+    @SuppressLint("LogNotTimber")
     private fun firebaseAuthWithGoogle(idToken: String) {
 
 //        Store id token to shared preferences
@@ -219,7 +216,7 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    val user = auth.currentUser
+//                    val user = auth.currentUser
 
                 } else {
                     // If sign in fails, display a message to the user.
@@ -228,6 +225,7 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
             }
     }
 
+    @SuppressLint("LogNotTimber")
     private fun passwordReset(password: String) {
         val user = auth.currentUser
         user!!.updatePassword(password)
@@ -284,6 +282,7 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
         val usermodel = UserModel(UserID, UserName, FirstName, LastName, EmailID, BluetoothID)
         val newUserRequest = service.createUser(token=" Bearer $token",usermodel)
         newUserRequest.enqueue(object : Callback<UserModel> {
+            @SuppressLint("LogNotTimber")
             override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
                 Log.d("retrofit", "Storedsuccessfully")
 //               Storing user data in shared preferences
@@ -297,6 +296,7 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
                 }
             }
 
+            @SuppressLint("LogNotTimber")
             override fun onFailure(call: Call<UserModel>, t: Throwable) {
                 Log.d("retrofitFailure", t.message.toString())
             }

@@ -11,18 +11,14 @@ import com.butterflies.stepaw.R
 import com.butterflies.stepaw.databinding.ActivityOnBoardingHostBinding
 import com.butterflies.stepaw.network.ApiService
 import com.butterflies.stepaw.network.models.PetModel
-import com.butterflies.stepaw.network.models.UserModel
-import com.butterflies.stepaw.network.networkCall.NetworkCall
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.lang.Exception
 
-class OnBoardingHost : AppCompatActivity(), Add_Dog_fragment.OnBoardingService {
+class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
     private lateinit var binding: ActivityOnBoardingHostBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +71,7 @@ class OnBoardingHost : AppCompatActivity(), Add_Dog_fragment.OnBoardingService {
         if (token != null) {
             idToken = token
         }
-        if (idToken !== null && userId !== "invalid"&&userId!==null) {
+        if (idToken !== null && userId !== "invalid" && userId !== null) {
             val petmodel = PetModel(
                 "invalid",
                 Age = age.toString(),
@@ -90,19 +86,20 @@ class OnBoardingHost : AppCompatActivity(), Add_Dog_fragment.OnBoardingService {
             val newPetRequest = service.createPet(token = " Bearer $idToken", petmodel)
             newPetRequest.enqueue(object : Callback<PetModel> {
                 override fun onResponse(call: Call<PetModel>, response: Response<PetModel>) {
-                    Log.d("newpet",response.isSuccessful.toString())
+                    Log.d("newpet", response.message())
+                    Log.d("newpet", response.isSuccessful().toString())
                 }
 
                 override fun onFailure(call: Call<PetModel>, t: Throwable) {
                     Log.d("newpet", t.message.toString())
-                    Toast.makeText(this@OnBoardingHost,t.message.toString(),Toast.LENGTH_SHORT).show()
-
+                    Toast.makeText(this@OnBoardingHost, t.message.toString(), Toast.LENGTH_SHORT)
+                        .show()
                 }
 
             })
 
-        }else{
-            Log.d("newpet","Something was null")
+        } else {
+            Log.d("newpet", "Something was null")
         }
 
     }
