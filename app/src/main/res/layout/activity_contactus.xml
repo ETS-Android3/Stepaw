@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".userActions.Contactus">
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp">
+
+        <TextView
+            android:id="@+id/contacttext1"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:text="@string/please_get_in_touch" />
+
+        <TextView
+            android:id="@+id/contacttext2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/contaus_text" />
+
+        <TextView
+            android:id="@+id/contactus_heading1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato_bold"
+            android:paddingTop="27dp"
+            android:paddingBottom="10dp"
+            android:text="@string/full_name_heading"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/contact_name"
+            style="@style/CustomEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_edittext"
+            android:minHeight="48dp" />
+
+        <TextView
+            android:id="@+id/contactus_heading2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato_bold"
+            android:hint="@string/please_enter_your_name"
+            android:paddingBottom="10dp"
+            android:text="@string/email_heading"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/contact_email"
+            style="@style/CustomEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_edittext"
+            android:hint="@string/example_email_com"
+            android:minHeight="48dp" />
+
+        <TextView
+            android:id="@+id/contactus_heading3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato_bold"
+            android:paddingBottom="10dp"
+            android:text="@string/message_heading"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/contact_body"
+            style="@style/CustomEditText"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:background="@drawable/rounded_edittext"
+            android:hint="@string/leave_a_message"
+            android:minHeight="48dp" />
+
+        <Button
+            android:id="@+id/sendMail"
+            style="@style/RoundedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/rounded_button"
+            android:text="@string/send" />
+    </LinearLayout>
+</LinearLayout>

@@ -12,7 +12,7 @@ import com.butterflies.stepaw.databinding.FragmentSigninBinding
 
 
 class FragmentSignin : Fragment() {
-lateinit var sign_in_with_activity:SigninService
+private lateinit var signinwithactivity:SigninService
     interface SigninService{
         fun signin(email:String,password:String)
         fun googlesignin()
@@ -21,13 +21,13 @@ lateinit var sign_in_with_activity:SigninService
     private lateinit var binding: FragmentSigninBinding
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        sign_in_with_activity=context as SigninService
+        signinwithactivity=context as SigninService
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentSigninBinding.inflate(layoutInflater, container, false)
         return binding.root
@@ -47,7 +47,7 @@ lateinit var sign_in_with_activity:SigninService
         }
 //        Call Activity's Google sign in method
         binding.googleSignin.setOnClickListener {
-            sign_in_with_activity.googlesignin()
+            signinwithactivity.googlesignin()
         }
 
 //        Call Activity's signinwith email and password method
@@ -58,7 +58,7 @@ lateinit var sign_in_with_activity:SigninService
 //            Validate
 
 //
-            sign_in_with_activity.signin(email, password)
+            signinwithactivity.signin(email, password)
         }
 
     }

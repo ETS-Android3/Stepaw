@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.butterflies.stepaw.ble
+package com.butterflies.stepaw.scanner
 
 import android.Manifest
 import android.app.Activity
@@ -31,27 +31,26 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.ParcelUuid
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
-import androidx.viewbinding.BuildConfig
+import com.butterflies.stepaw.BuildConfig
 import com.butterflies.stepaw.R
-import com.butterflies.stepaw.ble.ble.ConnectionEventListener
-import com.butterflies.stepaw.ble.ble.ConnectionManager
+import com.butterflies.stepaw.scanner.ble.ConnectionEventListener
+import com.butterflies.stepaw.scanner.ble.ConnectionManager
+import kotlinx.android.synthetic.main.activity_ble.*
 import org.jetbrains.anko.alert
 import timber.log.Timber
+
 
 private const val ENABLE_BLUETOOTH_REQUEST_CODE = 1
 private const val LOCATION_PERMISSION_REQUEST_CODE = 2
 private const val SERVICE_DATA_UUID = "0000183E-0000-1000-8000-00805f9b34fb"
 
 class BleActivity : AppCompatActivity() {
-    private lateinit var scan_button: Button
-    private lateinit var scan_results_recycler_view: RecyclerView
 
     /*******************************************
      * Properties
@@ -105,8 +104,6 @@ class BleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ble)
-        scan_button = findViewById<Button>(R.id.scan_button)
-        scan_results_recycler_view = findViewById(R.id.scan_results_recycler_view)
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
@@ -186,7 +183,7 @@ class BleActivity : AppCompatActivity() {
             alert {
                 title = "Location permission required"
                 message = "Starting from Android M (6.0), the system requires apps to be granted " +
-                        "location access in order to scan for BLE devices."
+                    "location access in order to scan for BLE devices."
                 isCancelable = false
                 positiveButton(android.R.string.ok) {
                     requestPermission(
@@ -266,7 +263,7 @@ class BleActivity : AppCompatActivity() {
 
     private fun Context.hasPermission(permissionType: String): Boolean {
         return ContextCompat.checkSelfPermission(this, permissionType) ==
-                PackageManager.PERMISSION_GRANTED
+            PackageManager.PERMISSION_GRANTED
     }
 
     private fun Activity.requestPermission(permission: String, requestCode: Int) {

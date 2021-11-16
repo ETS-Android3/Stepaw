@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-package com.butterflies.stepaw.ble.ble
+package com.butterflies.stepaw.scanner.ble
+
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
 import android.bluetooth.BluetoothGattDescriptor
@@ -127,7 +128,7 @@ fun BluetoothGattDescriptor.containsPermission(permission: Int): Boolean =
  * is a Client Characteristic Configuration Descriptor.
  */
 fun BluetoothGattDescriptor.isCccd() =
-    uuid.toString().uppercase(Locale.US) == CCC_DESCRIPTOR_UUID.uppercase(Locale.US)
+    uuid.toString().toUpperCase(Locale.US) == CCC_DESCRIPTOR_UUID.toUpperCase(Locale.US)
 
 // ByteArray
 

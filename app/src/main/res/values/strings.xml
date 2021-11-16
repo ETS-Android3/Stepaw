@@ -35,5 +35,19 @@
     <string name="txtGreetings">Start another fun date with your walk mates! Choose your partner below.</string>
     <string name="add_new_dog">Add New Dog</string>
     <string name="ble_playground">BLE Playground</string>
+    <string name="nav_open_drawer">Open navigation drawer</string>
+    <string name="nav_close_drawer">Close navigation drawer</string>
+    <string name="notifications">Notifications</string>
+    <string name="account">Account</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="please_get_in_touch">Please get in touch!</string>
+    <string name="contaus_text">Stepaw will answer to anything you might be wondering.</string>
+    <string name="full_name_heading">Full Name</string>
+    <string name="email_heading">Email</string>
+    <string name="message_heading">Message</string>
+    <string name="please_enter_your_name">Please enter your name</string>
+    <string name="example_email_com">example@email.com</string>
+    <string name="leave_a_message">Leave a message</string>
+    <string name="send">send</string>
 
 </resources>

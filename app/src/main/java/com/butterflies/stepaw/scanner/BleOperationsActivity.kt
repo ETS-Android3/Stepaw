@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.butterflies.stepaw.ble
+package com.butterflies.stepaw.scanner
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -31,14 +31,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.butterflies.stepaw.R
-import com.butterflies.stepaw.ble.ble.ConnectionEventListener
-import com.butterflies.stepaw.ble.ble.ConnectionManager
-import com.butterflies.stepaw.ble.ble.isIndicatable
-import com.butterflies.stepaw.ble.ble.isNotifiable
-import com.butterflies.stepaw.ble.ble.isReadable
-import com.butterflies.stepaw.ble.ble.isWritable
-import com.butterflies.stepaw.ble.ble.isWritableWithoutResponse
-import com.butterflies.stepaw.ble.ble.toHexString
+import com.butterflies.stepaw.scanner.ble.ConnectionEventListener
+import com.butterflies.stepaw.scanner.ble.ConnectionManager
+import com.butterflies.stepaw.scanner.ble.isIndicatable
+import com.butterflies.stepaw.scanner.ble.isNotifiable
+import com.butterflies.stepaw.scanner.ble.isReadable
+import com.butterflies.stepaw.scanner.ble.isWritable
+import com.butterflies.stepaw.scanner.ble.isWritableWithoutResponse
+import com.butterflies.stepaw.scanner.ble.toHexString
 import kotlinx.android.synthetic.main.activity_ble_operations.characteristics_recycler_view
 import kotlinx.android.synthetic.main.activity_ble_operations.log_scroll_view
 import kotlinx.android.synthetic.main.activity_ble_operations.log_text_view
@@ -52,6 +52,11 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.UUID
+import android.bluetooth.BluetoothGattDescriptor
+
+import android.bluetooth.BluetoothGattService
+import android.widget.Toast
+
 
 class BleOperationsActivity : AppCompatActivity() {
 
@@ -156,28 +161,34 @@ class BleOperationsActivity : AppCompatActivity() {
     }
 
     private fun showCharacteristicOptions(characteristic: BluetoothGattCharacteristic) {
-        characteristicProperties[characteristic]?.let { properties ->
-            selector("Select an action to perform", properties.map { it.action }) { _, i ->
-                when (properties[i]) {
-                    CharacteristicProperty.Readable -> {
-                        log("Reading from ${characteristic.uuid}")
-                        ConnectionManager.readCharacteristic(device, characteristic)
-                    }
-                    CharacteristicProperty.Writable, CharacteristicProperty.WritableWithoutResponse -> {
-                        showWritePayloadDialog(characteristic)
-                    }
-                    CharacteristicProperty.Notifiable, CharacteristicProperty.Indicatable -> {
-                        if (notifyingCharacteristics.contains(characteristic.uuid)) {
-                            log("Disabling notifications on ${characteristic.uuid}")
-                            ConnectionManager.disableNotifications(device, characteristic)
-                        } else {
-                            log("Enabling notifications on ${characteristic.uuid}")
-                            ConnectionManager.enableNotifications(device, characteristic)
-                        }
-                    }
-                }
-            }
+if(characteristic.isReadable()){
+    ConnectionManager.readCharacteristic(device,characteristic)
+}
+        if(characteristic.isNotifiable()){
+            ConnectionManager.enableNotifications(device,characteristic)
         }
+//        characteristicProperties[characteristic]?.let { properties ->
+//            selector("Select an action to perform", properties.map { it.action }) { _, i ->
+//                when (properties[i]) {
+//                    CharacteristicProperty.Readable -> {
+//                        log("Reading from ${characteristic.uuid}")
+//                        ConnectionManager.readCharacteristic(device, characteristic)
+//                    }
+//                    CharacteristicProperty.Writable, CharacteristicProperty.WritableWithoutResponse -> {
+//                        ConnectionManager.readCharacteristic(device, characteristic)
+//                    }
+//                    CharacteristicProperty.Notifiable, CharacteristicProperty.Indicatable -> {
+//                        if (notifyingCharacteristics.contains(characteristic.uuid)) {
+//                            log("Disabling notifications on ${characteristic.uuid}")
+//                            ConnectionManager.disableNotifications(device, characteristic)
+//                        } else {
+//                            log("Enabling notifications on ${characteristic.uuid}")
+//                            ConnectionManager.enableNotifications(device, characteristic)
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 
     @SuppressLint("InflateParams")

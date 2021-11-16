@@ -4,13 +4,13 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
@@ -24,21 +24,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Stepaw">
         <activity
+            android:name=".userActions.Contactus"
+            android:exported="false" />
+        <activity
+            android:name=".userActions.Notifications"
+            android:exported="false" />
+        <activity
+            android:name=".userActions.Account"
+            android:exported="false" />
+        <activity
             android:name=".DogList"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".dogonboarding.OnBoardingHost"
             android:exported="false" />
         <activity
             android:name=".welcomescreen.WelcomeScreenHost"
-            android:exported="false" />
-        <activity
-            android:name=".ble.BleActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ble.BleOperationsActivity"
             android:exported="false" />
         <activity
             android:name=".authentication.OneTapLogin"
@@ -47,15 +48,21 @@
             android:name=".authentication.AuthUIHost"
             android:exported="true" />
         <activity
+            android:name=".scanner.BleOperationsActivity"
+            android:exported="true" />
+        <activity android:name=".scanner.BleActivity"
+            android:exported="false"
+            />
+        <activity
             android:name=".ChartReport"
             android:exported="true"
-            android:theme="@style/Theme.Stepaw.NoActionBar">
-        </activity>
+            android:theme="@style/Theme.Stepaw.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

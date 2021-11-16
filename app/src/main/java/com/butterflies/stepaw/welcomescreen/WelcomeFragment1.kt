@@ -11,14 +11,10 @@ import com.butterflies.stepaw.databinding.FragmentWelcome1Binding
 class WelcomeFragment1 : Fragment() {
     private lateinit var binding:FragmentWelcome1Binding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding= FragmentWelcome1Binding.inflate(layoutInflater,container,false)
         return binding.root

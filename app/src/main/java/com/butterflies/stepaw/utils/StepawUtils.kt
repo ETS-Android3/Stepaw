@@ -1,14 +1,9 @@
 package com.butterflies.stepaw.utils
 
-import android.content.Context
-import android.util.Log
-import android.widget.Toast
-import com.butterflies.stepaw.network.models.UserModel
-import com.google.gson.Gson
 import java.util.regex.Pattern
 
 class StepawUtils {
-    private val EMAIL_ADDRESS_PATTERN: Pattern = Pattern.compile(
+    private val emailAddressPattern: Pattern = Pattern.compile(
         "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
                 "\\@" +
                 "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
@@ -19,7 +14,7 @@ class StepawUtils {
     )
 
     fun validateEmail(email: String): Boolean {
-        return EMAIL_ADDRESS_PATTERN.matcher(email).matches();
+        return emailAddressPattern.matcher(email).matches();
     }
 
     fun validatePassword(): Boolean = true

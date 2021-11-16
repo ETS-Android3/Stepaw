@@ -10,17 +10,13 @@ import com.butterflies.stepaw.R
 
 
 class FragmentPasswordReset : Fragment() {
-    lateinit var password_reset_activity:PasswordResetService
+    private lateinit var passwordResetActivity:PasswordResetService
     interface PasswordResetService{
-        fun resetPassword(email:String,Password:String);
+        fun resetPassword(email:String,Password:String)
     }
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        password_reset_activity=context as PasswordResetService
-    }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
+        passwordResetActivity=context as PasswordResetService
     }
 
     override fun onCreateView(

@@ -51,7 +51,7 @@ class WelcomeScreenHost : FragmentActivity() {
         override fun getItemCount(): Int = NUM_PAGES
 
         override fun createFragment(position: Int): Fragment =
-            listOf<Fragment>(WelcomeFragment1(), WelcomeFragment2(),WelcomeFragment3())[position]
+            listOf(WelcomeFragment1(), WelcomeFragment2(),WelcomeFragment3())[position]
     }
 
 }
