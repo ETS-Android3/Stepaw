@@ -34,6 +34,6 @@
     <string name="frame">Frame</string>
     <string name="txtGreetings">Start another fun date with your walk mates! Choose your partner below.</string>
     <string name="add_new_dog">Add New Dog</string>
-
+    <string name="ble_playground">BLE Playground</string>
 
 </resources>

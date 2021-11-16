@@ -20,7 +20,7 @@ class FragmentReminder : Fragment() {
 
 
     interface ReminderService {
-        fun setReminder(hour: String, minute: String)
+        fun setReminder(hour: String, minute: String,vararg days:Int)
     }
 
     override fun onAttach(context: Context) {
@@ -44,7 +44,7 @@ class FragmentReminder : Fragment() {
         binding.saveReminder.setOnClickListener {
             val time_picker = binding.timepicker
             val hour = time_picker.hour
-            reminder.setReminder(time_picker.hour.toString(), time_picker.minute.toString())
+            reminder.setReminder(time_picker.hour.toString(), time_picker.minute.toString(),1,2,3,4,5,6,7)
             binding.newreminder.visibility = View.GONE
             standardBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }

@@ -8,7 +8,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
+
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.FragmentKt;
 import androidx.navigation.fragment.NavHostFragment;
@@ -60,15 +66,15 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         BottomSheetBehavior<View> standardBottomSheetBehavior =
                 BottomSheetBehavior.from(findViewById(R.id.bottom_sheet_reminder));
 
-
         standardBottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-
             }
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                float half_height = (float) 0.73;
+
             }
         });
 
@@ -78,7 +84,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
     @Override
     public void onBackPressed() {
         Intent homeIntent = new Intent(Intent.ACTION_MAIN);
-        homeIntent.addCategory( Intent.CATEGORY_HOME );
+        homeIntent.addCategory(Intent.CATEGORY_HOME);
         homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(homeIntent);
         System.exit(1);
@@ -86,18 +92,40 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
     @Override
     protected void onStart() {
-
         super.onStart();
-
     }
+
     @Override
-    public void setReminder(@NonNull String hour, @NonNull String minute) {
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.item1:{
+
+                break;
+            }
+            case R.id.item2:{
+
+            }
+            case R.id.item3:{
+
+            }
+            default:return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
+    @Override
+    public void setReminder(@NonNull String hour, @NonNull String minute,@NonNull int... days) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour));
         calendar.set(Calendar.MINUTE, Integer.parseInt(minute));
         calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
-        calendar.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+
         updateTimeText(calendar);
         startAlarm(calendar);
     }
@@ -114,25 +142,28 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         if (c.before(Calendar.getInstance())) {
             c.add(Calendar.DATE, 1);
         }
-        Objects.requireNonNull(alarmManager).setInexactRepeating(AlarmManager.RTC_WAKEUP,AlarmManager.INTERVAL_DAY * 7,
+        Objects.requireNonNull(alarmManager).setInexactRepeating(AlarmManager.RTC_WAKEUP, AlarmManager.INTERVAL_DAY * 7,
                 c.getTimeInMillis(), pendingIntent);
     }
-//Implementing observable interface for update of data from network callback
+
+    //Implementing observable interface for update of data from network callback
     @Override
     public void update(Observable o, Object arg) {
 
     }
+
     @Override
     protected void onResume() {
-        RetrofitObservable r=new RetrofitObservable();
+        RetrofitObservable r = new RetrofitObservable();
         r.getInstance().addObserver(this);
         super.onResume();
     }
-@Override
+
+    @Override
     protected void onPause() {
-    RetrofitObservable r=new RetrofitObservable();
-    r.deleteObserver(this);
-    super.onPause();
-}
+        RetrofitObservable r = new RetrofitObservable();
+        r.deleteObserver(this);
+        super.onPause();
+    }
 }
 

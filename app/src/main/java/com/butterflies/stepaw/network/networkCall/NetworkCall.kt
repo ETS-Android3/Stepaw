@@ -19,10 +19,8 @@ class NetworkCall {
         .addConverterFactory(MoshiConverterFactory.create())
         .build()
     private val service: ApiService = retrofit.create(ApiService::class.java)
-
-
-    fun getAllPets(token:String){
-        val pets=service.getAllPets(token=" Bearer $token")
+    fun getAllPets(token: String) {
+        val pets = service.getAllPets(token = " Bearer $token")
         pets.enqueue(object : Callback<List<PetGetModel>> {
             override fun onResponse(
                 call: Call<List<PetGetModel>>,
@@ -39,8 +37,8 @@ class NetworkCall {
     }
 
 
-    fun getPetById(token:String,id:String){
-        val pet=service.getPetById(token=" Bearer $token",id)
+    fun getPetById(token: String, id: String) {
+        val pet = service.getPetById(token = " Bearer $token", id)
         pet.enqueue(object : Callback<PetGetModel> {
             override fun onResponse(call: Call<PetGetModel>, response: Response<PetGetModel>) {
                 TODO("response.body()")
