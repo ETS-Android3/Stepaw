@@ -1,12 +1,14 @@
 package com.butterflies.stepaw.dogonboarding
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.butterflies.stepaw.DogList
 import com.butterflies.stepaw.R
 import com.butterflies.stepaw.databinding.ActivityOnBoardingHostBinding
 import com.butterflies.stepaw.network.ApiService
@@ -86,8 +88,15 @@ class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
             val newPetRequest = service.createPet(token = " Bearer $idToken", petmodel)
             newPetRequest.enqueue(object : Callback<PetModel> {
                 override fun onResponse(call: Call<PetModel>, response: Response<PetModel>) {
+
                     Log.d("newpet", response.message())
                     Log.d("newpet", response.isSuccessful().toString())
+
+                    Log.d("newpet",response.isSuccessful.toString())
+                    if(response.isSuccessful) {
+                        Intent(applicationContext,DogList::class.java).also {
+                            startActivity(it) }
+                    }
                 }
 
                 override fun onFailure(call: Call<PetModel>, t: Throwable) {
