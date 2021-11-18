@@ -83,7 +83,8 @@ class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
                 NumberOfSteps = "0",
                 Distance = "0",
                 Duration = "0",
-                UserID = userId
+                UserID = userId,
+                PetName = name
             )
             val newPetRequest = service.createPet(token = " Bearer $idToken", petmodel)
             newPetRequest.enqueue(object : Callback<PetModel> {
