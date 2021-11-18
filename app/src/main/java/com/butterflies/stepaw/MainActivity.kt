@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.my_toolbar))
         val sharedData=getSharedPreferences("com.butterflies.stepaw",Context.MODE_PRIVATE)
         val token=sharedData.getString("com.butterflies.stepaw.idToken","invalid")
+
 //        if (token == "invalid") {
 //            Intent(this, AuthUIHost::class.java).run { startActivity(this) }
 //        }else{
@@ -32,7 +33,16 @@ class MainActivity : AppCompatActivity() {
 //                Log.d("sharedtoken",token)
 //            }
 //        }
-        Intent(this,BleActivity::class.java).also {
+//        Intent(this,BleActivity::class.java).also {
+//        if (token == "invalid") {
+//            Intent(this, AuthUIHost::class.java).run { startActivity(this) }
+//        }
+//        else{
+//            if (token != null) {
+//                Log.d("sharedtoken",token)
+//            }
+//        }
+        Intent(this,OnBoardingHost::class.java).also {
             startActivity(it) }
 
 //        if (token == "invalid") {

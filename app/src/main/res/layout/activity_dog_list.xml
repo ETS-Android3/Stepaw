@@ -73,7 +73,8 @@
 
 <!--        <ListView-->
 <!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content">-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/dog_list">-->
 
             <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -106,7 +107,8 @@
                             android:layout_height="80dp"
                             android:contentDescription="@string/dog_image"
                             app:srcCompat="@drawable/image_18"
-                            tools:ignore="ImageContrastCheck">
+                            tools:ignore="ImageContrastCheck"
+                            android:id="@+id/dog_image">
 
                         </ImageView>
 
@@ -129,7 +131,8 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="Frank"
                                 android:textColor="#000000"
-                                android:textSize="24sp" />
+                                android:textSize="24sp"
+                                android:id="@+id/dog_name"/>
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -150,7 +153,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="3y / 1.2 kg"
-                                android:textSize="20sp" />
+                                android:textSize="20sp"
+                                android:id="@+id/dog_age_weight"/>
 
                         </LinearLayout>
                     </LinearLayout>
