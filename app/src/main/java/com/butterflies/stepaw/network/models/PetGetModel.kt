@@ -10,7 +10,7 @@ data class PetGetModel(
     var NumberOfSteps:String,
     var UserID:String,
     var Distance:String,
-    var Duration:String
-
+    var Duration:String,
+    var PetName:String,
 
 )
