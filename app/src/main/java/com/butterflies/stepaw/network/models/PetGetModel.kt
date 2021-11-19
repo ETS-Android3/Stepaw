@@ -2,6 +2,7 @@ package com.butterflies.stepaw.network.models
 
 data class PetGetModel(
     var PetID:String,
+    var PetName:String,
     var Breed:String,
     var Age:String,
     var Weight:String,

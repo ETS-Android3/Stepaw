@@ -31,6 +31,7 @@
                 app:cardCornerRadius="50dp">
 
                 <ImageView
+                    android:id="@+id/petImage"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:contentDescription="@string/dog_image"
@@ -53,6 +54,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/petName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_bold"
@@ -76,6 +78,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/petAge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="3y / 1.2 kg"

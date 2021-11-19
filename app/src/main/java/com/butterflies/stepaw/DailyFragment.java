@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
 import app.futured.donut.DonutProgressView;
@@ -62,21 +64,34 @@ public class DailyFragment extends Fragment {
         DonutProgressView kmDonutChart = view.findViewById(R.id.kmDonutView);
         DonutProgressView minDonutChart = view.findViewById(R.id.minDonutView);
 
+        ChartReport activity = (ChartReport) getActivity();
+        Float km = Float.parseFloat(activity.petObj.getDistance());
+        Float min = Float.parseFloat(activity.petObj.getDuration());
+
         DonutSection kmSection = new DonutSection("km",
-                Color.parseColor("#004E99"), 3f);
+                Color.parseColor("#004E99"), km);
 
         DonutSection minSection = new DonutSection("min",
-                Color.parseColor("#FBD617"),4f);
+                Color.parseColor("#FBD617"),min);
 
         List<DonutSection> list = new ArrayList<>();
         list.add(kmSection);
-        kmDonutChart.setCap(5f);
+        kmDonutChart.setCap(km+2);
         kmDonutChart.submitData(list);
 
         list = new ArrayList<>();
         list.add(minSection);
-        minDonutChart.setCap(5f);
+        minDonutChart.setCap(min+2);
         minDonutChart.submitData(list);
+
+        TextView stepCount = view.findViewById(R.id.stepsCountTextView);
+        stepCount.setText(activity.petObj.getNumberOfSteps());
+
+        TextView minValue = view.findViewById(R.id.minValue);
+        minValue.setText(activity.petObj.getDuration());
+
+        TextView kmValue = view.findViewById(R.id.kmValue);
+        kmValue.setText(activity.petObj.getDistance());
 
         return view;
     }
