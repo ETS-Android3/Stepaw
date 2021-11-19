@@ -87,7 +87,7 @@ class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
             newPetRequest.enqueue(object : Callback<PetModel> {
                 override fun onResponse(call: Call<PetModel>, response: Response<PetModel>) {
                     if(response.isSuccessful){
-
+                        Intent(this@OnBoardingHost,DogList::class.java).run{startActivity(this)}
                     }
                 }
 
