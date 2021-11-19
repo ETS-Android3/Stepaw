@@ -9,8 +9,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
+import com.butterflies.stepaw.dogonboarding.OnBoardingHost;
 import com.butterflies.stepaw.network.ApiService;
 import com.butterflies.stepaw.network.models.PetGetModel;
 import com.butterflies.stepaw.network.models.PetModel;
@@ -51,6 +53,15 @@ public class DogList extends AppCompatActivity {
             getAllPets(token);
         }
 
+        Button addDog = findViewById(R.id.addDog);
+        addDog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), OnBoardingHost.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 
@@ -67,17 +78,17 @@ public class DogList extends AppCompatActivity {
                 DogListAdapter adapter = new DogListAdapter(getApplicationContext(), petList);
                 listView.setAdapter(adapter);
 
-//                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                        PetGetModel item = (PetGetModel) listView.getItemAtPosition(position);
-//                        Intent intent = new Intent(getApplicationContext(), ChartReport.class);
-//                        intent.putExtra("petId", item.getPetID());
-//
-//                        startActivity(intent);
-//
-//                    }
-//                });
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        PetGetModel item = (PetGetModel) listView.getItemAtPosition(position);
+                        Intent intent = new Intent(getApplicationContext(), ChartReport.class);
+                        intent.putExtra("petId", item.getPetID());
+
+                        startActivity(intent);
+
+                    }
+                });
 
             }
 
