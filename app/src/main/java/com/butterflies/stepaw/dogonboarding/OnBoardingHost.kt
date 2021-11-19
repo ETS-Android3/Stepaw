@@ -28,10 +28,7 @@ class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
         binding = ActivityOnBoardingHostBinding.inflate(layoutInflater)
         setContentView(binding.root)
         lateinit var idToken: String;
-
-
 //
-
 
 //        setSupportActionBar(findViewById(R.id.my_toolbar))
 ////        supportActionBar?.setHomeButtonEnabled(true)
@@ -89,14 +86,8 @@ class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
             val newPetRequest = service.createPet(token = " Bearer $idToken", petmodel)
             newPetRequest.enqueue(object : Callback<PetModel> {
                 override fun onResponse(call: Call<PetModel>, response: Response<PetModel>) {
+                    if(response.isSuccessful){
 
-                    Log.d("newpet", response.message())
-                    Log.d("newpet", response.isSuccessful().toString())
-
-                    Log.d("newpet",response.isSuccessful.toString())
-                    if(response.isSuccessful) {
-                        Intent(applicationContext,DogList::class.java).also {
-                            startActivity(it) }
                     }
                 }
 
