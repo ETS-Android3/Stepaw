@@ -1,5 +1,6 @@
 package com.butterflies.stepaw.dogonboarding
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.text.SimpleDateFormat
+import java.util.*
 
 class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
     private lateinit var binding: ActivityOnBoardingHostBinding
@@ -54,6 +57,7 @@ class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
         return true
     }
 
+    @SuppressLint("LogNotTimber")
     override fun registerDog(name: String, age: Float, weight: Float, gender: String) {
 
 
@@ -81,11 +85,13 @@ class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
                 Distance = "0",
                 Duration = "0",
                 UserID = userId,
-                PetName = name
+                PetName = name,
+                Date = SimpleDateFormat("yyyy-MM-dd hh:mm:ss",Locale.CANADA).format(Date())
             )
             val newPetRequest = service.createPet(token = " Bearer $idToken", petmodel)
             newPetRequest.enqueue(object : Callback<PetModel> {
                 override fun onResponse(call: Call<PetModel>, response: Response<PetModel>) {
+                    Log.d("newpet",response.message())
                     if(response.isSuccessful){
                         Intent(this@OnBoardingHost,DogList::class.java).run{startActivity(this)}
                     }
@@ -101,6 +107,8 @@ class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
 
         } else {
             Log.d("newpet", "Something was null")
+            Log.d("newpet",idToken.toString())
+            Log.d("newpet",userId.toString())
         }
 
     }
