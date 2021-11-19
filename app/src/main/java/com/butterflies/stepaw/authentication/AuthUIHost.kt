@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.butterflies.stepaw.DogList
 import com.butterflies.stepaw.R
 import com.butterflies.stepaw.dogonboarding.OnBoardingHost
 import com.butterflies.stepaw.network.ApiService
@@ -190,7 +191,7 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
                     if (this::id.isInitialized && this::userName.isInitialized && this::email.isInitialized) {
                         createNewUserCall(id, userName, userName, userName, email, "01",idToken)
                     }
-                    Intent(this@AuthUIHost, OnBoardingHost::class.java).also { startActivity(it) }
+                    Intent(this@AuthUIHost, DogList::class.java).also { startActivity(it) }
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("login", "signInWithCredential:failure", task.exception)
