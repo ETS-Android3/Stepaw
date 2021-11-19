@@ -12,5 +12,5 @@ data class PetGetModel(
     var UserID:String,
     var Distance:String,
     var Duration:String,
-
+    var Date:String
 )

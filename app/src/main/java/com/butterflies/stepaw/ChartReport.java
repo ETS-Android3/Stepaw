@@ -89,14 +89,10 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         String token = "ya29.a0ARrdaM8PdCTtbVE9qEKBu1MgiZaIOPPGY4ePq2CVJL3Y3DQUpdWxx14tI-QL1GC3j5_k8OVKbROEQJPkBMQRRqXPWjhsc3j5SLAY47840-MwSX1o3L9c8HZn4bT93l7qCoCdZpFE-u-8ONwM1DEHtuU_uISi";
         SharedPreferences pref = getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE);
         token = pref.getString("com.butterflies.stepaw.idToken", "invalid");
-        System.out.println("Token " + token );
+        System.out.println("Token " + token);
         if (token != null) {
             getPetById(token, petId);
         }
-
-
-
-
 
 
         Fragment fr = this.getSupportFragmentManager().findFragmentById(R.id.nav_host);
@@ -153,11 +149,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
     @Override
     public void onBackPressed() {
-        Intent homeIntent = new Intent(Intent.ACTION_MAIN);
-        homeIntent.addCategory(Intent.CATEGORY_HOME);
-        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(homeIntent);
-        System.exit(1);
+       super.onBackPressed();
     }
 
     @Override
@@ -223,10 +215,9 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                 ImageView petImage = findViewById(R.id.petImage);
                 TextView petAge = findViewById(R.id.petAge);
 
-                if(petObj.getPetName() != null && petObj.getPetName() != ""){
+                if (petObj.getPetName() != null && petObj.getPetName() != "") {
                     petName.setText(petObj.getPetName());
-                }
-                else{
+                } else {
                     petName.setText(petObj.getPetID());
                 }
 
