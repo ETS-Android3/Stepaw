@@ -10,16 +10,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -29,12 +23,10 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
-import com.butterflies.stepaw.authentication.AuthUIHost;
 import com.butterflies.stepaw.databinding.ActivityChartReportBinding;
 import com.butterflies.stepaw.network.ApiService;
 import com.butterflies.stepaw.network.RetrofitObservable;
 import com.butterflies.stepaw.network.models.PetGetModel;
-import com.butterflies.stepaw.network.networkCall.NetworkCall;
 import com.butterflies.stepaw.reminder.FragmentReminder;
 import com.butterflies.stepaw.reminder.NotificationPublisher;
 import com.butterflies.stepaw.userActions.Account;
@@ -47,7 +39,6 @@ import com.google.android.material.tabs.TabLayout;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
 import java.util.Observable;
@@ -65,11 +56,12 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
     PetGetModel petObj;
     private Retrofit retrofit;
     private ApiService service;
+    ActivityChartReportBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityChartReportBinding binding = ActivityChartReportBinding.inflate(getLayoutInflater());
+        binding = ActivityChartReportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(findViewById(R.id.my_toolbar));
 //        Drawer Toggle
@@ -81,7 +73,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                 R.string.nav_close_drawer);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
 //
@@ -102,16 +94,9 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
             getPetById(token, petId);
         }
 
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        ViewPager viewPager = binding.viewPager;
 
-        sectionsPagerAdapter.addFragment(new DailyFragment(), "Day");
-        sectionsPagerAdapter.addFragment(new WeeklyFragment(), "Week");
-        sectionsPagerAdapter.addFragment(new MonthlyFragment(), "Month");
-        viewPager.setAdapter(sectionsPagerAdapter);
 
-        TabLayout tabs = binding.chartTabLayout;
-        tabs.setupWithViewPager(viewPager);
+
 
 
         Fragment fr = this.getSupportFragmentManager().findFragmentById(R.id.nav_host);
@@ -238,11 +223,36 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                 ImageView petImage = findViewById(R.id.petImage);
                 TextView petAge = findViewById(R.id.petAge);
 
-                petName.setText(petObj.getPetID());
+                if(petObj.getPetName() != null && petObj.getPetName() != ""){
+                    petName.setText(petObj.getPetName());
+                }
+                else{
+                    petName.setText(petObj.getPetID());
+                }
+
                 String petAgeWeight = petObj.getAge() + " / " + petObj.getWeight();
                 petAge.setText(petAgeWeight);
 
                 Glide.with(getApplicationContext()).load("https://images.dog.ceo/breeds/shiba/shiba-15.jpg").into(petImage);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("petKm", petObj.getDistance());
+                bundle.putString("petMin", petObj.getDuration());
+                bundle.putString("petSteps", petObj.getNumberOfSteps());
+                DailyFragment dailyFragment = new DailyFragment();
+                dailyFragment.setArguments(bundle);
+
+                SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+                ViewPager viewPager = binding.viewPager;
+
+                sectionsPagerAdapter.addFragment(dailyFragment, "Day");
+                sectionsPagerAdapter.addFragment(new WeeklyFragment(), "Week");
+                sectionsPagerAdapter.addFragment(new MonthlyFragment(), "Month");
+                viewPager.setAdapter(sectionsPagerAdapter);
+
+                TabLayout tabs = binding.chartTabLayout;
+                tabs.setupWithViewPager(viewPager);
+
             }
 
             @Override

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -14,10 +15,14 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import app.futured.donut.DonutProgressView;
 import app.futured.donut.DonutSection;
@@ -38,6 +43,8 @@ public class MonthlyFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     BarChart barChart;
+    private List<DonutSection> kmDataList = new ArrayList<>();
+    private List<DonutSection> minDataList = new ArrayList<>();
 
     public MonthlyFragment() {
         // Required empty public constructor
@@ -84,27 +91,26 @@ public class MonthlyFragment extends Fragment {
         showBarChart();
         initBarChart();
 
-
         //generate daily report - donut chart
         //daily report chart generator - donut chart
         DonutProgressView kmDonutChart = view.findViewById(R.id.kmDonutView);
         DonutProgressView minDonutChart = view.findViewById(R.id.minDonutView);
 
-        DonutSection kmSection = new DonutSection("km",
-                Color.parseColor("#004E99"), 3f);
+        renderDonutData(kmDonutChart, minDonutChart);
 
-        DonutSection minSection = new DonutSection("min",
-                Color.parseColor("#FBD617"),4f);
+        barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                //Toast.makeText(getActivity(), "Value selected", Toast.LENGTH_SHORT).show();
+                renderDonutData(kmDonutChart, minDonutChart);
+                //System.out.println(e.getX()+ " " + e.getY());
+            }
 
-        List<DonutSection> list = new ArrayList<>();
-        list.add(kmSection);
-        kmDonutChart.setCap(5f);
-        kmDonutChart.submitData(list);
+            @Override
+            public void onNothingSelected() {
 
-        list = new ArrayList<>();
-        list.add(minSection);
-        minDonutChart.setCap(5f);
-        minDonutChart.submitData(list);
+            }
+        });
 
         return view;
     }
@@ -181,5 +187,29 @@ public class MonthlyFragment extends Fragment {
         rightAxis.setDrawAxisLine(false);
         rightAxis.setDrawLabels(false);
         rightAxis.enableGridDashedLine(10f, 10f, 100f);
+    }
+
+    private void renderDonutData(DonutProgressView kmDonutChart, DonutProgressView minDonutChart){
+
+        Random rn = new Random();
+        float answer = rn.nextInt(5) + 1;
+        DonutSection kmSection = new DonutSection("km",
+                Color.parseColor("#004E99"), answer);
+
+        DonutSection minSection = new DonutSection("min",
+                Color.parseColor("#FBD617"),answer);
+
+        kmDataList = new ArrayList<>();
+        kmDataList.add(kmSection);
+        kmDonutChart.setCap(5f);
+        kmDonutChart.submitData(kmDataList);
+        kmDonutChart.animate();
+
+        minDataList = new ArrayList<>();
+        minDataList.add(minSection);
+        minDonutChart.setCap(5f);
+        minDonutChart.submitData(minDataList);
+        minDonutChart.animate();
+
     }
 }

@@ -64,9 +64,12 @@ public class DailyFragment extends Fragment {
         DonutProgressView kmDonutChart = view.findViewById(R.id.kmDonutView);
         DonutProgressView minDonutChart = view.findViewById(R.id.minDonutView);
 
-        ChartReport activity = (ChartReport) getActivity();
-        Float km = Float.parseFloat(activity.petObj.getDistance());
-        Float min = Float.parseFloat(activity.petObj.getDuration());
+//        ChartReport activity = (ChartReport) getActivity();
+        String strKM = getArguments().getString("petKm");
+        String strMin = getArguments().getString("petMin");
+        String steps = getArguments().getString("petSteps");
+        Float km = Float.parseFloat(strKM);
+        Float min = Float.parseFloat(strMin);
 
         DonutSection kmSection = new DonutSection("km",
                 Color.parseColor("#004E99"), km);
@@ -85,13 +88,13 @@ public class DailyFragment extends Fragment {
         minDonutChart.submitData(list);
 
         TextView stepCount = view.findViewById(R.id.stepsCountTextView);
-        stepCount.setText(activity.petObj.getNumberOfSteps());
+        stepCount.setText(steps);
 
         TextView minValue = view.findViewById(R.id.minValue);
-        minValue.setText(activity.petObj.getDuration());
+        minValue.setText(strMin);
 
         TextView kmValue = view.findViewById(R.id.kmValue);
-        kmValue.setText(activity.petObj.getDistance());
+        kmValue.setText(strKM);
 
         return view;
     }

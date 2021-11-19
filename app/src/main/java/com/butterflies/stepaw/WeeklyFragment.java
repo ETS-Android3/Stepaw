@@ -99,7 +99,7 @@ public class WeeklyFragment extends Fragment {
         mChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                Toast.makeText(getActivity(), "Value selected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "Value selected", Toast.LENGTH_SHORT).show();
                 renderDonutData(kmDonutChart, minDonutChart);
                 //System.out.println(e.getX()+ " " + e.getY());
             }
