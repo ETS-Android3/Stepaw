@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 //                Log.d("sharedtoken",token)
 //            }
 //        }
-        Intent(this,OnBoardingHost::class.java).also {
+        Intent(this,AuthUIHost::class.java).also {
             startActivity(it) }
 
 //        if (token == "invalid") {
