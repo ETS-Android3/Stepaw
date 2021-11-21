@@ -23,6 +23,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.butterflies.stepaw.authentication.AuthUIHost;
 import com.butterflies.stepaw.databinding.ActivityChartReportBinding;
 import com.butterflies.stepaw.network.ApiService;
 import com.butterflies.stepaw.network.RetrofitObservable;
@@ -34,7 +35,10 @@ import com.butterflies.stepaw.userActions.Contactus;
 import com.butterflies.stepaw.userActions.Notifications;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.ktx.Firebase;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -78,6 +82,16 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         toggle.syncState();
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+//        Handle logout
+        binding.logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               FirebaseAuth.getInstance().signOut();
+              Intent i=new Intent(ChartReport.this,AuthUIHost.class);
+              startActivity(i);
+            }
+        });
 
 //
 

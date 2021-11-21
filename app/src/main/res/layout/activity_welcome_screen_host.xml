@@ -25,6 +25,8 @@
         app:tabGravity="center"
         android:translationY="16dp"
         app:tabIndicatorHeight="0dp"
+        app:tabIndicatorAnimationMode="linear"
+        app:tabIndicatorAnimationDuration="500"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

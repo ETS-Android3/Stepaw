@@ -30,6 +30,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import kotlin.system.exitProcess
 
 class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSignup.SignUpService,
     FragmentPasswordReset.PasswordResetService {
@@ -97,6 +98,15 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
         auth = Firebase.auth
 
 
+    }
+
+    override fun onBackPressed() {
+//        super.onBackPressed()
+        val homeIntent = Intent(Intent.ACTION_MAIN)
+        homeIntent.addCategory(Intent.CATEGORY_HOME)
+        homeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(homeIntent)
+        exitProcess(1)
     }
 
     @SuppressLint("LogNotTimber")

@@ -1,11 +1,14 @@
 package com.butterflies.stepaw.welcomescreen
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.butterflies.stepaw.authentication.AuthUIHost
 import com.butterflies.stepaw.databinding.ActivityWelcomeScreenHostBinding
+import com.butterflies.stepaw.utils.StepawUtils
 import com.google.android.material.tabs.TabLayoutMediator
 
 private const val NUM_PAGES = 3
@@ -13,8 +16,12 @@ private const val NUM_PAGES = 3
 class WelcomeScreenHost : FragmentActivity() {
     private lateinit var binding: ActivityWelcomeScreenHostBinding
     private lateinit var viewpager: ViewPager2
+    val utils=StepawUtils()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+//        Updating user status
+
         binding = ActivityWelcomeScreenHostBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewpager = binding.viewpager
@@ -30,6 +37,10 @@ class WelcomeScreenHost : FragmentActivity() {
         viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+                if (position==2){
+                    utils.storePreferences(this@WelcomeScreenHost,"com.butterflies.stepaw.firstTimeUser","false")
+                    Intent(this@WelcomeScreenHost,AuthUIHost::class.java).also { startActivity(it) }
+                }
             }
         })
 

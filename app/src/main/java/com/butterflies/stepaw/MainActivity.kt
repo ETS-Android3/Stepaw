@@ -28,8 +28,11 @@ class MainActivity : AppCompatActivity() {
         val sharedData=getSharedPreferences("com.butterflies.stepaw",Context.MODE_PRIVATE)
         val token=sharedData.getString("com.butterflies.stepaw.idToken","invalid")
         val userJson= sharedData.getString("com.butterflies.stepaw.user", "invalid")
-
-      if(token!=="invalid"&&userJson!=="invalid"&&userJson!==null){
+        val firstTimeUser=sharedData.getString("com.butterflies.stepaw.firstTimeUser","true")
+        if(firstTimeUser=="true"){
+            Intent(this,WelcomeScreenHost::class.java).also { startActivity(it) }
+        }
+      else if(token!=="invalid"&&userJson!=="invalid"&&userJson!==null){
           Intent(this,DogList::class.java).run { startActivity(this) }
       }else{
           Intent(this,AuthUIHost::class.java).run { startActivity(this) }
