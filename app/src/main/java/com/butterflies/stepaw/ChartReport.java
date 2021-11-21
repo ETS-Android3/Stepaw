@@ -124,6 +124,11 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
     public boolean onNavigationItemSelected(MenuItem item) {
         //Code to handle navigation clicks
         switch (item.getItemId()) {
+            case R.id.close_nav_icon:
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.closeDrawers();
+                break;
+
             case R.id.account:
                 Intent intent = new Intent(this, Account.class);
                 startActivity(intent);
