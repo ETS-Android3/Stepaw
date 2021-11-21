@@ -275,8 +275,10 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
         val sharedPreferences = getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
             putString(key, token)
-            apply()
+//            apply()
+            commit()
         }
+
     }
 
 //Storing user data as a string in shared preferences
@@ -286,8 +288,10 @@ fun storeUser(r:Response<UserModel>) {
         val gson = Gson()
         val json = gson.toJson(r.body())
         putString("com.butterflies.stepaw.user", json.toString())
-        apply()
+//        apply()
+        commit()
     }
+
 }
 
     //    Create a new user in the backend
