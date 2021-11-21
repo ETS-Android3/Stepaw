@@ -14,7 +14,10 @@ import com.butterflies.stepaw.R
 import com.butterflies.stepaw.databinding.ActivityOnBoardingHostBinding
 import com.butterflies.stepaw.network.ApiService
 import com.butterflies.stepaw.network.models.PetModel
+import com.butterflies.stepaw.network.models.UserModel
+import com.butterflies.stepaw.utils.StepawUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,6 +28,7 @@ import java.util.*
 
 class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
     lateinit var idToken:String
+    private lateinit var userId:String
     private lateinit var binding: ActivityOnBoardingHostBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,13 +73,19 @@ class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
 
         val p = getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE)
         val token = p.getString("com.butterflies.stepaw.idToken", "invalid")
-        val userId = p.getString("com.butterflies.stepaw.uid", "invalid")
+//        val userId = p.getString("com.butterflies.stepaw.uid", "invalid")
+        var userData=p.getString("com.butterflies.stepaw.user","invalid")
+        if(userData!=="invalid"){
+            val gson=Gson()
+            val j=gson.fromJson(userData,UserModel::class.java)
+            userId=j.UserID
+        }
        if(token!=="invalid"){
            if (token != null) {
                idToken=token
            }
        }
-        if (this::idToken.isInitialized && userId !== "invalid" && userId!==null) {
+        if (this::idToken.isInitialized && userId !== "invalid"&&this::userId.isInitialized) {
             val petmodel = PetModel(
                 "invalid",
                 Age = age.toString(),
@@ -97,7 +107,7 @@ class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
                     if(response.isSuccessful){
                         Intent(this@OnBoardingHost,DogList::class.java).also { startActivity(it) }
                     }
-                   Log.d("newpet","successs")
+                   Log.d("newpet",response.message())
                 }
 
                 override fun onFailure(call: Call<PetModel>, t: Throwable) {
@@ -108,7 +118,8 @@ class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
 
         } else {
             Log.d("newpet", "Something was null")
-
+            Log.d("newpet",userId)
+            Log.d("newpet", token!!)
         }
 
     }

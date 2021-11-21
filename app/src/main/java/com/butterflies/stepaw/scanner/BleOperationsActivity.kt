@@ -161,11 +161,11 @@ class BleOperationsActivity : AppCompatActivity() {
     }
 
     private fun showCharacteristicOptions(characteristic: BluetoothGattCharacteristic) {
-if(characteristic.isReadable()){
-    ConnectionManager.readCharacteristic(device,characteristic)
-}
-        if(characteristic.isNotifiable()){
-            ConnectionManager.enableNotifications(device,characteristic)
+        if (characteristic.isReadable()) {
+            ConnectionManager.readCharacteristic(device, characteristic)
+        }
+        if (characteristic.isNotifiable()) {
+            ConnectionManager.enableNotifications(device, characteristic)
         }
 //        characteristicProperties[characteristic]?.let { properties ->
 //            selector("Select an action to perform", properties.map { it.action }) { _, i ->
@@ -227,7 +227,14 @@ if(characteristic.isReadable()){
 
             onCharacteristicRead = { _, characteristic ->
 //              log("Read from ${characteristic.uuid}: ${characteristic.value.toHexString()}")
-                log("Read from ${characteristic.uuid}: ${characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 0)}")
+                log(
+                    "Read from ${characteristic.uuid}: ${
+                        characteristic.getIntValue(
+                            BluetoothGattCharacteristic.FORMAT_UINT16,
+                            0
+                        )
+                    }"
+                )
             }
 
             onCharacteristicWrite = { _, characteristic ->
@@ -240,7 +247,14 @@ if(characteristic.isReadable()){
 
             onCharacteristicChanged = { _, characteristic ->
 //                log("Value changed on ${characteristic.uuid}: ${characteristic.value.toHexString()}")
-                log("Value changed on ${characteristic.uuid}: ${characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 0)}")
+                log(
+                    "Value changed on ${characteristic.uuid}: ${
+                        characteristic.getIntValue(
+                            BluetoothGattCharacteristic.FORMAT_UINT16,
+                            0
+                        )
+                    }"
+                )
             }
 
             onNotificationsEnabled = { _, characteristic ->
@@ -277,12 +291,14 @@ if(characteristic.isReadable()){
     }
 
     private fun Context.hideKeyboard(view: View) {
-        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager =
+            getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     private fun EditText.showKeyboard() {
-        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager =
+            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         requestFocus()
         inputMethodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
     }
