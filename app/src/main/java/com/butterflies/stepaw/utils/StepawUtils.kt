@@ -1,6 +1,10 @@
 package com.butterflies.stepaw.utils
 
 import android.content.Context
+import android.util.Log
+import android.widget.Toast
+import com.butterflies.stepaw.network.models.UserModel
+import com.google.gson.Gson
 import java.util.regex.Pattern
 
 class StepawUtils {
@@ -19,17 +23,16 @@ class StepawUtils {
     }
 
     fun validatePassword(): Boolean = true
-//    Getting user data in any activity
-//    try {
-//        val p = getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE)
-//        val u = p.getString("com.butterflies.stepaw.user", "invalid")
-//        val j = Gson()
-//        val d = j.fromJson(u, UserModel::class.java)
-//        Toast.makeText(this, d.EmailID, Toast.LENGTH_SHORT).show()
-//    } catch (e: Exception) {
-//        Log.d("userdata", e.localizedMessage)
-//    }
 
+
+    fun extractUser(context:Context): UserModel? {
+        val p = context.getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE)
+        val u = p.getString("com.butterflies.stepaw.user", "invalid")
+        val j = Gson()
+        val d = j.fromJson(u, UserModel::class.java)
+      Toast.makeText(context, d.FirstName, Toast.LENGTH_SHORT).show()
+        return d
+    }
 
 
 

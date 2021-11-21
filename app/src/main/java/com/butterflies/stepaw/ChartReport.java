@@ -57,6 +57,8 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
     private Retrofit retrofit;
     private ApiService service;
     ActivityChartReportBinding binding;
+    ActionBarDrawerToggle toggle;
+    DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +67,13 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         setContentView(binding.getRoot());
         setSupportActionBar(findViewById(R.id.my_toolbar));
 //        Drawer Toggle
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,
+        drawer = binding.drawerLayout;
+        toggle = new ActionBarDrawerToggle(this,
                 drawer,
                 findViewById(R.id.my_toolbar),
                 R.string.nav_open_drawer,
                 R.string.nav_close_drawer);
+
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -125,7 +128,6 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         //Code to handle navigation clicks
         switch (item.getItemId()) {
             case R.id.close_nav_icon:
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawers();
                 break;
 
@@ -154,7 +156,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
     @Override
     public void onBackPressed() {
-       super.onBackPressed();
+        super.onBackPressed();
     }
 
     @Override

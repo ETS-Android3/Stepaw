@@ -191,7 +191,6 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
                     if (this::id.isInitialized && this::userName.isInitialized && this::email.isInitialized) {
                         createNewUserCall(id, userName, userName, userName, email, "01", idToken)
                     }
-                    Intent(this@AuthUIHost, DogList::class.java).also { startActivity(it) }
 
                 } else {
                     // If sign in fails, display a message to the user.
@@ -209,7 +208,6 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
     override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
-        Log.d("userdetails", currentUser.toString())
         currentUser?.displayName?.let { Log.d("onStart", it) }
     }
 
@@ -270,6 +268,18 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
             apply()
         }
     }
+
+//Storing user data as a string in shared preferences
+fun storeUser(r:Response<UserModel>) {
+    val sharedp = getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE)
+    with(sharedp.edit()) {
+        val gson = Gson()
+        val json = gson.toJson(r.body())
+        putString("com.butterflies.stepaw.user", json.toString())
+        apply()
+    }
+}
+
     //    Create a new user in the backend
     private fun createNewUserCall(
         UserID: String,
@@ -281,37 +291,34 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
         token: String
     ) {
 
-//        val userExists = service.getPersonWithId(token = " Bearer $token", UserID)
-//        userExists.enqueue(object : Callback<UserModel> {
-//            override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
-//                if (response.isSuccessful) {
-//                    Log.d("retrofit", "User exists")
-//                } else {
-//                    Log.d("retrofit", "User doesn't exist")
-//                }
-//            }
-//            override fun onFailure(call: Call<UserModel>, t: Throwable) {
-//                Log.d("retrofit", t.message.toString())
-//            }
-//
-//        })
-
         val usermodel = UserModel(UserID, UserName, FirstName, LastName, EmailID, BluetoothID)
         val newUserRequest = service.createUser(token = " Bearer $token", usermodel)
         newUserRequest.enqueue(object : Callback<UserModel> {
             @SuppressLint("LogNotTimber")
             override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
-                Log.d("retrofit", "${response.code()}")
+//                Checking response status
+                if(response.code()==200){
+                   storeUser(response)
+                   Intent(this@AuthUIHost,DogList::class.java).run { startActivity(this) }
+                }
+                if (response.code()==500){
+                    val personWithID=service.getPersonWithId(token=" Bearer $token",UserID)
+                    personWithID.enqueue(object : Callback<UserModel>{
+                        override fun onResponse(
+                            call: Call<UserModel>,
+                            response: Response<UserModel>
+                        ) {
+                            storeUser(response)
+                            if(response.code()==200){
+                                Intent(this@AuthUIHost,DogList::class.java).run{startActivity(this)}
+                            }
+                        }
 
-//               Storing user data in shared preferences
+                        override fun onFailure(call: Call<UserModel>, t: Throwable) {
+                            Log.d("retrofit Person","We don't know what's happening around here.")
+                        }
 
-                val userdatapreferences =
-                    getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE)
-                with(userdatapreferences.edit()) {
-                    val gson = Gson()
-                    val json = gson.toJson(response.body())
-                    putString("com.butterflies.stepaw.user", json.toString())
-                    apply()
+                    })
                 }
 
             }
@@ -324,3 +331,6 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
         })
     }
 }
+
+
+
