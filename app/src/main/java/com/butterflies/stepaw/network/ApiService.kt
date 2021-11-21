@@ -36,7 +36,7 @@ interface ApiService {
         @Path("id") id: String
     ): Call<PetGetModel>
 
-    @GET("/user/{id}")
+    @GET("/user/users/{id}")
     fun getPersonWithId(@Header("Authorization") token: String,@Path(value = "id") id:String):Call<UserModel>
 
     companion object {

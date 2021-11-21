@@ -10,8 +10,10 @@ import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import com.butterflies.stepaw.authentication.AuthUIHost
 import com.butterflies.stepaw.databinding.ActivityMainBinding
 import com.butterflies.stepaw.dogonboarding.OnBoardingHost
+import com.butterflies.stepaw.network.models.UserModel
 import com.butterflies.stepaw.scanner.BleActivity
 import com.butterflies.stepaw.welcomescreen.WelcomeScreenHost
+import com.google.gson.Gson
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,7 +27,12 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.my_toolbar))
         val sharedData=getSharedPreferences("com.butterflies.stepaw",Context.MODE_PRIVATE)
         val token=sharedData.getString("com.butterflies.stepaw.idToken","invalid")
-      if(token!=="invalid"){
+        val userJson= sharedData.getString("com.butterflies.stepaw.user", "invalid")
+        val firstTimeUser=sharedData.getString("com.butterflies.stepaw.firstTimeUser","true")
+        if(firstTimeUser=="true"){
+            Intent(this,WelcomeScreenHost::class.java).also { startActivity(it) }
+        }
+      else if(token!=="invalid"&&userJson!=="invalid"&&userJson!==null){
           Intent(this,DogList::class.java).run { startActivity(this) }
       }else{
           Intent(this,AuthUIHost::class.java).run { startActivity(this) }
