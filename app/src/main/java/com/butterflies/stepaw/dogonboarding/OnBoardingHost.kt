@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
+    lateinit var idToken:String
     private lateinit var binding: ActivityOnBoardingHostBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,28 +54,28 @@ class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
 
     override fun onSupportNavigateUp(): Boolean {
 //        return super.onSupportNavigateUp()
-        Toast.makeText(this, "Back pressed", Toast.LENGTH_SHORT).show()
+
         return true
     }
 
     @SuppressLint("LogNotTimber")
     override fun registerDog(name: String, age: Float, weight: Float, gender: String) {
-
-
         val retrofit = Retrofit.Builder()
             .baseUrl(ApiService.BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
         val service = retrofit.create(ApiService::class.java)
 
-        var idToken: String? = null
+
         val p = getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE)
         val token = p.getString("com.butterflies.stepaw.idToken", "invalid")
         val userId = p.getString("com.butterflies.stepaw.uid", "invalid")
-        if (token != null) {
-            idToken = token
-        }
-        if (idToken !== null && userId !== "invalid" && userId !== null) {
+       if(token!=="invalid"){
+           if (token != null) {
+               idToken=token
+           }
+       }
+        if (this::idToken.isInitialized && userId !== "invalid" && userId!==null) {
             val petmodel = PetModel(
                 "invalid",
                 Age = age.toString(),
@@ -89,26 +90,25 @@ class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
                 Date = SimpleDateFormat("yyyy-MM-dd hh:mm:ss",Locale.CANADA).format(Date())
             )
             val newPetRequest = service.createPet(token = " Bearer $idToken", petmodel)
+            Log.d("newpet","callback")
             newPetRequest.enqueue(object : Callback<PetModel> {
                 override fun onResponse(call: Call<PetModel>, response: Response<PetModel>) {
-                    Log.d("newpet",response.message())
+//
                     if(response.isSuccessful){
-                        Intent(this@OnBoardingHost,DogList::class.java).run{startActivity(this)}
+                        Intent(this@OnBoardingHost,DogList::class.java).also { startActivity(it) }
                     }
+                   Log.d("newpet","successs")
                 }
 
                 override fun onFailure(call: Call<PetModel>, t: Throwable) {
-                    Log.d("newpet", t.message.toString())
-                    Toast.makeText(this@OnBoardingHost, t.message.toString(), Toast.LENGTH_SHORT)
-                        .show()
+                  Log.d("newpet","failed")
                 }
 
             })
 
         } else {
             Log.d("newpet", "Something was null")
-            Log.d("newpet",idToken.toString())
-            Log.d("newpet",userId.toString())
+
         }
 
     }

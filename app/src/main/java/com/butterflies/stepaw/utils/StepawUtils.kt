@@ -1,5 +1,6 @@
 package com.butterflies.stepaw.utils
 
+import android.content.Context
 import java.util.regex.Pattern
 
 class StepawUtils {
@@ -28,5 +29,17 @@ class StepawUtils {
 //    } catch (e: Exception) {
 //        Log.d("userdata", e.localizedMessage)
 //    }
+
+
+
+
+    fun storePreferences(context:Context,key: String, token: String) {
+        val sharedPreferences = context.getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putString(key, token)
+            apply()
+        }
+    }
+
 
 }

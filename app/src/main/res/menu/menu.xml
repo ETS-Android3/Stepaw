@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-<item
-    android:id="@+id/account"
-    android:icon="@drawable/accounticon"
-    android:title="@string/account"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    />
-<item
-    android:id="@+id/notifications"
-    android:icon="@drawable/notificationicon"
-    android:title="@string/notifications" />
-<item
-    android:id="@+id/contactus"
-    android:icon="@drawable/contactusicon"
-    android:title="@string/contact_us" />
-    </menu>
+    <item
+        android:id="@+id/close_nav_icon"
+        android:title=""
+        app:actionLayout="@layout/nav_item_custom_close_layout" />
+
+    <item
+        android:id="@+id/account"
+        android:icon="@drawable/accounticon"
+        android:title="@string/account"
+        app:actionLayout="@layout/nav_item_custom_layout" />
+    <item
+        android:id="@+id/notifications"
+        android:icon="@drawable/notificationicon"
+        android:title="@string/notifications"
+        app:actionLayout="@layout/nav_item_custom_layout" />
+    <item
+        android:id="@+id/contactus"
+        android:icon="@drawable/contactusicon"
+        android:title="@string/contact_us"
+        app:actionLayout="@layout/nav_item_custom_layout" />
+</menu>

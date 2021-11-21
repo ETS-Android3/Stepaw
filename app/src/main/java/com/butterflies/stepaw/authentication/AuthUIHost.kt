@@ -31,7 +31,6 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-
 class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSignup.SignUpService,
     FragmentPasswordReset.PasswordResetService {
     private lateinit var auth: FirebaseAuth
@@ -108,6 +107,7 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("signin", "signInWithEmail:success")
                     val user = auth.currentUser
+
                     user?.uid?.let { storePreferences("com.butterflies.stepaw.uuid", it) }
                     user?.getIdToken(true)
                         ?.addOnCompleteListener { token ->
@@ -189,9 +189,10 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
                         email = user.email!!
                     } else storePreferences("com.butterflies.stepaw.email", "invalid")
                     if (this::id.isInitialized && this::userName.isInitialized && this::email.isInitialized) {
-                        createNewUserCall(id, userName, userName, userName, email, "01",idToken)
+                        createNewUserCall(id, userName, userName, userName, email, "01", idToken)
                     }
                     Intent(this@AuthUIHost, DogList::class.java).also { startActivity(it) }
+
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("login", "signInWithCredential:failure", task.exception)
@@ -269,7 +270,6 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
             apply()
         }
     }
-
     //    Create a new user in the backend
     private fun createNewUserCall(
         UserID: String,
@@ -278,15 +278,33 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
         LastName: String,
         EmailID: String,
         BluetoothID: String,
-        token:String
+        token: String
     ) {
+
+//        val userExists = service.getPersonWithId(token = " Bearer $token", UserID)
+//        userExists.enqueue(object : Callback<UserModel> {
+//            override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
+//                if (response.isSuccessful) {
+//                    Log.d("retrofit", "User exists")
+//                } else {
+//                    Log.d("retrofit", "User doesn't exist")
+//                }
+//            }
+//            override fun onFailure(call: Call<UserModel>, t: Throwable) {
+//                Log.d("retrofit", t.message.toString())
+//            }
+//
+//        })
+
         val usermodel = UserModel(UserID, UserName, FirstName, LastName, EmailID, BluetoothID)
-        val newUserRequest = service.createUser(token=" Bearer $token",usermodel)
+        val newUserRequest = service.createUser(token = " Bearer $token", usermodel)
         newUserRequest.enqueue(object : Callback<UserModel> {
             @SuppressLint("LogNotTimber")
             override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
-                Log.d("retrofit", "Storedsuccessfully")
+                Log.d("retrofit", "${response.code()}")
+
 //               Storing user data in shared preferences
+
                 val userdatapreferences =
                     getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE)
                 with(userdatapreferences.edit()) {
@@ -295,6 +313,7 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
                     putString("com.butterflies.stepaw.user", json.toString())
                     apply()
                 }
+
             }
 
             @SuppressLint("LogNotTimber")
