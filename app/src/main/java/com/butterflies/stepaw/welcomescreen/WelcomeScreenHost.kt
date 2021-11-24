@@ -2,10 +2,13 @@ package com.butterflies.stepaw.welcomescreen
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_DRAGGING
 import com.butterflies.stepaw.authentication.AuthUIHost
 import com.butterflies.stepaw.databinding.ActivityWelcomeScreenHostBinding
 import com.butterflies.stepaw.utils.StepawUtils
@@ -35,12 +38,13 @@ class WelcomeScreenHost : FragmentActivity() {
         }.attach()
 
         viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                if (position==2){
-                    utils.storePreferences(this@WelcomeScreenHost,"com.butterflies.stepaw.firstTimeUser","false")
-                    Intent(this@WelcomeScreenHost,AuthUIHost::class.java).also { startActivity(it) }
-                }
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+               if(state==1&&viewpager.currentItem==2){
+                   utils.storePreferences(this@WelcomeScreenHost,"com.butterflies.stepaw.firstTimeUser","false")
+                   Intent(this@WelcomeScreenHost,AuthUIHost::class.java).also { startActivity(it) }
+                   finish()
+               }
             }
         })
 

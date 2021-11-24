@@ -3,17 +3,13 @@ package com.butterflies.stepaw
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import com.butterflies.stepaw.authentication.AuthUIHost
 import com.butterflies.stepaw.databinding.ActivityMainBinding
-import com.butterflies.stepaw.dogonboarding.OnBoardingHost
-import com.butterflies.stepaw.network.models.UserModel
 import com.butterflies.stepaw.scanner.BleActivity
 import com.butterflies.stepaw.welcomescreen.WelcomeScreenHost
-import com.google.gson.Gson
 
 
 class MainActivity : AppCompatActivity() {
@@ -33,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             Intent(this,WelcomeScreenHost::class.java).also { startActivity(it) }
         }
       else if(token!=="invalid"&&userJson!=="invalid"&&userJson!==null){
-          Intent(this,DogList::class.java).run { startActivity(this) }
+          Intent(this, DogList::class.java).run { startActivity(this) }
       }else{
           Intent(this,AuthUIHost::class.java).run { startActivity(this) }
       }

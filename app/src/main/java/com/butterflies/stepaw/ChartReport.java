@@ -30,15 +30,13 @@ import com.butterflies.stepaw.network.RetrofitObservable;
 import com.butterflies.stepaw.network.models.PetGetModel;
 import com.butterflies.stepaw.reminder.FragmentReminder;
 import com.butterflies.stepaw.reminder.NotificationPublisher;
-import com.butterflies.stepaw.userActions.Account;
-import com.butterflies.stepaw.userActions.Contactus;
-import com.butterflies.stepaw.userActions.Notifications;
+import com.butterflies.stepaw.userActions.AccountActivity;
+import com.butterflies.stepaw.userActions.ContactUsActivity;
+import com.butterflies.stepaw.userActions.NotificationsActivity;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.ktx.Firebase;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -146,16 +144,16 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                 break;
 
             case R.id.account:
-                Intent intent = new Intent(this, Account.class);
+                Intent intent = new Intent(this, AccountActivity.class);
                 startActivity(intent);
                 break;
             case R.id.notifications:
-                Intent notification = new Intent(this, Notifications.class);
+                Intent notification = new Intent(this, NotificationsActivity.class);
                 startActivity(notification);
                 break;
 
             case R.id.contactus:
-                Intent contact = new Intent(this, Contactus.class);
+                Intent contact = new Intent(this, ContactUsActivity.class);
                 startActivity(contact);
                 break;
 

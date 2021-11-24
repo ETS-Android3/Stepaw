@@ -24,13 +24,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Stepaw">
         <activity
-            android:name=".userActions.Contactus"
+            android:name=".userActions.ContactUsActivity"
             android:exported="false" />
         <activity
-            android:name=".userActions.Notifications"
+            android:name=".userActions.NotificationsActivity"
             android:exported="false" />
         <activity
-            android:name=".userActions.Account"
+            android:name=".userActions.AccountActivity"
             android:exported="false" />
         <activity
             android:name=".DogList"
@@ -50,17 +50,16 @@
         <activity
             android:name=".scanner.BleOperationsActivity"
             android:exported="true" />
-        <activity android:name=".scanner.BleActivity"
-            android:exported="false"
-            />
+        <activity
+            android:name=".scanner.BleActivity"
+            android:exported="false" />
         <activity
             android:name=".ChartReport"
             android:exported="true"
             android:theme="@style/Theme.Stepaw.NoActionBar" />
         <activity
             android:name=".MainActivity"
-            android:exported="true"
-            >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
