@@ -144,6 +144,8 @@ class BleOperationsActivity : AppCompatActivity() {
         if (animator is SimpleItemAnimator) {
             animator.supportsChangeAnimations = false
         }
+
+        characteristics_recycler_view.findViewHolderForAdapterPosition(3)?.itemView?.performClick()
     }
 
     @SuppressLint("SetTextI18n")

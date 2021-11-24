@@ -38,12 +38,12 @@ private lateinit var signinwithactivity:SigninService
 
 //        Navigate to signup fragment
         binding.signup.setOnClickListener {
-            view.findNavController().navigate(R.id.signup_fragment)
+            view.findNavController().navigate(R.id.action_signin_to_signup)
 
         }
 // Navigate to forgot password fragment
         binding.forgotPassword.setOnClickListener {
-            view.findNavController().navigate(R.id.password_reset_fragment)
+            view.findNavController().navigate(R.id.action_signin_to_password_reset_fragment)
         }
 //        Call Activity's Google sign in method
         binding.googleSignin.setOnClickListener {
@@ -56,8 +56,6 @@ private lateinit var signinwithactivity:SigninService
             val email=binding.email.text.toString()
             val password=binding.password.text.toString()
 //            Validate
-
-//
             signinwithactivity.signin(email, password)
         }
 

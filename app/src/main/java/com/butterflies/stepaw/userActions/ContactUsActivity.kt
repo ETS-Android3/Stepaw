@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.butterflies.stepaw.R
 import com.butterflies.stepaw.databinding.ActivityContactusBinding
 
-class Contactus : AppCompatActivity() {
+class ContactUsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityContactusBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +33,7 @@ class Contactus : AppCompatActivity() {
             try {
                 startActivity(Intent.createChooser(emailIntent, "Send email using..."))
             } catch (ex: ActivityNotFoundException) {
-                Toast.makeText(this@Contactus, "No email clients installed.", Toast.LENGTH_SHORT)
+                Toast.makeText(this@ContactUsActivity, "No email clients installed.", Toast.LENGTH_SHORT)
                     .show()
             }
         }

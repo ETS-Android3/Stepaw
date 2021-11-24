@@ -2,24 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <ImageView
         android:id="@+id/welcome_image1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:contentDescription="Welcome Image" />
 
-    <TextView
-        android:id="@+id/welcome_text1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Start to detect your Dog's approximate Steps" />
+<!--    <TextView-->
+<!--        android:id="@+id/welcome_text1"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Start to detect your Dog's approximate Steps" />-->
 
-    <TextView
-        android:id="@+id/welcome_text11"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Get an idea of how many steps your dog walks per day" />
+<!--    <TextView-->
+<!--        android:id="@+id/welcome_text11"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Get an idea of how many steps your dog walks per day" />-->
 
 </LinearLayout>

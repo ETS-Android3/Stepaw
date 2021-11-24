@@ -45,6 +45,8 @@ class CharacteristicAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
         holder.bind(item)
+
+
     }
 
     class ViewHolder(

@@ -49,5 +49,10 @@
     <string name="example_email_com">example@email.com</string>
     <string name="leave_a_message">Leave a message</string>
     <string name="send">send</string>
+    <string name="current_password">Current Password</string>
+    <string name="please_re_enter_your_new_password">Please re-enter your new password</string>
+    <string name="please_enter_your_new_passsword">Please enter your new passsword</string>
+    <string name="please_enter_your_new_password">Please enter your new password</string>
+    <string name="new_password">New Password</string>
 
 </resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/account_nav"
+    app:startDestination="@id/fragmentUpdateEmail">
+
+    <fragment
+        android:id="@+id/fragmentUpdateEmail"
+        android:name="com.butterflies.stepaw.userActions.FragmentUpdateEmail"
+        android:label="FragmentUpdateEmail" >
+        <action
+            android:id="@+id/action_fragmentUpdateEmail_to_fragmentUpdatePassword"
+            app:destination="@id/fragmentUpdatePassword"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentUpdatePassword"
+        android:name="com.butterflies.stepaw.userActions.FragmentUpdatePassword"
+        android:label="FragmentUpdatePassword" />
+</navigation>

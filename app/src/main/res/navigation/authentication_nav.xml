@@ -17,6 +17,9 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_signin_to_password_reset_fragment"
+            app:destination="@id/password_reset_fragment" />
     </fragment>
     <fragment
         android:id="@+id/signup_fragment"
