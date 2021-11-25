@@ -55,6 +55,7 @@ import java.util.UUID
 import android.bluetooth.BluetoothGattDescriptor
 
 import android.bluetooth.BluetoothGattService
+import android.view.ViewTreeObserver
 import android.widget.Toast
 
 
@@ -145,7 +146,19 @@ class BleOperationsActivity : AppCompatActivity() {
             animator.supportsChangeAnimations = false
         }
 
-        characteristics_recycler_view.findViewHolderForAdapterPosition(3)?.itemView?.performClick()
+        val recyclerView = findViewById<RecyclerView>(R.id.characteristics_recycler_view)
+        recyclerView
+            .viewTreeObserver
+            .addOnGlobalLayoutListener(
+                object : ViewTreeObserver.OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+                        recyclerView.findViewHolderForAdapterPosition(3)!!.itemView?.performClick()
+                        recyclerView
+                            .viewTreeObserver
+                            .removeOnGlobalLayoutListener(this)
+                    }
+                })
+
     }
 
     @SuppressLint("SetTextI18n")
