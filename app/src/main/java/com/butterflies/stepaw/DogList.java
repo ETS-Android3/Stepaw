@@ -1,11 +1,13 @@
 package com.butterflies.stepaw;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import kotlin.NotImplementedError;
 import kotlin.jvm.internal.Intrinsics;
@@ -45,7 +48,7 @@ public class DogList extends AppCompatActivity {
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build();
         service = retrofit.create(ApiService.class);
-        String token = "ya29.a0ARrdaM8PdCTtbVE9qEKBu1MgiZaIOPPGY4ePq2CVJL3Y3DQUpdWxx14tI-QL1GC3j5_k8OVKbROEQJPkBMQRRqXPWjhsc3j5SLAY47840-MwSX1o3L9c8HZn4bT93l7qCoCdZpFE-u-8ONwM1DEHtuU_uISi";
+        String token = "ya29.a0ARrdaM_u23mjkQ1IUdyYgvzgbOGHYnaXEBCnSNgimBn9r_oP2u6QS7F3uNDYD83guUwHTHuhYxuydOQkJS4gJeqo-6Z_QbuKW8BQaBv1dzhPRTDE0fcy8Zr73JNf3F4uuVIQuuw2DpzowYDJlB-LayFmMskJ";
         SharedPreferences pref = getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE);
         token = pref.getString("com.butterflies.stepaw.idToken", "invalid");
         System.out.println("Token " + token );
@@ -77,13 +80,25 @@ public class DogList extends AppCompatActivity {
         Intrinsics.checkNotNullParameter(token, "token");
         Call pets = this.service.getAllPets(" Bearer " + token);
         pets.enqueue(new Callback() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(Call call, Response response) {
                 Object pets = response.body();
+                ArrayList<String> distinctPetNames = new ArrayList<>();
+                ArrayList<PetGetModel> distinctPetList = new ArrayList<>();
                 ArrayList<PetGetModel> petList = (ArrayList<PetGetModel>) response.body();
 
+                for (int i = 0; i < petList.size(); i++) {
+                    if(!distinctPetNames.contains(petList.get(i).getPetName())){
+                        distinctPetNames.add(petList.get(i).getPetName());
+                        distinctPetList.add(petList.get(i));
+                    }
+                }
+
+                System.out.println(distinctPetList);
+
                 ListView listView = (ListView) findViewById(R.id.dog_list);
-                DogListAdapter adapter = new DogListAdapter(getApplicationContext(), petList);
+                DogListAdapter adapter = new DogListAdapter(getApplicationContext(), distinctPetList);
                 listView.setAdapter(adapter);
 
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -91,7 +106,9 @@ public class DogList extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         PetGetModel item = (PetGetModel) listView.getItemAtPosition(position);
                         Intent intent = new Intent(getApplicationContext(), ChartReport.class);
-                        intent.putExtra("petId", item.getPetID());
+                        //intent.putExtra("petId", item.getPetID());
+                        intent.putExtra("petId", item.getUserID());
+
                         startActivity(intent);
 
                     }

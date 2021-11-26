@@ -34,7 +34,7 @@ interface ApiService {
     fun updatePetWithId(
         @Header("Authorization") token: String,
         @Path("id") id: String
-    ): Call<PetGetModel>
+    ): Call<List<PetGetModel>>
 
     @GET("/user/users/{id}")
     fun getPersonWithId(

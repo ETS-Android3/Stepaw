@@ -79,7 +79,7 @@ public class DailyFragment extends Fragment {
 
         List<DonutSection> list = new ArrayList<>();
         list.add(kmSection);
-        kmDonutChart.setCap(km+2);
+        kmDonutChart.setCap(km+20);
         kmDonutChart.submitData(list);
 
         list = new ArrayList<>();
