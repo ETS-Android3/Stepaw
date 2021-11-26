@@ -60,14 +60,6 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
 
         setContentView(R.layout.activity_authuihost)
 
-//        Test
-
-        val d=NetworkCall()
-        d.getPetById("12345","1")
-
-//
-
-
         val navHostFragment: NavHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host) as NavHostFragment
 
