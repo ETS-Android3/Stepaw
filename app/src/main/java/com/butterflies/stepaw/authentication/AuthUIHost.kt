@@ -15,12 +15,14 @@ import com.butterflies.stepaw.R
 import com.butterflies.stepaw.dogonboarding.OnBoardingHost
 import com.butterflies.stepaw.network.ApiService
 import com.butterflies.stepaw.network.models.UserModel
+import com.butterflies.stepaw.network.networkCall.NetworkCall
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -57,6 +59,7 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_authuihost)
+
         val navHostFragment: NavHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host) as NavHostFragment
 
@@ -117,21 +120,7 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("signin", "signInWithEmail:success")
                     val user = auth.currentUser
-
-                    user?.uid?.let { storePreferences("com.butterflies.stepaw.uuid", it) }
-                    user?.getIdToken(true)
-                        ?.addOnCompleteListener { token ->
-                            if (token.isSuccessful) {
-                                val idToken = token.result?.token
-                                if (idToken != null) {
-                                    storePreferences("com.butterflies.stepaw.idToken", idToken)
-                                }
-
-                            } else {
-                                Log.d("failed", "Failed to generate idtoken")
-                            }
-                        }
-
+                    taskSuccessGetIdToken(user)
 
                 } else {
                     // If sign in fails, display a message to the user.
@@ -141,6 +130,25 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
                         Toast.LENGTH_SHORT
                     ).show()
 
+                }
+            }
+    }
+
+    private fun taskSuccessGetIdToken(user: FirebaseUser?) {
+        user?.uid?.let { storePreferences("com.butterflies.stepaw.uuid", it) }
+        user?.getIdToken(true)
+            ?.addOnCompleteListener { token ->
+                if (token.isSuccessful) {
+                    val idToken = token.result?.token
+                    if (idToken != null) {
+                        storePreferences("com.butterflies.stepaw.idToken", idToken)
+                        Toast.makeText(this,"Got id token",Toast.LENGTH_SHORT).show()
+                        taskSuccessCreateNewUser(idToken)
+                    }
+
+                } else {
+                    Log.d("idToken", "Failed to generate idtoken")
+                    Toast.makeText(this,"id token failed",Toast.LENGTH_SHORT).show()
                 }
             }
     }
@@ -176,31 +184,7 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    val user = auth.currentUser
-                    if (user?.uid !== null) {
-                        id = user.uid
-                    }
-                    if (user?.displayName !== null) {
-
-                        userName = user.displayName!!
-                    } else storePreferences("com.butterflies.stepaw.displayName", "invalid")
-
-                    if (user?.displayName !== null) {
-
-                        firstName = user.displayName!!
-                    } else storePreferences("com.butterflies.stepaw.firstName", "invalid")
-                    if (user?.displayName !== null) {
-
-                        lastName = user.displayName!!
-                    } else storePreferences("com.butterflies.stepaw.lastName", "invalid")
-
-                    if (user?.email !== null) {
-
-                        email = user.email!!
-                    } else storePreferences("com.butterflies.stepaw.email", "invalid")
-                    if (this::id.isInitialized && this::userName.isInitialized && this::email.isInitialized) {
-                        createNewUserCall(id, userName, userName, userName, email, "01", idToken)
-                    }
+                    taskSuccessCreateNewUser(idToken)
 
                 } else {
                     // If sign in fails, display a message to the user.
@@ -208,6 +192,34 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
                     Toast.makeText(this, "failed", Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+
+    private fun taskSuccessCreateNewUser(idToken: String) {
+        val user = auth.currentUser
+        if (user?.uid !== null) {
+            id = user.uid
+        }
+        if (user?.displayName !== null) {
+
+            userName = user.displayName!!
+        } else storePreferences("com.butterflies.stepaw.displayName", "invalid")
+
+        if (user?.displayName !== null) {
+
+            firstName = user.displayName!!
+        } else storePreferences("com.butterflies.stepaw.firstName", "invalid")
+        if (user?.displayName !== null) {
+
+            lastName = user.displayName!!
+        } else storePreferences("com.butterflies.stepaw.lastName", "invalid")
+
+        if (user?.email !== null) {
+
+            email = user.email!!
+        } else storePreferences("com.butterflies.stepaw.email", "invalid")
+        if (this::id.isInitialized && this::userName.isInitialized && this::email.isInitialized) {
+            createNewUserCall(id, userName, userName, userName, email, "01", idToken)
+        }
     }
 
     private fun signIn() {
@@ -226,11 +238,14 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-//                    val user = auth.currentUser
+
+                    val user = auth.currentUser
+                    taskSuccessGetIdToken(user)
 
                 } else {
                     // If sign in fails, display a message to the user.
-
+                    Log.w("signup", "createUserWithEmail:failure", task.exception)
+                    Log.d("signup", task.result.toString())
                 }
             }
     }
@@ -281,18 +296,18 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
 
     }
 
-//Storing user data as a string in shared preferences
-fun storeUser(r:Response<UserModel>) {
-    val sharedp = getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE)
-    with(sharedp.edit()) {
-        val gson = Gson()
-        val json = gson.toJson(r.body())
-        putString("com.butterflies.stepaw.user", json.toString())
+    //Storing user data as a string in shared preferences
+    fun storeUser(r: Response<UserModel>) {
+        val sharedp = getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE)
+        with(sharedp.edit()) {
+            val gson = Gson()
+            val json = gson.toJson(r.body())
+            putString("com.butterflies.stepaw.user", json.toString())
 //        apply()
-        commit()
-    }
+            commit()
+        }
 
-}
+    }
 
     //    Create a new user in the backend
     private fun createNewUserCall(
@@ -311,25 +326,32 @@ fun storeUser(r:Response<UserModel>) {
             @SuppressLint("LogNotTimber")
             override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
 //                Checking response status
-                if(response.code()==200){
-                   storeUser(response)
-                   Intent(this@AuthUIHost,DogList::class.java).run { startActivity(this) }
+                if (response.code() == 200) {
+                    storeUser(response)
+                    Log.d("authUI",response.message())
+                    Intent(this@AuthUIHost, DogList::class.java).run { startActivity(this) }
                 }
-                if (response.code()==500){
-                    val personWithID=service.getPersonWithId(token=" Bearer $token",UserID)
-                    personWithID.enqueue(object : Callback<UserModel>{
+                if (response.code() == 500) {
+                    val personWithID = service.getPersonWithId(token = " Bearer $token", UserID)
+                    personWithID.enqueue(object : Callback<UserModel> {
                         override fun onResponse(
                             call: Call<UserModel>,
                             response: Response<UserModel>
                         ) {
                             storeUser(response)
-                            if(response.code()==200){
-                                Intent(this@AuthUIHost,DogList::class.java).run{startActivity(this)}
+                            if (response.code() == 200) {
+                                Intent(this@AuthUIHost, DogList::class.java).run {
+                                    startActivity(
+                                        this
+                                    )
+                                }
+                            }else{
+                                Log.d("authUI",response.message())
                             }
                         }
 
                         override fun onFailure(call: Call<UserModel>, t: Throwable) {
-                            Log.d("retrofit Person","We don't know what's happening around here.")
+                            Log.d("authUI", "We don't know what's happening around here.")
                         }
 
                     })
@@ -339,7 +361,7 @@ fun storeUser(r:Response<UserModel>) {
 
             @SuppressLint("LogNotTimber")
             override fun onFailure(call: Call<UserModel>, t: Throwable) {
-                Log.d("retrofitFailure", t.message.toString())
+                Log.d("authUI", t.message.toString())
             }
 
         })
