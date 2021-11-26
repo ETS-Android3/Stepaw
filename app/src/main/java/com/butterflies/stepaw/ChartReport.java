@@ -77,6 +77,22 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                 R.string.nav_open_drawer,
                 R.string.nav_close_drawer);
 
+        toggle.setDrawerIndicatorEnabled(false);
+        toggle.setHomeAsUpIndicator(R.drawable.close_nav_drawer);
+        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (drawer .isDrawerVisible(GravityCompat.START)) {
+                    drawer .closeDrawer(GravityCompat.START);
+                } else {
+                    drawer .openDrawer(GravityCompat.START);
+                }
+
+
+            }
+        });
+
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -86,9 +102,9 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         binding.logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               FirebaseAuth.getInstance().signOut();
-              Intent i=new Intent(ChartReport.this,AuthUIHost.class);
-              startActivity(i);
+                FirebaseAuth.getInstance().signOut();
+                Intent i = new Intent(ChartReport.this, AuthUIHost.class);
+                startActivity(i);
             }
         });
 
@@ -110,7 +126,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
             getPetById(token, petId);
         }
 
-
+//Setting nav graph for bottom sheet reminder programatically
         Fragment fr = this.getSupportFragmentManager().findFragmentById(R.id.nav_host);
         if (fr == null) {
             throw new NullPointerException("null cannot be cast to non-null type androidx.navigation.fragment.NavHostFragment");
@@ -118,6 +134,8 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
             NavHostFragment navHostFragment = (NavHostFragment) fr;
             FragmentKt.findNavController((Fragment) navHostFragment).setGraph(R.navigation.reminder_nav);
         }
+//
+
 //Handling bottom sheet
         BottomSheetBehavior<View> standardBottomSheetBehavior =
                 BottomSheetBehavior.from(findViewById(R.id.bottom_sheet_reminder));
