@@ -10,15 +10,19 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -74,7 +78,13 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         super.onCreate(savedInstanceState);
         binding = ActivityChartReportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        setSupportActionBar(findViewById(R.id.my_toolbar));
+
+//        Change status bar icon color to black
+        getWindow().getDecorView().setSystemUiVisibility(getWindow().getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//
+Toolbar toolbar=findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 //        Drawer Toggle
         drawer = binding.drawerLayout;
         toggle = new ActionBarDrawerToggle(this,
@@ -82,25 +92,24 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                 findViewById(R.id.my_toolbar),
                 R.string.nav_open_drawer,
                 R.string.nav_close_drawer);
-
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
         toggle.setDrawerIndicatorEnabled(false);
-        toggle.setHomeAsUpIndicator(R.drawable.close_nav_drawer);
-        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+        toggle.setHomeAsUpIndicator(R.drawable.custom_back_button);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-
-                if (drawer .isDrawerVisible(GravityCompat.START)) {
-                    drawer .closeDrawer(GravityCompat.START);
-                } else {
-                    drawer .openDrawer(GravityCompat.START);
-                }
-
-
+               ChartReport.super.onBackPressed();
+//                }
             }
         });
 
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+
+//        Change hamburger icon color to black
+        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.black, this.getTheme()));
+
+//
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -145,7 +154,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 //Handling bottom sheet
         BottomSheetBehavior<View> standardBottomSheetBehavior =
                 BottomSheetBehavior.from(findViewById(R.id.bottom_sheet_reminder));
-
+        standardBottomSheetBehavior.setPeekHeight(170);
         standardBottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -163,9 +172,10 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         //Code to handle navigation clicks
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         switch (item.getItemId()) {
             case R.id.close_nav_icon:
-                drawer.closeDrawers();
+                drawer.closeDrawer(Gravity.RIGHT);
                 break;
 
             case R.id.account:
@@ -186,8 +196,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
 
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        drawer.closeDrawer(Gravity.RIGHT);
         return true;
     }
 
@@ -233,7 +242,24 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
     public void update(Observable o, Object arg) {
 
     }
+//Handle menu click
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_drawer,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    public void openNavDrawer(MenuItem item) {
+        if (drawer.isDrawerOpen(Gravity.RIGHT)) {
+                    drawer.closeDrawer(Gravity.RIGHT);
+                } else {
+                    drawer.openDrawer(Gravity.RIGHT);
+                }
+    }
+
+    //
     @Override
     protected void onResume() {
         RetrofitObservable r = new RetrofitObservable();
@@ -265,7 +291,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                 ImageView petImage = findViewById(R.id.petImage);
                 TextView petAge = findViewById(R.id.petAge);
 
-                if(petList != null){
+                if (petList != null) {
                     petObj = petList.get(0);
                     //set weekly data array
                     //set monthly chart data array
@@ -273,7 +299,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                     System.out.println("sorted list");
                     System.out.println(petList);
                 }
-                
+
                 if (petObj != null && petObj.getPetName() != null && petObj.getPetName() != "") {
                     petName.setText(petObj.getPetName());
                 } else {
@@ -311,5 +337,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
             }
         });
     }
+
+
 }
 
