@@ -28,7 +28,7 @@ interface ApiService {
     fun getPetById(
         @Header("Authorization") token: String,
         @Path("id") id: String
-    ): Call<PetGetModel>
+    ): Call<List<PetGetModel>>
 
     @PUT("/user/pets/{id}")
     fun updatePetWithId(
@@ -37,7 +37,10 @@ interface ApiService {
     ): Call<PetGetModel>
 
     @GET("/user/users/{id}")
-    fun getPersonWithId(@Header("Authorization") token: String,@Path(value = "id") id:String):Call<UserModel>
+    fun getPersonWithId(
+        @Header("Authorization") token: String,
+        @Path(value = "id") id: String
+    ): Call<UserModel>
 
     companion object {
         const val BASE_URL = "https://stepaw.wmdd4950.com"
