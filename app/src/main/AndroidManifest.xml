@@ -24,6 +24,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Stepaw">
         <activity
+            android:name=".scanner.BleConnectionScreen2"
+            android:exported="true" />
+        <activity
+            android:name=".scanner.BleConnectionScreen"
+            android:exported="true" />
+        <activity
             android:name=".userActions.ContactUsActivity"
             android:exported="false" />
         <activity
