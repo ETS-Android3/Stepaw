@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.butterflies.stepaw.DogList
@@ -59,7 +60,8 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_authuihost)
-
+        window.decorView.systemUiVisibility =
+            window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         val navHostFragment: NavHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host) as NavHostFragment
 
@@ -105,11 +107,20 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
 
     override fun onBackPressed() {
 //        super.onBackPressed()
-        val homeIntent = Intent(Intent.ACTION_MAIN)
-        homeIntent.addCategory(Intent.CATEGORY_HOME)
-        homeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(homeIntent)
-        exitProcess(1)
+
+        val currentFragment = findNavController(R.id.nav_host).currentDestination!!.id
+        if (currentFragment == R.id.signin) {
+//           Close application here
+            val homeIntent = Intent(Intent.ACTION_MAIN)
+            homeIntent.addCategory(Intent.CATEGORY_HOME)
+            homeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(homeIntent)
+            exitProcess(1)
+
+        } else {
+            super.onBackPressed()
+        }
+//
     }
 
     @SuppressLint("LogNotTimber")
@@ -142,13 +153,13 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
                     val idToken = token.result?.token
                     if (idToken != null) {
                         storePreferences("com.butterflies.stepaw.idToken", idToken)
-                        Toast.makeText(this,"Got id token",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Got id token", Toast.LENGTH_SHORT).show()
                         taskSuccessCreateNewUser(idToken)
                     }
 
                 } else {
                     Log.d("idToken", "Failed to generate idtoken")
-                    Toast.makeText(this,"id token failed",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "id token failed", Toast.LENGTH_SHORT).show()
                 }
             }
     }
@@ -328,7 +339,7 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
 //                Checking response status
                 if (response.code() == 200) {
                     storeUser(response)
-                    Log.d("authUI",response.message())
+                    Log.d("authUI", response.message())
                     Intent(this@AuthUIHost, DogList::class.java).run { startActivity(this) }
                 }
                 if (response.code() == 500) {
@@ -345,8 +356,8 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
                                         this
                                     )
                                 }
-                            }else{
-                                Log.d("authUI",response.message())
+                            } else {
+                                Log.d("authUI", response.message())
                             }
                         }
 

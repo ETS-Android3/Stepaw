@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    tools:openDrawer="right">
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -160,7 +161,7 @@
         android:id="@+id/nav_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
+        android:layout_gravity="right"
         android:layout_marginEnd="-65dp"
         android:fitsSystemWindows="true"
         app:menu="@menu/menu" >
@@ -168,7 +169,6 @@
     <Button
         android:id="@+id/logout"
         android:text="Logout"
-        android:background="@drawable/rounded_button"
         style="@style/RoundedButton"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_width="wrap_content"
