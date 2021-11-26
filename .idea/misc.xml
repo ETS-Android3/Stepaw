@@ -37,6 +37,7 @@
         <entry key="..\:/Users/thout/Downloads/Android/Stepaw/app/src/main/res/layout/toolbar.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/thout/Downloads/Android/Stepaw/app/src/main/res/menu/menu.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/cursor_color.xml" value="0.19166666666666668" />
+        <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/edittext_states.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/fade_blue.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/ic_appicon.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/ic_icon_title.xml" value="0.1" />
@@ -44,6 +45,7 @@
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/ic_menu_camera.xml" value="0.1" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/rounded_button.xml" value="0.1" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/rounded_edittext.xml" value="0.19166666666666668" />
+        <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/rounded_edittext_active.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/side_nav_bar.xml" value="0.1" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/viewpager_not_selected.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/viewpager_selected.xml" value="0.19166666666666668" />
@@ -54,6 +56,7 @@
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/activity_ble_operations.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/activity_chart_report.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/activity_contactus.xml" value="0.1" />
+        <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/activity_dog_list.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/activity_main.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/activity_main2.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/activity_notifications.xml" value="0.17552083333333332" />

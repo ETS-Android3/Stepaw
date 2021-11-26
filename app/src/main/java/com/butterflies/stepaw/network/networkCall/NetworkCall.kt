@@ -1,6 +1,7 @@
 package com.butterflies.stepaw.network.networkCall
 
 import android.util.Log
+import android.widget.Toast
 import com.butterflies.stepaw.network.ApiService
 import com.butterflies.stepaw.network.RetrofitObservable
 import com.butterflies.stepaw.network.models.PetGetModel
@@ -39,14 +40,18 @@ class NetworkCall {
 
     fun getPetById(token: String, id: String) {
         val pet = service.getPetById(token = " Bearer $token", id)
-        pet.enqueue(object : Callback<PetGetModel> {
-            override fun onResponse(call: Call<PetGetModel>, response: Response<PetGetModel>) {
-                TODO("response.body()")
+        pet.enqueue(object : Callback<List<PetGetModel>> {
+            override fun onResponse(
+                call: Call<List<PetGetModel>>,
+                response: Response<List<PetGetModel>>
+            ) {
+               Log.d("petbyid",response.body()!!.get(0)!!.PetID)
             }
 
-            override fun onFailure(call: Call<PetGetModel>, t: Throwable) {
-                TODO("Not yet implemented")
+            override fun onFailure(call: Call<List<PetGetModel>>, t: Throwable) {
+                Log.d("petbyid",t.message.toString())
             }
+
 
         })
     }

@@ -12,16 +12,17 @@ import com.butterflies.stepaw.databinding.FragmentSigninBinding
 
 
 class FragmentSignin : Fragment() {
-private lateinit var signinwithactivity:SigninService
-    interface SigninService{
-        fun signin(email:String,password:String)
+    private lateinit var signinwithactivity: SigninService
+
+    interface SigninService {
+        fun signin(email: String, password: String)
         fun googlesignin()
     }
 
     private lateinit var binding: FragmentSigninBinding
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        signinwithactivity=context as SigninService
+        signinwithactivity = context as SigninService
     }
 
     override fun onCreateView(
@@ -35,7 +36,7 @@ private lateinit var signinwithactivity:SigninService
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val root = FragmentSigninBinding.bind(binding.root)
 //        Navigate to signup fragment
         binding.signup.setOnClickListener {
             view.findNavController().navigate(R.id.action_signin_to_signup)
@@ -53,8 +54,8 @@ private lateinit var signinwithactivity:SigninService
 //        Call Activity's signinwith email and password method
 
         binding.signin.setOnClickListener {
-            val email=binding.email.text.toString()
-            val password=binding.password.text.toString()
+            val email = root.email.text.toString()
+            val password = root.password.text.toString()
 //            Validate
             signinwithactivity.signin(email, password)
         }

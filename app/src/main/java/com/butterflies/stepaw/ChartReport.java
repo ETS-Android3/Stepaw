@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -229,6 +230,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         pet.enqueue(new Callback() {
             @Override
             public void onResponse(Call call, Response response) {
+
                 petObj = (PetGetModel) response.body();
                 TextView petName = findViewById(R.id.petName);
                 ImageView petImage = findViewById(R.id.petImage);

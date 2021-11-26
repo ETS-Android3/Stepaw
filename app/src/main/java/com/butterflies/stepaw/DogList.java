@@ -92,7 +92,6 @@ public class DogList extends AppCompatActivity {
                         PetGetModel item = (PetGetModel) listView.getItemAtPosition(position);
                         Intent intent = new Intent(getApplicationContext(), ChartReport.class);
                         intent.putExtra("petId", item.getPetID());
-
                         startActivity(intent);
 
                     }
