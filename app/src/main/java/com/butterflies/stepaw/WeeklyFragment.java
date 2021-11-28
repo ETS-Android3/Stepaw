@@ -1,13 +1,16 @@
 package com.butterflies.stepaw;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -21,8 +24,8 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import app.futured.donut.DonutProgressView;
 import app.futured.donut.DonutSection;
@@ -46,6 +49,7 @@ public class WeeklyFragment extends Fragment {
     private String mParam2;
     private List<DonutSection> kmDataList = new ArrayList<>();
     private List<DonutSection> minDataList = new ArrayList<>();
+
 
     public WeeklyFragment() {
         // Required empty public constructor
@@ -78,6 +82,7 @@ public class WeeklyFragment extends Fragment {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -88,7 +93,27 @@ public class WeeklyFragment extends Fragment {
         DonutProgressView kmDonutChart = view.findViewById(R.id.kmDonutView);
         DonutProgressView minDonutChart = view.findViewById(R.id.minDonutView);
 
-        renderDonutData(kmDonutChart, minDonutChart);
+        assert getArguments() != null;
+        double[] distanceArray = getArguments().getDoubleArray("petKmArray");
+        double[] timeArray = getArguments().getDoubleArray("petMinArray");
+        int[] stepsArray = getArguments().getIntArray("petStepsArray");
+        String[] days = getArguments().getStringArray("days");
+        String[] dates = getArguments().getStringArray("dateArray");
+
+        float kmCap = Float.parseFloat(String.valueOf(Arrays.stream(distanceArray).average().orElse(0.0)));
+        float minCap = Float.parseFloat(String.valueOf(Arrays.stream(timeArray).average().orElse(0.0)));
+
+        TextView stepCount = view.findViewById(R.id.stepsCountTextView);
+        TextView minValue = view.findViewById(R.id.minValue);
+        TextView kmValue = view.findViewById(R.id.kmValue);
+        TextView dateTextView = view.findViewById(R.id.dateTextView);
+
+        renderDonutData(kmDonutChart, minDonutChart, distanceArray[0], timeArray[0], kmCap, minCap);
+
+        stepCount.setText(String.valueOf(stepsArray[0]));
+        minValue.setText(String.valueOf(timeArray[0]));
+        kmValue.setText(String.valueOf(distanceArray[0]));
+        dateTextView.setText(dates[0]);
 
         //weekly report - line chart generation
         mChart = view.findViewById(R.id.chart);
@@ -99,9 +124,16 @@ public class WeeklyFragment extends Fragment {
         mChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                //Toast.makeText(getActivity(), "Value selected", Toast.LENGTH_SHORT).show();
-                renderDonutData(kmDonutChart, minDonutChart);
-                //System.out.println(e.getX()+ " " + e.getY());
+                int index = (int) e.getX();
+                renderDonutData(kmDonutChart, minDonutChart, distanceArray[index], timeArray[index],
+                        kmCap, minCap);
+
+                stepCount.setText(String.valueOf(stepsArray[index]));
+                minValue.setText(String.valueOf( timeArray[index]));
+                kmValue.setText(String.valueOf(distanceArray[index]));
+                dateTextView.setText(dates[index]);
+
+                System.out.println(e.getX()+ " " + e.getY());
             }
 
             @Override
@@ -110,36 +142,35 @@ public class WeeklyFragment extends Fragment {
             }
         });
 
-        renderData();
+        renderData(stepsArray, days);
         return view;
     }
 
-    private void renderDonutData(DonutProgressView kmDonutChart, DonutProgressView minDonutChart){
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void renderDonutData(DonutProgressView kmDonutChart, DonutProgressView minDonutChart,
+                                 double distance, double time, float kmCap, float minCap){
 
-        Random rn = new Random();
-        float answer = rn.nextInt(5) + 1;
         DonutSection kmSection = new DonutSection("km",
-                Color.parseColor("#004E99"), answer);
+                Color.parseColor("#004E99"), Float.parseFloat(String.valueOf(distance)));
 
         DonutSection minSection = new DonutSection("min",
-                Color.parseColor("#FBD617"),answer);
+                Color.parseColor("#FBD617"),Float.parseFloat(String.valueOf(time)));
 
         kmDataList = new ArrayList<>();
         kmDataList.add(kmSection);
-        kmDonutChart.setCap(5f);
+        kmDonutChart.setCap(kmCap);
         kmDonutChart.submitData(kmDataList);
         kmDonutChart.animate();
 
         minDataList = new ArrayList<>();
         minDataList.add(minSection);
-        minDonutChart.setCap(5f);
+        minDonutChart.setCap(minCap);
         minDonutChart.submitData(minDataList);
         minDonutChart.animate();
-
     }
 
 
-    public void renderData() {
+    public void renderData(int[] stepsArray, String[] days) {
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setDrawGridLines(false);
@@ -149,7 +180,7 @@ public class WeeklyFragment extends Fragment {
         xAxis.setDrawLabels(true);
         xAxis.setTextSize(12);
         xAxis.setDrawAxisLine(false);
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(getXAxisValues()));
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(days));
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setEnabled(false);
@@ -162,34 +193,15 @@ public class WeeklyFragment extends Fragment {
         mChart.getAxisRight().enableGridDashedLine(10f, 10f, 10f);
         mChart.getLegend().setEnabled(false);
         mChart.getDescription().setEnabled(false);
-        setData();
+        setData(stepsArray);
     }
 
-    private ArrayList<String> getXAxisValues()
-    {
-        ArrayList<String> labels = new ArrayList<> ();
-
-        labels.add( "SUN");
-        labels.add( "MON");
-        labels.add( "TUE");
-        labels.add( "WED");
-        labels.add( "THU");
-        labels.add( "FRI");
-        labels.add( "SAT");
-        return labels;
-    }
-
-    private void setData() {
+    private void setData(int[] stepsArray) {
 
         ArrayList<Entry> values = new ArrayList<>();
-        values.add(new Entry(0, 50));
-        values.add(new Entry(1, 100));
-        values.add(new Entry(2, 80));
-        values.add(new Entry(3, 120));
-        values.add(new Entry(4, 110));
-        values.add(new Entry(5, 150));
-        values.add(new Entry(6, 250));
-
+        for (int i = 0; i < stepsArray.length; i++) {
+            values.add(new Entry(i, stepsArray[i]));
+        }
 
         LineDataSet set1;
         if (mChart.getData() != null &&
