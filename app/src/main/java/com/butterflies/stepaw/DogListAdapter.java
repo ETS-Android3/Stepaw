@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.butterflies.stepaw.dogonboarding.OnBoardingHost;
 import com.butterflies.stepaw.network.models.PetGetModel;
 
 import java.util.ArrayList;
@@ -63,11 +64,25 @@ public class DogListAdapter extends BaseAdapter {
             tvName.setText(pet.getPetID());
         }
 
-        String pet_age_weight = pet.getAge() + " / " + pet.getWeight();
+        String pet_age_weight = pet.getAge() + "y / " + pet.getWeight() + "kg";
         tvHome.setText(pet_age_weight);
 
         beacon.setImageResource(R.drawable.ic_frame);
         editPet.setImageResource(R.drawable.ic_edit_icon);
+        editPet.setOnClickListener(v -> {
+            Intent intent = new Intent(context, OnBoardingHost.class);
+            intent.putExtra("petId", pet.getPetID());
+            intent.putExtra("name", pet.getPetName());
+            intent.putExtra("age", pet.getAge());
+            intent.putExtra("weight", pet.getWeight());
+            intent.putExtra("gender", pet.getGender());
+
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            context.startActivity(intent);
+        });
+
+
         bluetooth.setImageResource(R.drawable.ic_bluetooth);
 
         petWalkBtn.setImageResource(R.drawable.ic_walk_paw);

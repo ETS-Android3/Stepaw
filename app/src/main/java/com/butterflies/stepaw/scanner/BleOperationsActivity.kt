@@ -55,8 +55,12 @@ import java.util.UUID
 import android.bluetooth.BluetoothGattDescriptor
 
 import android.bluetooth.BluetoothGattService
+import android.os.SystemClock
+import android.util.Log
 import android.view.ViewTreeObserver
+import android.widget.Chronometer
 import android.widget.Toast
+import com.google.android.material.internal.ContextUtils.getActivity
 
 
 class BleOperationsActivity : AppCompatActivity() {
@@ -101,17 +105,7 @@ class BleOperationsActivity : AppCompatActivity() {
             title = getString(R.string.ble_playground)
         }
         setupRecyclerView()
-//        request_mtu_button.setOnClickListener {
-//            if (mtu_field.text.isNotEmpty() && mtu_field.text.isNotBlank()) {
-//                mtu_field.text.toString().toIntOrNull()?.let { mtu ->
-//                    log("Requesting for MTU value of $mtu")
-//                    ConnectionManager.requestMtu(device, mtu)
-//                } ?: log("Invalid MTU value: ${mtu_field.text}")
-//            } else {
-//                log("Please specify a numeric value for desired ATT MTU (23-517)")
-//            }
-//            hideKeyboard()
-//        }
+
     }
 
     override fun onDestroy() {

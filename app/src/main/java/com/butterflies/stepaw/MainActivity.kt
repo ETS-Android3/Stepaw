@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import com.butterflies.stepaw.authentication.AuthUIHost
 import com.butterflies.stepaw.databinding.ActivityMainBinding
 import com.butterflies.stepaw.scanner.BleActivity
+import com.butterflies.stepaw.scanner.BleConnectionScreen
+import com.butterflies.stepaw.scanner.BleConnectionScreen2
 import com.butterflies.stepaw.welcomescreen.WelcomeScreenHost
 
 
