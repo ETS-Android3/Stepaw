@@ -81,7 +81,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 //        Change status bar icon color to black
         getWindow().getDecorView().setSystemUiVisibility(getWindow().getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 //
-        Toolbar toolbar=findViewById(R.id.my_toolbar);
+        Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 //        Drawer Toggle
@@ -99,7 +99,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
             @Override
             public void onClick(View v) {
-               ChartReport.super.onBackPressed();
+                ChartReport.super.onBackPressed();
 //                }
             }
         });
@@ -210,13 +210,13 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
 
     @Override
-    public void setReminder(@NonNull String hour, @NonNull String minute, @NonNull int... days) {
+    public void setReminder(@NonNull String hour, @NonNull String minute, @NonNull String label, @NonNull int... days) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour));
         calendar.set(Calendar.MINUTE, Integer.parseInt(minute));
         calendar.set(Calendar.SECOND, 0);
         updateTimeText(calendar);
-        startAlarm(calendar);
+        startAlarm(calendar, label);
     }
 
     private void updateTimeText(Calendar c) {
@@ -224,14 +224,15 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         timeText += DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
     }
 
-    private void startAlarm(Calendar c) {
+    private void startAlarm(Calendar c, String label) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, NotificationPublisher.class);
+        intent.putExtra("reminderlabel",label);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
         if (c.before(Calendar.getInstance())) {
             c.add(Calendar.DATE, 1);
         }
-        Objects.requireNonNull(alarmManager).setInexactRepeating(AlarmManager.RTC_WAKEUP, AlarmManager.INTERVAL_DAY * 7,
+        Objects.requireNonNull(alarmManager).setRepeating(AlarmManager.RTC_WAKEUP, AlarmManager.INTERVAL_DAY * 7,
                 c.getTimeInMillis(), pendingIntent);
     }
 
@@ -245,13 +246,12 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_drawer,menu);
+        getMenuInflater().inflate(R.menu.menu_drawer, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     public void openNavDrawer(MenuItem item) {
-        if (drawer.isDrawerOpen(Gravity.RIGHT))
-        {
+        if (drawer.isDrawerOpen(Gravity.RIGHT)) {
             drawer.closeDrawer(Gravity.RIGHT);
         } else {
             drawer.openDrawer(Gravity.RIGHT);
@@ -280,6 +280,8 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onResponse(Call call, Response response) {
+            petObj = (PetGetModel) response.body();
+
 
                 //weekly chart variables
                 ArrayList<PetGetModel> weekArray = new ArrayList<>();
@@ -305,7 +307,6 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                 String[] months = new String[6];
                 ArrayList<String> monthArray = new ArrayList<>(Arrays.asList("Jan", "Feb", "Mar","Apr", "May",
                         "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"));
-
                 Object obj = response.body();
                 System.out.println("Dog data");
                 System.out.println(obj);

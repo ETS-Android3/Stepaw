@@ -2,6 +2,7 @@ package com.butterflies.stepaw.reminder
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +17,7 @@ class FragmentReminder : Fragment() {
     private lateinit var reminder: ReminderService
 
     interface ReminderService {
-        fun setReminder(hour: String, minute: String, vararg days: Int)
+        fun setReminder(hour: String, minute: String, extraData:String,vararg days: Int,)
     }
 
     override fun onAttach(context: Context) {
@@ -39,16 +40,18 @@ class FragmentReminder : Fragment() {
         }
         binding.saveReminder.setOnClickListener {
             val timePicker = binding.timepicker
+            val d=binding.reminderLabel.text.toString()
             reminder.setReminder(
                 timePicker.hour.toString(),
                 timePicker.minute.toString(),
+                extraData = d,
                 1,
                 2,
                 3,
                 4,
                 5,
                 6,
-                7
+                7,
             )
             binding.newreminder.visibility = View.GONE
             standardBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
