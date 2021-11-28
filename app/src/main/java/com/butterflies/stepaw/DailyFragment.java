@@ -9,7 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import app.futured.donut.DonutProgressView;
 import app.futured.donut.DonutSection;
@@ -68,6 +71,19 @@ public class DailyFragment extends Fragment {
         String strKM = getArguments().getString("petKm");
         String strMin = getArguments().getString("petMin");
         String steps = getArguments().getString("petSteps");
+        Float kmCap = getArguments().getFloat("petKmCap");
+        Float minCap = getArguments().getFloat("petMinCap");
+        String dateStr = null;
+        try {
+            SimpleDateFormat formatter =   new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            Date date = formatter.parse(getArguments().getString("date"));
+
+            formatter = new SimpleDateFormat("MMM dd, yyyy");
+            dateStr = formatter.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         Float km = Float.parseFloat(strKM);
         Float min = Float.parseFloat(strMin);
 
@@ -79,12 +95,12 @@ public class DailyFragment extends Fragment {
 
         List<DonutSection> list = new ArrayList<>();
         list.add(kmSection);
-        kmDonutChart.setCap(km+20);
+        kmDonutChart.setCap(kmCap);
         kmDonutChart.submitData(list);
 
         list = new ArrayList<>();
         list.add(minSection);
-        minDonutChart.setCap(min+2);
+        minDonutChart.setCap(minCap);
         minDonutChart.submitData(list);
 
         TextView stepCount = view.findViewById(R.id.stepsCountTextView);
@@ -94,7 +110,10 @@ public class DailyFragment extends Fragment {
         minValue.setText(strMin);
 
         TextView kmValue = view.findViewById(R.id.kmValue);
-        kmValue.setText(strKM);
+        kmValue.setText(km.toString());
+
+        TextView dateTextView = view.findViewById(R.id.dateTextView);
+        dateTextView.setText(dateStr);
 
         return view;
     }
