@@ -57,5 +57,7 @@
     <string name="please_enter_your_new_passsword">Please enter your new passsword</string>
     <string name="please_enter_your_new_password">Please enter your new password</string>
     <string name="new_password">New Password</string>
+    <string name="menu_scan">Start Scan</string>
+    <string name="menu_stop">Stop</string>
 
 </resources>

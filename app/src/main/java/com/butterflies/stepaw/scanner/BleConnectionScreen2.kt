@@ -17,6 +17,7 @@ import com.bumptech.glide.request.target.Target
 import com.butterflies.stepaw.databinding.ActivityBleConnectionScreen2Binding
 import com.butterflies.stepaw.scanner.ble.ConnectionManager
 import com.butterflies.stepaw.MainActivity
+import com.butterflies.stepaw.ble.DeviceScanActivity
 import com.butterflies.stepaw.welcomescreen.WelcomeScreenHost
 
 
@@ -51,7 +52,7 @@ class BleConnectionScreen2 : AppCompatActivity() {
 
     private fun NextActivity() {
         Handler().postDelayed(Runnable {
-            val mainIntent = Intent(this@BleConnectionScreen2, WelcomeScreenHost::class.java)
+            val mainIntent = Intent(this@BleConnectionScreen2, DeviceScanActivity::class.java)
             this@BleConnectionScreen2.startActivity(mainIntent)
             this@BleConnectionScreen2.finish()
         }, 2000)

@@ -23,6 +23,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Stepaw">
+        <service
+            android:name=".ble.BluetoothLeService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <activity
+            android:name=".ble.DevicecontrolActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ble.DeviceScanActivity"
+            android:exported="true" />
         <activity
             android:name=".scanner.BleConnectionScreen2"
             android:exported="true" />
