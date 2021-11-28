@@ -46,7 +46,7 @@
             style="@style/CustomEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_edittext_active"
+            android:layout_marginBottom="16dp"
             android:minHeight="48dp" />
 
         <TextView
@@ -64,7 +64,7 @@
             style="@style/CustomEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_edittext_active"
+            android:layout_marginBottom="16dp"
             android:hint="@string/example_email_com"
             android:minHeight="48dp" />
 
@@ -82,7 +82,7 @@
             style="@style/CustomEditText"
             android:layout_width="match_parent"
             android:layout_height="180dp"
-            android:background="@drawable/rounded_edittext_active"
+            android:layout_marginBottom="16dp"
             android:hint="@string/leave_a_message"
             android:minHeight="48dp" />
 

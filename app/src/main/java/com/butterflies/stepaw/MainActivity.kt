@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity() {
         val token=sharedData.getString("com.butterflies.stepaw.idToken","invalid")
         val userJson= sharedData.getString("com.butterflies.stepaw.user", "invalid")
         val firstTimeUser=sharedData.getString("com.butterflies.stepaw.firstTimeUser","true")
-//        Intent(this,BleActivity::class.java).also { startActivity(it) }
         if(firstTimeUser=="true"){
             Intent(this,WelcomeScreenHost::class.java).also { startActivity(it) }
         }

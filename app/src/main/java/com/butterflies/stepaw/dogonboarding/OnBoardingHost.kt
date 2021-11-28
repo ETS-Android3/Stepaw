@@ -33,10 +33,10 @@ class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
     private lateinit var binding: ActivityOnBoardingHostBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.decorView.systemUiVisibility =
-            window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         binding = ActivityOnBoardingHostBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        window.decorView.systemUiVisibility =
+            window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         lateinit var idToken: String;
 //
 
