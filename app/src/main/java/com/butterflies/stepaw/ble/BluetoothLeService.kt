@@ -79,7 +79,6 @@ internal class BluetoothLeService : Service() {
                         setCharacteristicNotification(gattService.characteristics[0], true)
                     }
                 }
-
                 broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED)
             } else {
                 Log.d("Discovered", "onServicesDiscovered received: $status")
@@ -120,7 +119,7 @@ internal class BluetoothLeService : Service() {
 
     private fun broadcastUpdate(action: String, characteristic: BluetoothGattCharacteristic) {
         val intent = Intent(action)
-
+        Log.d("gh",action)
         when (characteristic.uuid) {
             characteristicuuid -> {
                 val flag = characteristic.properties
@@ -133,14 +132,15 @@ internal class BluetoothLeService : Service() {
                     }
                 }
                 val step = characteristic.getIntValue(format, 0)
-                Log.d("bledata", String.format("Received rate: %d", step))
-                _callback?.invoke(step)
-//                intent.putExtra("data", (step).toString())
+//                Log.d("bledata", String.format("Received rate: %d", step))
+//                _callback?.invoke(step)
+                intent.putExtra("data", (step).toString())
+                sendBroadcast(intent)
             }
             else -> {
             }
         }
-//        sendBroadcast(intent)
+        sendBroadcast(intent)
     }
 
     private val binder: Binder = LocalBinder()
@@ -155,6 +155,7 @@ internal class BluetoothLeService : Service() {
     }
 
     private fun close() {
+        Log.d("exited", "ertd")
         bluetoothGatt?.let { gatt ->
             gatt.close()
             bluetoothGatt = null
@@ -167,6 +168,8 @@ internal class BluetoothLeService : Service() {
             "com.example.bluetooth.le.ACTION_GATT_DISCONNECTED"
         const val ACTION_GATT_SERVICES_DISCOVERED =
             "com.example.bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED"
+        const val ACTION_DATA_AVAILABLE =
+            "com.example.bluetooth.le.ACTION_DATA_AVAILABLE"
 
         private const val STATE_DISCONNECTED = 0
         private const val STATE_CONNECTED = 2

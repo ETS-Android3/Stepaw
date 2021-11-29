@@ -5,20 +5,28 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 
+import android.os.IBinder;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -29,6 +37,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.butterflies.stepaw.authentication.AuthUIHost;
+import com.butterflies.stepaw.ble.BluetoothLeService;
 import com.butterflies.stepaw.databinding.ActivityChartReportBinding;
 import com.butterflies.stepaw.network.ApiService;
 import com.butterflies.stepaw.network.RetrofitObservable;
@@ -56,6 +65,7 @@ import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 
+import kotlin.jvm.functions.Function1;
 import kotlin.jvm.internal.Intrinsics;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -71,6 +81,9 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
     ActivityChartReportBinding binding;
     ActionBarDrawerToggle toggle;
     DrawerLayout drawer;
+    private String deviceAddress = "";
+    private Boolean connected = null;
+    private BluetoothLeService bluetoothService = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +139,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
         Intent intent = getIntent();
         String petId = intent.getStringExtra("petId");
-
+        deviceAddress = intent.getStringExtra("address");
         retrofit = new Retrofit.Builder()
                 .baseUrl(ApiService.BASE_URL)
                 .addConverterFactory(MoshiConverterFactory.create())
@@ -164,6 +177,70 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
             }
         });
+
+//       Service Broadcast
+        if(!isMyServiceRunning(BluetoothLeService.class)) {
+            Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+            bindService(gattServiceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+        }
+    }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            BluetoothLeService bluetoothService = ((BluetoothLeService.LocalBinder) service).getService();
+            if (bluetoothService != null) {
+                if (!bluetoothService.initialize()) {
+                    Log.e("TAG", "Unable to initialize Bluetooth");
+                    finish();
+                }
+                // perform device connection
+                bluetoothService.connect(deviceAddress);
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            BluetoothLeService bluetoothService = null;
+        }
+    };
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private final BroadcastReceiver gattUpdateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
+                connected = true;
+//                updateConnectionState(R.string.connected);
+            } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
+                connected = false;
+//                updateConnectionState(R.string.disconnected);
+            }
+            else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+                int step = Integer.parseInt(intent.getStringExtra("data"));
+//                int distance = step * 0.05;
+                Log.d("glen", intent.getStringExtra("data"));
+            }
+        }
+    };
+
+    private static IntentFilter makeGattUpdateIntentFilter() {
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
+        intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
+        return intentFilter;
     }
 
 
@@ -264,6 +341,11 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         RetrofitObservable r = new RetrofitObservable();
         r.getInstance().addObserver(this);
         super.onResume();
+        registerReceiver(gattUpdateReceiver, makeGattUpdateIntentFilter());
+        if (bluetoothService != null) {
+            final boolean result = bluetoothService.connect(deviceAddress);
+            Log.d("TAG", "Connect request result=" + result);
+        }
     }
 
     @Override
@@ -271,6 +353,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         RetrofitObservable r = new RetrofitObservable();
         r.deleteObserver(this);
         super.onPause();
+        unregisterReceiver(gattUpdateReceiver);
     }
 
     public final void getPetById(@NotNull String token, @NonNull String id) {

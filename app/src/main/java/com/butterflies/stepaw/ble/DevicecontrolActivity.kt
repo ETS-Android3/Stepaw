@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.IBinder
 
 import android.util.Log
+import com.butterflies.stepaw.ChartReport
 
 class DevicecontrolActivity : AppCompatActivity() {
     private var bluetoothService : BluetoothLeService? = null
@@ -25,7 +26,20 @@ class DevicecontrolActivity : AppCompatActivity() {
 
     private val gattUpdateReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-
+            when (intent.action) {
+                BluetoothLeService.ACTION_GATT_CONNECTED -> {
+                    connected = true
+//                    updateConnectionState(R.string.connected)
+                }
+                BluetoothLeService.ACTION_GATT_DISCONNECTED -> {
+                    connected = false
+//                    updateConnectionState(R.string.disconnected)
+                }
+                BluetoothLeService.ACTION_DATA_AVAILABLE -> {
+                    connected = false
+                    intent.getStringExtra("data")?.let { Log.d("yui", it) }
+                }
+            }
         }
     }
 
@@ -49,6 +63,7 @@ class DevicecontrolActivity : AppCompatActivity() {
             addAction(BluetoothLeService.ACTION_GATT_CONNECTED)
             addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED)
             addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED)
+            addAction(BluetoothLeService.ACTION_DATA_AVAILABLE)
         }
     }
 
@@ -65,6 +80,9 @@ class DevicecontrolActivity : AppCompatActivity() {
                     finish()
                 }
                 bluetooth.connect(deviceAddress)
+//                val intent = Intent(this@DevicecontrolActivity, ChartReport::class.java)
+//                intent.putExtra("address", intent.getStringExtra("address").toString())
+//                startActivity(intent)
             }
 
             bluetoothService?.setCallback { step ->
