@@ -325,17 +325,27 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
                         cal.add(Calendar.DATE, -7);
                         Date week = cal.getTime();
-                        cal.add(Calendar.DAY_OF_MONTH, -30);
+                        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
                         Date today30 = cal.getTime();
-                        cal.add(Calendar.DAY_OF_MONTH, -60);
+
+                        cal.set(Calendar.MONTH , today30.getMonth() - 1);
+                        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
                         Date today60 = cal.getTime();
-                        cal.add(Calendar.DAY_OF_MONTH, -90);
+
+                        cal.set(Calendar.MONTH , today60.getMonth() - 1);
+                        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
                         Date today90 = cal.getTime();
-                        cal.add(Calendar.DAY_OF_MONTH, -120);
+
+                        cal.set(Calendar.MONTH , today90.getMonth() - 1);
+                        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
                         Date today120 = cal.getTime();
-                        cal.add(Calendar.DAY_OF_MONTH, -120);
+
+                        cal.set(Calendar.MONTH , today120.getMonth() - 1);
+                        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
                         Date today150 = cal.getTime();
-                        cal.add(Calendar.DAY_OF_MONTH, -120);
+
+                        cal.set(Calendar.MONTH , today150.getMonth() - 1);
+                        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
                         Date today180 = cal.getTime();
 
                         for (int i = 0; i < petList.size(); i++) {
@@ -380,19 +390,19 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                                     }
                                 }
                             }
-                            else if(date.compareTo(today60) >= 0 && date.compareTo(today30) <= 0) {
+                            else if(date.compareTo(today60) >= 0 && date.compareTo(today30) < 0) {
                                 month2.add(petList.get(i));
                             }
-                            else if(date.compareTo(today90) >= 0 && date.compareTo(today60) <= 0) {
+                            else if(date.compareTo(today90) >= 0 && date.compareTo(today60) < 0) {
                                 month3.add(petList.get(i));
                             }
                             else if(date.compareTo(today120) >= 0 && date.compareTo(today90) <= 0) {
                                 month4.add(petList.get(i));
                             }
-                            else if(date.compareTo(today150) >= 0 && date.compareTo(today120) <= 0) {
+                            else if(date.compareTo(today150) >= 0 && date.compareTo(today120) < 0) {
                                 month5.add(petList.get(i));
                             }
-                            else if(date.compareTo(today180) >= 0 && date.compareTo(today150) <= 0) {
+                            else if(date.compareTo(today180) >= 0 && date.compareTo(today150) < 0) {
                                 month6.add(petList.get(i));
                             }
                         }
@@ -400,6 +410,9 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 //                        System.out.println("Last 1 month Array " + month1);
 //                        System.out.println("Last 2 month Array " + month2);
 //                        System.out.println("Last 3 month Array " + month3);
+//                        System.out.println("Last 4 month Array " + month4);
+//                        System.out.println("Last 5 month Array " + month5);
+//                        System.out.println("Last 6 month Array " + month6);
 
                         double distanceSum, timeSum; int stepSum;
                         distanceSum =  month1.stream().mapToDouble(p -> Float.parseFloat(p.getDistance())).sum();
