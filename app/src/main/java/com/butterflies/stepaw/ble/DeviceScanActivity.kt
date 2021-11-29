@@ -16,13 +16,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.ParcelUuid
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.ListView
+import android.view.ViewGroup
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.butterflies.stepaw.ChartReport
 import com.butterflies.stepaw.R
 import org.jetbrains.anko.alert
 
@@ -49,9 +49,10 @@ class DeviceScanActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_device_scan)
         val devicesListView = findViewById<View>(R.id.devicesListView) as ListView
-        val arrayAdapter: ArrayAdapter<BluetoothDevice> =
-            ArrayAdapter(this, android.R.layout.simple_list_item_1)
+//        val arrayAdapter: ArrayAdapter<BluetoothDevice> =
+//            ArrayAdapter(this, android.R.layout.simple_list_item_1)
         val button = findViewById<Button>(R.id.scan) as Button
+        val arrayAdapter = LeDeviceListAdapter(this@DeviceScanActivity)
         devicesListView.setAdapter(arrayAdapter)
 
         if (bluetoothAdapter == null) {
@@ -65,9 +66,9 @@ class DeviceScanActivity : AppCompatActivity() {
         val leScanCallback: ScanCallback = object : ScanCallback() {
             override fun onScanResult(callbackType: Int, result: ScanResult) {
                 super.onScanResult(callbackType, result)
-                val exist = arrayAdapter.getPosition(result.device).toString()
-                if (exist == "-1") {
-                    arrayAdapter.add(result.device)
+                val exist = arrayAdapter.count
+                if (exist == 0) {
+                    arrayAdapter.addDevice(result.device)
                     arrayAdapter.notifyDataSetChanged()
                 }
             }
@@ -113,7 +114,7 @@ class DeviceScanActivity : AppCompatActivity() {
 
         devicesListView.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
             val value = devicesListView.getItemAtPosition(position).toString()
-            val intent = Intent(this@DeviceScanActivity, DevicecontrolActivity::class.java)
+            val intent = Intent(this@DeviceScanActivity, ChartReport::class.java)
             intent.putExtra("address", value)
             startActivity(intent)
         })
@@ -149,5 +150,51 @@ class DeviceScanActivity : AppCompatActivity() {
 
     private fun Activity.requestPermission(permission: String, requestCode: Int) {
         ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
+    }
+
+    private class LeDeviceListAdapter() : BaseAdapter() {
+        private var mLeDevices: ArrayList<BluetoothDevice> = ArrayList()
+        private var mContext: Context? = null
+
+        constructor(context: Context) : this() {
+            mContext = context
+        }
+
+        fun addDevice(device: BluetoothDevice) {
+            if (!mLeDevices.contains(device)) {
+                mLeDevices.add(device)
+            }
+        }
+
+        fun clear() {
+            mLeDevices.clear()
+        }
+
+        override fun getCount(): Int {
+            return mLeDevices.size
+        }
+
+        override fun getItem(i: Int): Any {
+            return mLeDevices[i]
+        }
+
+        override fun getItemId(i: Int): Long {
+            return i.toLong()
+        }
+
+        override fun getView(position: Int, view: View?, viewGroup: ViewGroup): View? {
+            val device = mLeDevices.get(position)
+            var convertView: View? = view
+
+            if (view == null) {
+                val inflater = LayoutInflater.from(mContext)
+                convertView = inflater.inflate(R.layout.row_scan_result, viewGroup, false)
+            }
+
+            convertView?.findViewById<TextView>(R.id.device_name)?.setText(device.name)
+            convertView?.findViewById<TextView>(R.id.mac_address)?.setText(device.address)
+            convertView?.findViewById<TextView>(R.id.signal_strength)?.setText(device.toString())
+            return convertView
+        }
     }
 }

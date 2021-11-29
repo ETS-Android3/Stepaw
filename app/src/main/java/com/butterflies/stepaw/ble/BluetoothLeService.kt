@@ -23,9 +23,17 @@ internal class BluetoothLeService : Service() {
     private var characteristicuuid: UUID = UUID.fromString("00002713-0000-1000-8000-00805f9b34fb")
     private var descriptoruuid: UUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb")
     private var _callback : ((Int) -> Unit)? = null
+    private var startTime: Long? = null
+
 
     fun setCallback(callback: (Int) -> Unit) {
         _callback = callback
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        startTime = System.currentTimeMillis();
+        Log.d("time", startTime.toString())
     }
 
     fun initialize(): Boolean {
@@ -55,6 +63,10 @@ internal class BluetoothLeService : Service() {
         }
     }
 
+    fun getRunningTimeMillis(): Long {
+        return (System.currentTimeMillis() - startTime!!)
+    }
+
 
     private val bluetoothGattCallback = object : BluetoothGattCallback() {
         override fun onConnectionStateChange(gatt: BluetoothGatt?, status: Int, newState: Int) {
@@ -79,7 +91,6 @@ internal class BluetoothLeService : Service() {
                         setCharacteristicNotification(gattService.characteristics[0], true)
                     }
                 }
-
                 broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED)
             } else {
                 Log.d("Discovered", "onServicesDiscovered received: $status")
@@ -120,7 +131,6 @@ internal class BluetoothLeService : Service() {
 
     private fun broadcastUpdate(action: String, characteristic: BluetoothGattCharacteristic) {
         val intent = Intent(action)
-
         when (characteristic.uuid) {
             characteristicuuid -> {
                 val flag = characteristic.properties
@@ -133,14 +143,16 @@ internal class BluetoothLeService : Service() {
                     }
                 }
                 val step = characteristic.getIntValue(format, 0)
-                Log.d("bledata", String.format("Received rate: %d", step))
-                _callback?.invoke(step)
-//                intent.putExtra("data", (step).toString())
+//                Log.d("bledata", String.format("Received rate: %d", step))
+//                _callback?.invoke(step)
+                intent.putExtra("data", (step).toString())
+                intent.putExtra("runtime", getRunningTimeMillis().toString())
+                sendBroadcast(intent)
             }
             else -> {
             }
         }
-//        sendBroadcast(intent)
+        sendBroadcast(intent)
     }
 
     private val binder: Binder = LocalBinder()
@@ -155,6 +167,7 @@ internal class BluetoothLeService : Service() {
     }
 
     private fun close() {
+        Log.d("exited", "ertd")
         bluetoothGatt?.let { gatt ->
             gatt.close()
             bluetoothGatt = null
@@ -167,6 +180,8 @@ internal class BluetoothLeService : Service() {
             "com.example.bluetooth.le.ACTION_GATT_DISCONNECTED"
         const val ACTION_GATT_SERVICES_DISCOVERED =
             "com.example.bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED"
+        const val ACTION_DATA_AVAILABLE =
+            "com.example.bluetooth.le.ACTION_DATA_AVAILABLE"
 
         private const val STATE_DISCONNECTED = 0
         private const val STATE_CONNECTED = 2
