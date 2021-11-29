@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.butterflies.stepaw.R
@@ -16,17 +17,12 @@ class ContactUsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityContactusBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //        Change status bar icon color to black
-
-//        Change status bar icon color to black
-        window.decorView.systemUiVisibility =
-            window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-//
         setSupportActionBar(findViewById(R.id.my_toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.custom_back_button)
-
+        val toolbarTitle=findViewById<TextView>(R.id.toolbar_title)
+        toolbarTitle.text = "Contact Us"
         binding.sendMail.setOnClickListener {
             val name = binding.contactName.text.toString()
             val email = binding.contactEmail.text.toString()

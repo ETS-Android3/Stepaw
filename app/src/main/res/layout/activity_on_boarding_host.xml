@@ -2,12 +2,33 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
-   <TextView
-       android:id="@+id/pick_image"
-       android:text="Upload image"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"/>
+    android:layout_width="match_parent"
+    android:background="@color/color_primary_variant_1"
+    >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        >
+
+        <ImageView
+            android:id="@+id/myImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/dog_placeholder_image" />
+
+        <TextView
+            android:id="@+id/myImageViewText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/myImageView"
+            android:layout_marginTop="4dp"
+        android:layout_centerHorizontal="true"
+            android:text="@string/upload_picture" />
+    </RelativeLayout>
+
     <include layout="@layout/bottom_sheet_host" android:id="@+id/bottom_sheet_onboard" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

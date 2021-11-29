@@ -60,8 +60,6 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_authuihost)
-        window.decorView.systemUiVisibility =
-            window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         val navHostFragment: NavHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host) as NavHostFragment
 
