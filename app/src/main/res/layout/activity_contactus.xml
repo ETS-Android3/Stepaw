@@ -30,6 +30,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/contaus_text" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="1"/>
 
         <TextView
             android:id="@+id/contactus_heading1"
@@ -48,6 +53,11 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:minHeight="48dp" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="1"/>
 
         <TextView
             android:id="@+id/contactus_heading2"
@@ -67,6 +77,11 @@
             android:layout_marginBottom="16dp"
             android:hint="@string/example_email_com"
             android:minHeight="48dp" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="1"/>
 
         <TextView
             android:id="@+id/contactus_heading3"
@@ -85,6 +100,11 @@
             android:layout_marginBottom="16dp"
             android:hint="@string/leave_a_message"
             android:minHeight="48dp" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="1"/>
 
         <Button
             android:id="@+id/sendMail"
@@ -92,6 +112,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_weight="0"
             android:background="@drawable/rounded_button"
             android:text="@string/send" />
     </LinearLayout>

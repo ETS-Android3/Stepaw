@@ -59,5 +59,8 @@
     <string name="new_password">New Password</string>
     <string name="menu_scan">Start Scan</string>
     <string name="menu_stop">Stop</string>
+    <string name="toolbar_account">Account</string>
+    <string name="upload_picture">Upload picture</string>
+    <string name="notifications_title">Notifications</string>
 
 </resources>

@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import android.os.IBinder;
+
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -94,9 +95,6 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         binding = ActivityChartReportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-//        Change status bar icon color to black
-        getWindow().getDecorView().setSystemUiVisibility(getWindow().getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
@@ -295,6 +293,13 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour));
         calendar.set(Calendar.MINUTE, Integer.parseInt(minute));
         calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+        calendar.set(Calendar.DAY_OF_WEEK,Calendar.FRIDAY);
+        calendar.set(Calendar.DAY_OF_WEEK,Calendar.THURSDAY);
+        calendar.set(Calendar.DAY_OF_WEEK,Calendar.WEDNESDAY);
+        calendar.set(Calendar.DAY_OF_WEEK,Calendar.TUESDAY);
+        calendar.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
+        calendar.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
         updateTimeText(calendar);
         startAlarm(calendar, label);
     }
@@ -307,12 +312,13 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
     private void startAlarm(Calendar c, String label) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, NotificationPublisher.class);
+        Log.d("reminderAlarm",label);
         intent.putExtra("reminderlabel",label);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
         if (c.before(Calendar.getInstance())) {
             c.add(Calendar.DATE, 1);
         }
-        Objects.requireNonNull(alarmManager).setRepeating(AlarmManager.RTC_WAKEUP, AlarmManager.INTERVAL_DAY * 7,
+        Objects.requireNonNull(alarmManager).setRepeating(AlarmManager.RTC_WAKEUP, AlarmManager.INTERVAL_DAY ,
                 c.getTimeInMillis(), pendingIntent);
     }
 
@@ -366,8 +372,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onResponse(Call call, Response response) {
-            petObj = (PetGetModel) response.body();
-
+//            petObj = (PetGetModel) response.body()
 
                 //weekly chart variables
                 ArrayList<PetGetModel> weekArray = new ArrayList<>();
@@ -607,7 +612,5 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
             }
         });
     }
-
-
 }
 

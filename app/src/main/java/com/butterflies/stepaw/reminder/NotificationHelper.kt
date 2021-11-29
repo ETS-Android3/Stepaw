@@ -1,22 +1,22 @@
 package com.butterflies.stepaw.reminder
 
-import android.content.Intent
-import android.content.ContextWrapper
-import android.app.NotificationManager
-import android.annotation.TargetApi
-import android.os.Build
-import android.app.NotificationChannel
-import com.butterflies.stepaw.reminder.NotificationHelper
 import android.annotation.SuppressLint
+import android.annotation.TargetApi
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.content.ContextWrapper
+import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.butterflies.stepaw.R
 
 internal class NotificationHelper(base: Context?, reminderLabel: String) : ContextWrapper(base) {
     private var notificationManager: NotificationManager? = null
-    val label=reminderLabel
+    private val messageLabel=reminderLabel
     @TargetApi(Build.VERSION_CODES.O)
     private fun createChannel() {
+        Log.d("notificationhelper", messageLabel.length.toString())
         val channel = NotificationChannel(
             channelID, channelName,
             NotificationManager.IMPORTANCE_HIGH
@@ -36,7 +36,7 @@ internal class NotificationHelper(base: Context?, reminderLabel: String) : Conte
     val channelNotification: NotificationCompat.Builder
         get() = NotificationCompat.Builder(applicationContext, channelID)
             .setContentTitle("Scheduled Alert")
-            .setContentText(label)
+            .setContentText(messageLabel)
             .setSmallIcon(R.drawable.icon_title)
 
     companion object {
