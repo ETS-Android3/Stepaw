@@ -21,7 +21,6 @@
         android:id="@+id/dog_name_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_edittext_active"
         style="@style/CustomEditText"
         android:autofillHints="name"
         android:hint="@string/dog_name_hint"
@@ -41,7 +40,6 @@
 
     <EditText
         android:id="@+id/dog_age_edit"
-        android:background="@drawable/rounded_edittext_active"
         style="@style/CustomEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -61,7 +59,6 @@
 
     <EditText
         android:id="@+id/dog_weight_edit"
-        android:background="@drawable/rounded_edittext_active"
         style="@style/CustomEditText"
         android:layout_width="match_parent"
         android:layout_marginBottom="15dp"
