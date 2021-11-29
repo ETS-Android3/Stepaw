@@ -23,9 +23,17 @@ internal class BluetoothLeService : Service() {
     private var characteristicuuid: UUID = UUID.fromString("00002713-0000-1000-8000-00805f9b34fb")
     private var descriptoruuid: UUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb")
     private var _callback : ((Int) -> Unit)? = null
+    private var startTime: Long? = null
+
 
     fun setCallback(callback: (Int) -> Unit) {
         _callback = callback
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        startTime = System.currentTimeMillis();
+        Log.d("time", startTime.toString())
     }
 
     fun initialize(): Boolean {
@@ -53,6 +61,10 @@ internal class BluetoothLeService : Service() {
             Log.d("TAG", "BluetoothAdapter not initialized")
             return false
         }
+    }
+
+    fun getRunningTimeMillis(): Long {
+        return (System.currentTimeMillis() - startTime!!)
     }
 
 
@@ -119,7 +131,6 @@ internal class BluetoothLeService : Service() {
 
     private fun broadcastUpdate(action: String, characteristic: BluetoothGattCharacteristic) {
         val intent = Intent(action)
-        Log.d("gh",action)
         when (characteristic.uuid) {
             characteristicuuid -> {
                 val flag = characteristic.properties
@@ -135,6 +146,7 @@ internal class BluetoothLeService : Service() {
 //                Log.d("bledata", String.format("Received rate: %d", step))
 //                _callback?.invoke(step)
                 intent.putExtra("data", (step).toString())
+                intent.putExtra("runtime", getRunningTimeMillis().toString())
                 sendBroadcast(intent)
             }
             else -> {

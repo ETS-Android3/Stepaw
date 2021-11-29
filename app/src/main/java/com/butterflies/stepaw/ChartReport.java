@@ -1,5 +1,7 @@
 package com.butterflies.stepaw;
 
+import static java.lang.Long.parseLong;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -64,6 +66,7 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.TimeUnit;
 
 import kotlin.jvm.functions.Function1;
 import kotlin.jvm.internal.Intrinsics;
@@ -134,8 +137,6 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                 startActivity(i);
             }
         });
-
-//
 
         Intent intent = getIntent();
         String petId = intent.getStringExtra("petId");
@@ -229,7 +230,9 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
             else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 int step = Integer.parseInt(intent.getStringExtra("data"));
 //                int distance = step * 0.05;
-                Log.d("glen", intent.getStringExtra("data"));
+                Log.d("stepcount", intent.getStringExtra("data"));
+                Log.d("runtime", String.valueOf(TimeUnit.MILLISECONDS.toSeconds(
+                        Long.parseLong(intent.getStringExtra("runtime")))));
             }
         }
     };
