@@ -436,6 +436,13 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
                         Date today180 = cal.getTime();
 
+                        for (int k = 0; k < 7; k++) {
+                            cal = Calendar.getInstance();
+                            cal.add(Calendar.DATE, - k);
+                            Date weekDays = cal.getTime();
+                            days[k] = daysArray.get(weekDays.getDay());
+                        }
+
                         for (int i = 0; i < petList.size(); i++) {
                             Date date =   new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").
                                     parse(petList.get(i).getDate());
@@ -447,7 +454,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                                 weekDistance[i] = Double.parseDouble(petList.get(i).getDistance());
                                 weekSteps[i] = Integer.parseInt(petList.get(i).getNumberOfSteps());
                                 weekTime[i] = Double.parseDouble(petList.get(i).getDuration());
-                                days[i] = daysArray.get(date.getDay());
+//                                days[i] = daysArray.get(date.getDay());
                                 SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy");
                                 weekDates[i] = formatter.format(date);
 
@@ -455,7 +462,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                                 weekDistance[i] = 0;
                                 weekSteps[i] = 0;
                                 weekTime[i] = 0;
-                                days[i] = daysArray.get(date.getDay());
+//                                days[i] = daysArray.get(date.getDay());
                                 SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy");
                                 weekDates[i] = formatter.format(date);
                             }

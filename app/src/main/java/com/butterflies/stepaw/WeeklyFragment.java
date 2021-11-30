@@ -142,7 +142,9 @@ public class WeeklyFragment extends Fragment {
             }
         });
 
-        renderData(stepsArray, days);
+        if(stepsArray != null && days != null){
+            renderData(stepsArray, days);
+        }
         return view;
     }
 
