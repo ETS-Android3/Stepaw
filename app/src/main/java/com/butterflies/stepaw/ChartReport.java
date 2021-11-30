@@ -1,7 +1,5 @@
 package com.butterflies.stepaw;
 
-import static java.lang.Long.parseLong;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -29,7 +27,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -64,12 +61,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.TimeUnit;
-
-import kotlin.jvm.functions.Function1;
 import kotlin.jvm.internal.Intrinsics;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -191,10 +187,11 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
             if (bluetoothService != null) {
                 if (!bluetoothService.initialize()) {
                     Log.e("TAG", "Unable to initialize Bluetooth");
-                    finish();
+                    //finish();
                 }
                 // perform device connection
-                bluetoothService.connect(deviceAddress);
+                if(deviceAddress != null)
+                    bluetoothService.connect(deviceAddress);
             }
         }
 
@@ -367,11 +364,11 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
     public final void getPetById(@NotNull String token, @NonNull String id) {
         Intrinsics.checkNotNullParameter(token, "token");
-        Call pets = this.service.getPetById(" Bearer " + token, id);
+        Call<List<PetGetModel>> pets = this.service.getPetById(" Bearer " + token, id);
         pets.enqueue(new Callback() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
-            public void onResponse(Call call, Response response) {
+            public void onResponse(Call wcall, Response response) {
 //            petObj = (PetGetModel) response.body()
 
                 //weekly chart variables
@@ -560,7 +557,13 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                         String petAgeWeight = petObj.getAge() + "y / " + petObj.getWeight() + " kg";
                         petAge.setText(petAgeWeight);
 
-                        Glide.with(getApplicationContext()).load("https://images.dog.ceo/breeds/shiba/shiba-15.jpg").into(petImage);
+                        if(petObj.getPicture() != null){
+                            Glide.with(getApplicationContext()).load(petObj.getPicture()).into(petImage);
+                        }
+                        else
+                        {
+                            Glide.with(getApplicationContext()).load("https://images.dog.ceo/breeds/shiba/shiba-15.jpg").into(petImage);
+                        }
 
                         Bundle bundle = new Bundle();
                         bundle.putString("petKm", petObj.getDistance());
@@ -608,7 +611,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
             @Override
             public void onFailure(Call call, Throwable t) {
-
+                Log.e("Get pet by id:", t.getMessage());
             }
         });
     }

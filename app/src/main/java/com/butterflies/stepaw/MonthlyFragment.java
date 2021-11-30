@@ -150,20 +150,22 @@ public class MonthlyFragment extends Fragment {
         ArrayList<BarEntry> entries = new ArrayList<>();
 
         //fit the data into a bar
-        for (int i = 0; i < stepsArray.length; i++) {
-            BarEntry barEntry = new BarEntry(i, stepsArray[i]);
-            entries.add(barEntry);
+        if(stepsArray != null && stepsArray.length > 0){
+            for (int i = 0; i < stepsArray.length; i++) {
+                BarEntry barEntry = new BarEntry(i, stepsArray[i]);
+                entries.add(barEntry);
+            }
+
+            BarDataSet barDataSet = new BarDataSet(entries, "");
+            barDataSet.setDrawValues(false);
+            barDataSet.setColor(Color.parseColor("#DFE9F8"));
+            barDataSet.setBarShadowColor(Color.rgb(255,222,46));
+            BarData data = new BarData(barDataSet);
+            data.setBarWidth(0.4f);
+
+            barChart.setData(data);
+            barChart.invalidate();
         }
-
-        BarDataSet barDataSet = new BarDataSet(entries, "");
-        barDataSet.setDrawValues(false);
-        barDataSet.setColor(Color.parseColor("#DFE9F8"));
-        barDataSet.setBarShadowColor(Color.rgb(255,222,46));
-        BarData data = new BarData(barDataSet);
-        data.setBarWidth(0.4f);
-
-        barChart.setData(data);
-        barChart.invalidate();
     }
 
     private void initBarChart(String[] monthArray){
@@ -184,7 +186,9 @@ public class MonthlyFragment extends Fragment {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawLabels(true);
         xAxis.setTextSize(12);
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(monthArray));
+        if(monthArray != null && monthArray.length > 0){
+            xAxis.setValueFormatter(new IndexAxisValueFormatter(monthArray));
+        }
         xAxis.setGranularity(1f);
         xAxis.setDrawAxisLine(false);
         xAxis.setDrawGridLines(false);

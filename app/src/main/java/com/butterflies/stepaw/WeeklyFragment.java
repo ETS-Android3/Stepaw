@@ -180,7 +180,8 @@ public class WeeklyFragment extends Fragment {
         xAxis.setDrawLabels(true);
         xAxis.setTextSize(12);
         xAxis.setDrawAxisLine(false);
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(days));
+        if(days != null && days.length > 0)
+            xAxis.setValueFormatter(new IndexAxisValueFormatter(days));
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setEnabled(false);
@@ -199,42 +200,43 @@ public class WeeklyFragment extends Fragment {
     private void setData(int[] stepsArray) {
 
         ArrayList<Entry> values = new ArrayList<>();
-        for (int i = 0; i < stepsArray.length; i++) {
-            values.add(new Entry(i, stepsArray[i]));
-        }
+        if(stepsArray != null && stepsArray.length > 0) {
+            for (int i = 0; i < stepsArray.length; i++) {
+                values.add(new Entry(i, stepsArray[i]));
+            }
 
-        LineDataSet set1;
-        if (mChart.getData() != null &&
-                mChart.getData().getDataSetCount() > 0) {
-            set1 = (LineDataSet) mChart.getData().getDataSetByIndex(0);
-            set1.setValues(values);
-            mChart.getData().notifyDataChanged();
-            mChart.getData().notifyDataChanged();
-            mChart.notifyDataSetChanged();
-        } else {
+            LineDataSet set1;
+            if (mChart.getData() != null &&
+                    mChart.getData().getDataSetCount() > 0) {
+                set1 = (LineDataSet) mChart.getData().getDataSetByIndex(0);
+                set1.setValues(values);
+                mChart.getData().notifyDataChanged();
+                mChart.getData().notifyDataChanged();
+                mChart.notifyDataSetChanged();
+            } else {
 
-            set1 = new LineDataSet(values, "Walk Data");
-            set1.setDrawIcons(false);
-            set1.setColor(Color.DKGRAY);
-            set1.setCircleColor(Color.DKGRAY);
+                set1 = new LineDataSet(values, "Walk Data");
+                set1.setDrawIcons(false);
+                set1.setColor(Color.DKGRAY);
+                set1.setCircleColor(Color.DKGRAY);
 
-            set1.setLineWidth(1.5f);
-            set1.setCircleRadius(5f);
-            set1.setDrawCircleHole(true);
-            set1.setDrawValues(false);
-            set1.setDrawFilled(false);
-            set1.setFormLineWidth(.5f);
-            set1.setFormSize(15f);
-            set1.setDrawHorizontalHighlightIndicator(true);
-            set1.setHighLightColor(Color.rgb(255,222,46));
-            set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                set1.setLineWidth(1.5f);
+                set1.setCircleRadius(5f);
+                set1.setDrawCircleHole(true);
+                set1.setDrawValues(false);
+                set1.setDrawFilled(false);
+                set1.setFormLineWidth(.5f);
+                set1.setFormSize(15f);
+                set1.setDrawHorizontalHighlightIndicator(true);
+                set1.setHighLightColor(Color.rgb(255,222,46));
+                set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
 
-            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-            dataSets.add(set1);
-            LineData data = new LineData(dataSets);
+                ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+                dataSets.add(set1);
+                LineData data = new LineData(dataSets);
 
-            mChart.setData(data);
+                mChart.setData(data);
+            }
         }
     }
-
 }
