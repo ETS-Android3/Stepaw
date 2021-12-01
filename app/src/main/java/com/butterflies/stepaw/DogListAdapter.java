@@ -55,7 +55,13 @@ public class DogListAdapter extends BaseAdapter {
         ImageView petWalkBtn = row.findViewById(R.id.petWalkBtn);
         ImageView bluetooth = row.findViewById(R.id.bluetooth);
 
-        Glide.with(context).load("https://images.dog.ceo/breeds/shiba/shiba-15.jpg").into(picture);
+
+        if(pet.getPicture() != null){
+            Glide.with(context).load(pet.getPicture()).into(picture);
+        }
+        else{
+            Glide.with(context).load("https://images.dog.ceo/breeds/shiba/shiba-15.jpg").into(picture);
+        }
 
         if(pet.getPetName() != null && pet.getPetName() != ""){
             tvName.setText(pet.getPetName());

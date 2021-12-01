@@ -33,8 +33,9 @@ interface ApiService {
     @PUT("/user/pets/{id}")
     fun updatePetWithId(
         @Header("Authorization") token: String,
-        @Path("id") id: String
-    ): Call<List<PetGetModel>>
+        @Path("id") id: String,
+        @Body petmodel:PetGetModel
+    ): Call<PetGetModel>
 
     @GET("/user/users/{id}")
     fun getPersonWithId(

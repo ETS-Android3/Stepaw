@@ -1,7 +1,5 @@
 package com.butterflies.stepaw;
 
-import static java.lang.Long.parseLong;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -21,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import android.os.IBinder;
+
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -28,7 +27,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -63,12 +61,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.TimeUnit;
-
-import kotlin.jvm.functions.Function1;
 import kotlin.jvm.internal.Intrinsics;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -94,9 +91,6 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         binding = ActivityChartReportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-//        Change status bar icon color to black
-        getWindow().getDecorView().setSystemUiVisibility(getWindow().getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
@@ -193,10 +187,11 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
             if (bluetoothService != null) {
                 if (!bluetoothService.initialize()) {
                     Log.e("TAG", "Unable to initialize Bluetooth");
-                    finish();
+                    //finish();
                 }
                 // perform device connection
-                bluetoothService.connect(deviceAddress);
+                if(deviceAddress != null)
+                    bluetoothService.connect(deviceAddress);
             }
         }
 
@@ -295,6 +290,13 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour));
         calendar.set(Calendar.MINUTE, Integer.parseInt(minute));
         calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+        calendar.set(Calendar.DAY_OF_WEEK,Calendar.FRIDAY);
+        calendar.set(Calendar.DAY_OF_WEEK,Calendar.THURSDAY);
+        calendar.set(Calendar.DAY_OF_WEEK,Calendar.WEDNESDAY);
+        calendar.set(Calendar.DAY_OF_WEEK,Calendar.TUESDAY);
+        calendar.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
+        calendar.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
         updateTimeText(calendar);
         startAlarm(calendar, label);
     }
@@ -307,12 +309,13 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
     private void startAlarm(Calendar c, String label) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, NotificationPublisher.class);
+        Log.d("reminderAlarm",label);
         intent.putExtra("reminderlabel",label);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
         if (c.before(Calendar.getInstance())) {
             c.add(Calendar.DATE, 1);
         }
-        Objects.requireNonNull(alarmManager).setRepeating(AlarmManager.RTC_WAKEUP, AlarmManager.INTERVAL_DAY * 7,
+        Objects.requireNonNull(alarmManager).setRepeating(AlarmManager.RTC_WAKEUP, AlarmManager.INTERVAL_DAY ,
                 c.getTimeInMillis(), pendingIntent);
     }
 
@@ -361,13 +364,12 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
     public final void getPetById(@NotNull String token, @NonNull String id) {
         Intrinsics.checkNotNullParameter(token, "token");
-        Call pets = this.service.getPetById(" Bearer " + token, id);
+        Call<List<PetGetModel>> pets = this.service.getPetById(" Bearer " + token, id);
         pets.enqueue(new Callback() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
-            public void onResponse(Call call, Response response) {
-            petObj = (PetGetModel) response.body();
-
+            public void onResponse(Call wcall, Response response) {
+//            petObj = (PetGetModel) response.body()
 
                 //weekly chart variables
                 ArrayList<PetGetModel> weekArray = new ArrayList<>();
@@ -434,6 +436,13 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
                         Date today180 = cal.getTime();
 
+                        for (int k = 0; k < 7; k++) {
+                            cal = Calendar.getInstance();
+                            cal.add(Calendar.DATE, - k);
+                            Date weekDays = cal.getTime();
+                            days[k] = daysArray.get(weekDays.getDay());
+                        }
+
                         for (int i = 0; i < petList.size(); i++) {
                             Date date =   new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").
                                     parse(petList.get(i).getDate());
@@ -445,7 +454,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                                 weekDistance[i] = Double.parseDouble(petList.get(i).getDistance());
                                 weekSteps[i] = Integer.parseInt(petList.get(i).getNumberOfSteps());
                                 weekTime[i] = Double.parseDouble(petList.get(i).getDuration());
-                                days[i] = daysArray.get(date.getDay());
+//                                days[i] = daysArray.get(date.getDay());
                                 SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy");
                                 weekDates[i] = formatter.format(date);
 
@@ -453,7 +462,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                                 weekDistance[i] = 0;
                                 weekSteps[i] = 0;
                                 weekTime[i] = 0;
-                                days[i] = daysArray.get(date.getDay());
+//                                days[i] = daysArray.get(date.getDay());
                                 SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy");
                                 weekDates[i] = formatter.format(date);
                             }
@@ -555,7 +564,13 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                         String petAgeWeight = petObj.getAge() + "y / " + petObj.getWeight() + " kg";
                         petAge.setText(petAgeWeight);
 
-                        Glide.with(getApplicationContext()).load("https://images.dog.ceo/breeds/shiba/shiba-15.jpg").into(petImage);
+                        if(petObj.getPicture() != null){
+                            Glide.with(getApplicationContext()).load(petObj.getPicture()).into(petImage);
+                        }
+                        else
+                        {
+                            Glide.with(getApplicationContext()).load("https://images.dog.ceo/breeds/shiba/shiba-15.jpg").into(petImage);
+                        }
 
                         Bundle bundle = new Bundle();
                         bundle.putString("petKm", petObj.getDistance());
@@ -603,11 +618,9 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
             @Override
             public void onFailure(Call call, Throwable t) {
-
+                Log.e("Get pet by id:", t.getMessage());
             }
         });
     }
-
-
 }
 
