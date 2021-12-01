@@ -8,18 +8,22 @@ android:layout_height="match_parent"
 tools:context=".MainActivity"
 android:orientation="vertical">
 
-<ListView
-    android:id="@+id/devicesListView"
-    android:layout_width="match_parent"
-    android:layout_height="455dp" >
+    <ListView
+        android:id="@+id/devicesListView"
+        android:layout_width="match_parent"
+        android:layout_height="426dp"></ListView>
 
-</ListView>
+    <LinearLayout
+        android:layout_width="377dp"
+        android:layout_height="144dp"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal">
 
-<Button
-    android:id="@+id/scan"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/menu_scan" />
-
+        <Button
+            android:id="@+id/scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_scan" />
+    </LinearLayout>
 
 </LinearLayout>
