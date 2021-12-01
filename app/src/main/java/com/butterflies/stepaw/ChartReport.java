@@ -1,7 +1,5 @@
 package com.butterflies.stepaw;
 
-import static java.lang.Long.parseLong;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -20,6 +18,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 
+import android.os.Handler;
 import android.os.IBinder;
 
 import android.util.Log;
@@ -29,7 +28,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -64,12 +62,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.TimeUnit;
-
-import kotlin.jvm.functions.Function1;
 import kotlin.jvm.internal.Intrinsics;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -86,8 +83,11 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
     ActionBarDrawerToggle toggle;
     DrawerLayout drawer;
     private String deviceAddress = "";
+    private String petId = "";
     private Boolean connected = null;
     private BluetoothLeService bluetoothService = null;
+    private String token;
+    private final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,18 +138,28 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
         Intent intent = getIntent();
         String petId = intent.getStringExtra("petId");
+//        petId = "BsFHEoXIBEgJKXKVSJWU7MYriEo1";
         deviceAddress = intent.getStringExtra("address");
         retrofit = new Retrofit.Builder()
                 .baseUrl(ApiService.BASE_URL)
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build();
         service = retrofit.create(ApiService.class);
-        String token = "ya29.a0ARrdaM_u23mjkQ1IUdyYgvzgbOGHYnaXEBCnSNgimBn9r_oP2u6QS7F3uNDYD83guUwHTHuhYxuydOQkJS4gJeqo-6Z_QbuKW8BQaBv1dzhPRTDE0fcy8Zr73JNf3F4uuVIQuuw2DpzowYDJlB-LayFmMskJ";
+        token = "ya29.a0ARrdaM_u23mjkQ1IUdyYgvzgbOGHYnaXEBCnSNgimBn9r_oP2u6QS7F3uNDYD83guUwHTHuhYxuydOQkJS4gJeqo-6Z_QbuKW8BQaBv1dzhPRTDE0fcy8Zr73JNf3F4uuVIQuuw2DpzowYDJlB-LayFmMskJ";
         SharedPreferences pref = getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE);
         token = pref.getString("com.butterflies.stepaw.idToken", "invalid");
         if (token != null) {
-            getPetById(token, petId);
+            getPetById(token, petId, 0, 0L);
         }
+//        if(!isMyServiceRunning(BluetoothLeService.class)) {
+//            Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+//            bindService(gattServiceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+//        }
+//        registerReceiver(gattUpdateReceiver, makeGattUpdateIntentFilter());
+//        if (bluetoothService != null) {
+//            final boolean result = bluetoothService.connect(deviceAddress);
+//            Log.d("TAG", "Connect request result=" + result);
+//        }
 
 //Setting nav graph for bottom sheet reminder programatically
         Fragment fr = this.getSupportFragmentManager().findFragmentById(R.id.nav_host);
@@ -176,74 +186,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
             }
         });
-
-//       Service Broadcast
-        if(!isMyServiceRunning(BluetoothLeService.class)) {
-            Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
-            bindService(gattServiceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-        }
     }
-
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            BluetoothLeService bluetoothService = ((BluetoothLeService.LocalBinder) service).getService();
-            if (bluetoothService != null) {
-                if (!bluetoothService.initialize()) {
-                    Log.e("TAG", "Unable to initialize Bluetooth");
-                    finish();
-                }
-                // perform device connection
-                bluetoothService.connect(deviceAddress);
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            BluetoothLeService bluetoothService = null;
-        }
-    };
-
-    private boolean isMyServiceRunning(Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private final BroadcastReceiver gattUpdateReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
-            if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
-                connected = true;
-//                updateConnectionState(R.string.connected);
-            } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
-                connected = false;
-//                updateConnectionState(R.string.disconnected);
-            }
-            else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-                int step = Integer.parseInt(intent.getStringExtra("data"));
-//                int distance = step * 0.05;
-                Log.d("stepcount", intent.getStringExtra("data"));
-                Log.d("runtime", String.valueOf(TimeUnit.MILLISECONDS.toSeconds(
-                        Long.parseLong(intent.getStringExtra("runtime")))));
-            }
-        }
-    };
-
-    private static IntentFilter makeGattUpdateIntentFilter() {
-        final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
-        intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
-        return intentFilter;
-    }
-
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -350,11 +293,6 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         RetrofitObservable r = new RetrofitObservable();
         r.getInstance().addObserver(this);
         super.onResume();
-        registerReceiver(gattUpdateReceiver, makeGattUpdateIntentFilter());
-        if (bluetoothService != null) {
-            final boolean result = bluetoothService.connect(deviceAddress);
-            Log.d("TAG", "Connect request result=" + result);
-        }
     }
 
     @Override
@@ -362,16 +300,16 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         RetrofitObservable r = new RetrofitObservable();
         r.deleteObserver(this);
         super.onPause();
-        unregisterReceiver(gattUpdateReceiver);
+//        unregisterReceiver(gattUpdateReceiver);
     }
 
-    public final void getPetById(@NotNull String token, @NonNull String id) {
+    public final void getPetById(@NotNull String token, @NonNull String id, int step, Long distance) {
         Intrinsics.checkNotNullParameter(token, "token");
-        Call pets = this.service.getPetById(" Bearer " + token, id);
+        Call<List<PetGetModel>> pets = this.service.getPetById(" Bearer " + token, id);
         pets.enqueue(new Callback() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
-            public void onResponse(Call call, Response response) {
+            public void onResponse(Call wcall, Response response) {
 //            petObj = (PetGetModel) response.body()
 
                 //weekly chart variables
@@ -439,6 +377,13 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
                         Date today180 = cal.getTime();
 
+                        for (int k = 0; k < 7; k++) {
+                            cal = Calendar.getInstance();
+                            cal.add(Calendar.DATE, - k);
+                            Date weekDays = cal.getTime();
+                            days[k] = daysArray.get(weekDays.getDay());
+                        }
+
                         for (int i = 0; i < petList.size(); i++) {
                             Date date =   new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").
                                     parse(petList.get(i).getDate());
@@ -450,7 +395,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                                 weekDistance[i] = Double.parseDouble(petList.get(i).getDistance());
                                 weekSteps[i] = Integer.parseInt(petList.get(i).getNumberOfSteps());
                                 weekTime[i] = Double.parseDouble(petList.get(i).getDuration());
-                                days[i] = daysArray.get(date.getDay());
+//                                days[i] = daysArray.get(date.getDay());
                                 SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy");
                                 weekDates[i] = formatter.format(date);
 
@@ -458,7 +403,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                                 weekDistance[i] = 0;
                                 weekSteps[i] = 0;
                                 weekTime[i] = 0;
-                                days[i] = daysArray.get(date.getDay());
+//                                days[i] = daysArray.get(date.getDay());
                                 SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy");
                                 weekDates[i] = formatter.format(date);
                             }
@@ -560,7 +505,13 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                         String petAgeWeight = petObj.getAge() + "y / " + petObj.getWeight() + " kg";
                         petAge.setText(petAgeWeight);
 
-                        Glide.with(getApplicationContext()).load("https://images.dog.ceo/breeds/shiba/shiba-15.jpg").into(petImage);
+                        if(petObj.getPicture() != null){
+                            Glide.with(getApplicationContext()).load(petObj.getPicture()).into(petImage);
+                        }
+                        else
+                        {
+                            Glide.with(getApplicationContext()).load("https://images.dog.ceo/breeds/shiba/shiba-15.jpg").into(petImage);
+                        }
 
                         Bundle bundle = new Bundle();
                         bundle.putString("petKm", petObj.getDistance());
@@ -608,7 +559,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
             @Override
             public void onFailure(Call call, Throwable t) {
-
+                Log.e("Get pet by id:", t.getMessage());
             }
         });
     }
