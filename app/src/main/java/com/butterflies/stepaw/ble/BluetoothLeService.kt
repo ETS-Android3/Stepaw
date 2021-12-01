@@ -25,7 +25,6 @@ internal class BluetoothLeService : Service() {
     private var _callback : ((Int) -> Unit)? = null
     private var startTime: Long? = null
 
-
     fun setCallback(callback: (Int) -> Unit) {
         _callback = callback
     }
@@ -63,10 +62,19 @@ internal class BluetoothLeService : Service() {
         }
     }
 
+    fun disconnect() {
+        if (bluetoothAdapter == null || bluetoothGatt == null) {
+            Log.w("TAG", "BluetoothAdapter not initialized")
+            return
+        }
+        Log.d("wing","inn")
+        bluetoothGatt!!.disconnect()
+
+    }
+
     fun getRunningTimeMillis(): Long {
         return (System.currentTimeMillis() - startTime!!)
     }
-
 
     private val bluetoothGattCallback = object : BluetoothGattCallback() {
         override fun onConnectionStateChange(gatt: BluetoothGatt?, status: Int, newState: Int) {
@@ -150,6 +158,7 @@ internal class BluetoothLeService : Service() {
                 sendBroadcast(intent)
             }
             else -> {
+
             }
         }
         sendBroadcast(intent)
@@ -160,6 +169,7 @@ internal class BluetoothLeService : Service() {
     override fun onBind(intent: Intent): IBinder? {
         return binder
     }
+
 
     override fun onUnbind(intent: Intent?): Boolean {
         close()

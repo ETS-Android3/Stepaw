@@ -24,6 +24,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.butterflies.stepaw.ChartReport
 import com.butterflies.stepaw.R
+import com.butterflies.stepaw.scanner.BleConnectionScreen3
 import org.jetbrains.anko.alert
 
 private const val ENABLE_BLUETOOTH_REQUEST_CODE = 1

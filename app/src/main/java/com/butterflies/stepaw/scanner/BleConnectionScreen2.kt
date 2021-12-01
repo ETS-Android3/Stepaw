@@ -15,10 +15,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.DrawableImageViewTarget
 import com.bumptech.glide.request.target.Target
 import com.butterflies.stepaw.databinding.ActivityBleConnectionScreen2Binding
-import com.butterflies.stepaw.scanner.ble.ConnectionManager
-import com.butterflies.stepaw.MainActivity
 import com.butterflies.stepaw.ble.DeviceScanActivity
-import com.butterflies.stepaw.welcomescreen.WelcomeScreenHost
 
 
 //private lateinit var binding: ActivityBleConnectionScreen2Binding

@@ -9,13 +9,20 @@ import android.os.Bundle
 import android.os.IBinder
 
 import android.util.Log
+import android.view.View
 import com.butterflies.stepaw.ChartReport
+import kotlinx.android.synthetic.main.activity_devicecontrol.*
+import org.jetbrains.anko.stopService
+import android.content.Intent
+
+
+
 
 class DevicecontrolActivity : AppCompatActivity() {
     private var bluetoothService : BluetoothLeService? = null
     private var deviceAddress: String = ""
     private var connected: Boolean? = null
-
+    private var step: Int? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_devicecontrol)
@@ -33,10 +40,12 @@ class DevicecontrolActivity : AppCompatActivity() {
                 }
                 BluetoothLeService.ACTION_GATT_DISCONNECTED -> {
                     connected = false
+                    Log.d("pacho",step.toString());
 //                    updateConnectionState(R.string.disconnected)
                 }
                 BluetoothLeService.ACTION_DATA_AVAILABLE -> {
                     connected = false
+                    step = intent.getStringExtra("data")?.toInt()
                     intent.getStringExtra("data")?.let { Log.d("yui", it) }
                 }
             }
@@ -46,11 +55,15 @@ class DevicecontrolActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         registerReceiver(gattUpdateReceiver, makeGattUpdateIntentFilter())
-//        LocalBroadcastManager.getInstance(this).registerReceiver(gattUpdateReceiver, makeGattUpdateIntentFilter())
         if (bluetoothService != null) {
             val result = bluetoothService!!.connect(deviceAddress)
             Log.d("Request Failed", "Connect request result=$result")
         }
+
+        button.setOnClickListener(View.OnClickListener { view ->
+            Log.d("clicked", "onclicked")
+            bluetoothService?.disconnect()
+        })
     }
 
     override fun onPause() {
@@ -85,13 +98,11 @@ class DevicecontrolActivity : AppCompatActivity() {
 //                startActivity(intent)
             }
 
-            bluetoothService?.setCallback { step ->
-                Log.d("value", step.toString())
-            }
         }
 
         override fun onServiceDisconnected(componentName: ComponentName) {
             bluetoothService = null
+            Log.d("rax", "stopped service");
         }
     }
 }
