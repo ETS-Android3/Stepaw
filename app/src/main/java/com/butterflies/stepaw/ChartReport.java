@@ -7,19 +7,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 
 import android.os.Handler;
-import android.os.IBinder;
-
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -65,7 +59,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.concurrent.TimeUnit;
 import kotlin.jvm.internal.Intrinsics;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -137,7 +130,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
         Intent intent = getIntent();
         String petId = intent.getStringExtra("petId");
-//        petId = "BsFHEoXIBEgJKXKVSJWU7MYriEo1";
+        //petId = "BsFHEoXIBEgJKXKVSJWU7MYriEo1";
         deviceAddress = intent.getStringExtra("address");
         retrofit = new Retrofit.Builder()
                 .baseUrl(ApiService.BASE_URL)
