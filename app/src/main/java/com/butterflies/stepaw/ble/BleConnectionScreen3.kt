@@ -14,9 +14,11 @@ class BleConnectionScreen3 : AppCompatActivity() {
         setContentView(R.layout.activity_ble_connection_screen3)
         val intent = intent
         val deviceAddress = intent.getStringExtra("address")
+        val petId = intent.getStringExtra("petId")
         Handler().postDelayed(Runnable {
             val mainIntent = Intent(this@BleConnectionScreen3, ChartReport::class.java)
             mainIntent.putExtra("address", deviceAddress)
+            mainIntent.putExtra("petId", petId)
             startActivity(mainIntent)
             this@BleConnectionScreen3.finish()
         }, 2000)

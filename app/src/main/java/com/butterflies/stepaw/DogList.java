@@ -18,6 +18,7 @@ import com.butterflies.stepaw.dogonboarding.OnBoardingHost;
 import com.butterflies.stepaw.network.ApiService;
 import com.butterflies.stepaw.network.models.PetGetModel;
 import com.butterflies.stepaw.network.models.PetModel;
+import com.butterflies.stepaw.scanner.BleConnectionScreen;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -104,7 +105,7 @@ public class DogList extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         PetGetModel item = (PetGetModel) listView.getItemAtPosition(position);
-                        Intent intent = new Intent(getApplicationContext(), ChartReport.class);
+                        Intent intent = new Intent(getApplicationContext(), BleConnectionScreen.class);
                         //intent.putExtra("petId", item.getPetID());
                         intent.putExtra("petId", item.getUserID());
 

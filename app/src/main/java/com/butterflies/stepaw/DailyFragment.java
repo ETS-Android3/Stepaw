@@ -78,11 +78,14 @@ public class DailyFragment extends Fragment {
     private TextView stepCount;
     private TextView minValue;
     private TextView kmValue;
-    private DonutProgressView minDonutChart;
-    private DonutSection minSection;
+    private DonutProgressView minDonutChart, kmDonutChart;
+    private DonutSection minSection, kmSection;
     private List<DonutSection> list;
     private List<DonutSection> kmlist;
     private DecimalFormat df = new DecimalFormat("##.#");
+    private Float initialKm;
+    private Float initialMin;
+    private int initialSteps;
 
 
     @Override
@@ -112,7 +115,7 @@ public class DailyFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_daily, container, false);
-        DonutProgressView kmDonutChart = view.findViewById(R.id.kmDonutView);
+        kmDonutChart = view.findViewById(R.id.kmDonutView);
         minDonutChart = view.findViewById(R.id.minDonutView);
 
 //        ChartReport activity = (ChartReport) getActivity();
@@ -132,14 +135,15 @@ public class DailyFragment extends Fragment {
             e.printStackTrace();
         }
 
-        Float km = Float.parseFloat(strKM);
-        Float min = Float.parseFloat(strMin);
+        initialKm = Float.parseFloat(strKM);
+        initialMin = Float.parseFloat(strMin);
+        initialSteps = Integer.parseInt(steps);
 
-        DonutSection kmSection = new DonutSection("km",
-                Color.parseColor("#004E99"), km);
+        kmSection = new DonutSection("km",
+                Color.parseColor("#004E99"), initialKm);
 
-        DonutSection minSection = new DonutSection("min",
-                Color.parseColor("#FBD617"),min);
+        minSection = new DonutSection("min",
+                Color.parseColor("#FBD617"),initialMin);
 
         kmlist = new ArrayList<>();
         kmlist.add(kmSection);
@@ -158,7 +162,7 @@ public class DailyFragment extends Fragment {
         minValue.setText(strMin);
 
         kmValue = view.findViewById(R.id.kmValue);
-        kmValue.setText(km.toString());
+        kmValue.setText(initialKm.toString());
 
         TextView dateTextView = view.findViewById(R.id.dateTextView);
         dateTextView.setText(dateStr);
@@ -224,20 +228,31 @@ public class DailyFragment extends Fragment {
     };
 
     private void test(int step, String time) {
+        step = initialSteps + step;
         stepCount.setText(String.valueOf(step));
-        String minutes = String.valueOf(TimeUnit.MILLISECONDS.toMinutes(
+        Float minutes = Float.valueOf(TimeUnit.MILLISECONDS.toMinutes(
                 Long.parseLong(time)));
-        float distance = (float) step * (float) 0.005 * (float) 1.6;
-        kmValue.setText(String.valueOf(df.format(distance)));
-        minValue.setText(minutes);
-        Log.d("minutes", minutes);
+        //float distance = (float) step * (float) 0.005 * (float) 1.6;
+        float distance = (float) ((float) (step *  0.05 ) * 1.6 / 100);
+        distance = initialKm + distance;
+        minutes = initialMin + minutes;
+        kmValue.setText(df.format(distance));
+        minValue.setText(minutes.toString());
+        Log.d("minutes", minutes.toString());
+        Log.d("distance", String.valueOf(distance));
+
         if(!list.isEmpty()) {
-            list.remove(0);
-            DonutSection minSection = new DonutSection("min",
-                    Color.parseColor("#FBD617"),Float.parseFloat(time)+1);
+            list = new ArrayList<>();
+             minSection = new DonutSection("min",
+                    Color.parseColor("#FBD617"),minutes);
             list.add(minSection);
-            minDonutChart.setCap(3f);
             minDonutChart.submitData(list);
+
+            kmlist = new ArrayList<>();
+            kmlist.add(kmSection);
+            kmDonutChart.submitData(kmlist);
+
+
         }
 //        minDonutChart.addAmount(Float.parseFloat(time));
 //        minDonutChart.submitData(list);

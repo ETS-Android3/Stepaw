@@ -8,9 +8,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import com.butterflies.stepaw.authentication.AuthUIHost
 import com.butterflies.stepaw.databinding.ActivityMainBinding
-import com.butterflies.stepaw.scanner.BleActivity
-import com.butterflies.stepaw.scanner.BleConnectionScreen
-import com.butterflies.stepaw.scanner.BleConnectionScreen2
 import com.butterflies.stepaw.welcomescreen.WelcomeScreenHost
 
 
@@ -27,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         val token=sharedData.getString("com.butterflies.stepaw.idToken","invalid")
         val userJson= sharedData.getString("com.butterflies.stepaw.user", "invalid")
         val firstTimeUser=sharedData.getString("com.butterflies.stepaw.firstTimeUser","true")
-//        Intent(this, BleConnectionScreen::class.java).also { startActivity(it) }
+//        Intent(this, DogList::class.java).also { startActivity(it) }
         if(firstTimeUser=="true"){
             Intent(this,WelcomeScreenHost::class.java).also { startActivity(it) }
         }
