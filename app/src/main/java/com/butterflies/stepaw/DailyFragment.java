@@ -74,7 +74,7 @@ public class DailyFragment extends Fragment {
     private int prevStep = 0;
     private View mView;
     private int finalStep;
-    private String finalTime;
+    private String finalTime, petId;
     private TextView stepCount;
     private TextView minValue;
     private TextView kmValue;
@@ -124,6 +124,7 @@ public class DailyFragment extends Fragment {
         String steps = getArguments().getString("petSteps");
         Float kmCap = getArguments().getFloat("petKmCap");
         Float minCap = getArguments().getFloat("petMinCap");
+        petId = getArguments().getString("petId");
         String dateStr = null;
         try {
             SimpleDateFormat formatter =   new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");

@@ -506,6 +506,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                         }
 
                         Bundle bundle = new Bundle();
+                        bundle.putString("petId", petObj.getUserID());
                         bundle.putString("petKm", petObj.getDistance());
                         bundle.putString("petMin", petObj.getDuration());
                         bundle.putString("petSteps", petObj.getNumberOfSteps());
