@@ -35,7 +35,7 @@ internal class NotificationHelper(base: Context?, reminderLabel: String) : Conte
     @get:SuppressLint("LogNotTimber")
     val channelNotification: NotificationCompat.Builder
         get() = NotificationCompat.Builder(applicationContext, channelID)
-            .setContentTitle("Scheduled Alert")
+            .setContentTitle("Stepaw Alert")
             .setContentText(messageLabel)
             .setSmallIcon(R.drawable.icon_title)
 

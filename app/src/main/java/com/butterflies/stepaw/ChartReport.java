@@ -228,13 +228,13 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour));
         calendar.set(Calendar.MINUTE, Integer.parseInt(minute));
         calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
-        calendar.set(Calendar.DAY_OF_WEEK,Calendar.FRIDAY);
-        calendar.set(Calendar.DAY_OF_WEEK,Calendar.THURSDAY);
-        calendar.set(Calendar.DAY_OF_WEEK,Calendar.WEDNESDAY);
-        calendar.set(Calendar.DAY_OF_WEEK,Calendar.TUESDAY);
-        calendar.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
-        calendar.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+//        calendar.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+//        calendar.set(Calendar.DAY_OF_WEEK,Calendar.FRIDAY);
+//        calendar.set(Calendar.DAY_OF_WEEK,Calendar.THURSDAY);
+//        calendar.set(Calendar.DAY_OF_WEEK,Calendar.WEDNESDAY);
+//        calendar.set(Calendar.DAY_OF_WEEK,Calendar.TUESDAY);
+//        calendar.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
+//        calendar.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
         updateTimeText(calendar);
         startAlarm(calendar, label);
     }
@@ -253,8 +253,10 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         if (c.before(Calendar.getInstance())) {
             c.add(Calendar.DATE, 1);
         }
-        Objects.requireNonNull(alarmManager).setRepeating(AlarmManager.RTC_WAKEUP, AlarmManager.INTERVAL_DAY ,
-                c.getTimeInMillis(), pendingIntent);
+//        Objects.requireNonNull(alarmManager).setRepeating(AlarmManager.RTC_WAKEUP, AlarmManager.INTERVAL_DAY ,
+//                c.getTimeInMillis(), pendingIntent);
+
+        Objects.requireNonNull(alarmManager).setExact(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),pendingIntent);
     }
 
     //Implementing observable interface for update of data from network callback
