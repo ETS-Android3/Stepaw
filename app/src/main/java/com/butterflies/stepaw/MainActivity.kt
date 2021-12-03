@@ -25,14 +25,14 @@ class MainActivity : AppCompatActivity() {
         val userJson= sharedData.getString("com.butterflies.stepaw.user", "invalid")
         val firstTimeUser=sharedData.getString("com.butterflies.stepaw.firstTimeUser","true")
         Intent(this, DogList::class.java).also { startActivity(it) }
-//        if(firstTimeUser=="true"){
-//            Intent(this,WelcomeScreenHost::class.java).also { startActivity(it) }
-//        }
-//      else if(token!=="invalid"&&userJson!=="invalid"&&userJson!==null){
-//          Intent(this, DogList::class.java).run { startActivity(this) }
-//      }else{
-//          Intent(this,AuthUIHost::class.java).run { startActivity(this) }
-//      }
+        if(firstTimeUser=="true"){
+            Intent(this,WelcomeScreenHost::class.java).also { startActivity(it) }
+        }
+      else if(token!=="invalid"&&userJson!=="invalid"&&userJson!==null){
+          Intent(this, DogList::class.java).run { startActivity(this) }
+      }else{
+          Intent(this,AuthUIHost::class.java).run { startActivity(this) }
+      }
     }
 
 }
