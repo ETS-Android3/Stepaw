@@ -20,7 +20,7 @@ class BleConnectionScreen3 : AppCompatActivity() {
             mainIntent.putExtra("address", deviceAddress)
             mainIntent.putExtra("petId", petId)
             startActivity(mainIntent)
-            this@BleConnectionScreen3.finish()
+//            this@BleConnectionScreen3.finish()
         }, 2000)
     }
 }

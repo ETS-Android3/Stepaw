@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import com.butterflies.stepaw.R
+import com.butterflies.stepaw.ble.BleConnectionScreen2
 
 
 class BleConnectionScreen : AppCompatActivity() {
@@ -18,7 +19,7 @@ class BleConnectionScreen : AppCompatActivity() {
         button.setOnClickListener {
 //            Toast.makeText(applicationContext, "hii there", Toast.LENGTH_SHORT).show()
             val petId = intent.getStringExtra("petId");
-            val newIntent = Intent(this, BleConnectionScreen3::class.java).apply {
+            val newIntent = Intent(this, BleConnectionScreen2::class.java).apply {
                 putExtra("petId", petId)
             }
             startActivity(newIntent)

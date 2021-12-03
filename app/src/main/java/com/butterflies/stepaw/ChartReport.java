@@ -130,7 +130,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
         Intent intent = getIntent();
         String petId = intent.getStringExtra("petId");
-        //petId = "BsFHEoXIBEgJKXKVSJWU7MYriEo1";
+        petId = "BsFHEoXIBEgJKXKVSJWU7MYriEo1";
         deviceAddress = intent.getStringExtra("address");
         retrofit = new Retrofit.Builder()
                 .baseUrl(ApiService.BASE_URL)

@@ -24,6 +24,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Stepaw">
         <activity
+            android:name=".ble.BleConnectionScreen2"
+            android:exported="true" />
+        <activity
             android:name=".scanner.BleConnectionScreen3"
             android:exported="true" />
 
@@ -42,7 +45,7 @@
             android:name=".ble.DeviceScanActivity"
             android:exported="true" />
         <activity
-            android:name=".scanner.BleConnectionScreen2"
+            android:name=".ble.BleConnectionScreen2"
             android:exported="true" />
         <activity
             android:name=".scanner.BleConnectionScreen"
