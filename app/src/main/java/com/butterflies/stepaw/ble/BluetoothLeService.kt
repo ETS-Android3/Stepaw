@@ -1,16 +1,12 @@
 package com.butterflies.stepaw.ble
 
 import android.app.Service
-import android.content.Intent
-import android.os.IBinder
 import android.bluetooth.*
+import android.content.Intent
 import android.os.Binder
+import android.os.IBinder
 import android.util.Log
 import java.util.*
-import android.bluetooth.BluetoothGattService
-import android.bluetooth.BluetoothGattCharacteristic
-import android.nfc.NfcAdapter.EXTRA_DATA
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 
 
 internal class BluetoothLeService : Service() {
@@ -22,7 +18,7 @@ internal class BluetoothLeService : Service() {
     private var serviceuuid: UUID = UUID.fromString("0000183E-0000-1000-8000-00805f9b34fb")
     private var characteristicuuid: UUID = UUID.fromString("00002713-0000-1000-8000-00805f9b34fb")
     private var descriptoruuid: UUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb")
-    private var _callback : ((Int) -> Unit)? = null
+    private var _callback: ((Int) -> Unit)? = null
     private var startTime: Long? = null
 
     fun setCallback(callback: (Int) -> Unit) {
@@ -67,7 +63,7 @@ internal class BluetoothLeService : Service() {
             Log.w("TAG", "BluetoothAdapter not initialized")
             return
         }
-        Log.d("wing","inn")
+        Log.d("wing", "inn")
         bluetoothGatt!!.disconnect()
 
     }
@@ -95,7 +91,7 @@ internal class BluetoothLeService : Service() {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 val gattServices: List<BluetoothGattService> = gatt!!.getServices()
                 for (gattService in gattServices) {
-                    if(gattService.uuid == serviceuuid) {
+                    if (gattService.uuid == serviceuuid) {
                         setCharacteristicNotification(gattService.characteristics[0], true)
                     }
                 }

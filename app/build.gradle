@@ -6,6 +6,7 @@ plugins {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 android {
     compileSdk 31
     buildFeatures {
@@ -49,13 +50,13 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
     implementation("app.futured.donut:donut:2.2.0")
     implementation 'com.github.bumptech.glide:glide:4.12.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+    kapt 'com.github.bumptech.glide:compiler:4.12.0'
     implementation 'com.google.firebase:firebase-storage-ktx'
 
     def room_version = "2.3.0"
 
     implementation "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
     def nav_version = "2.3.5"
     // Kotlin
@@ -77,6 +78,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-script-runtime:1.5.31"
     implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.jakewharton.timber:timber:5.0.1'
     implementation "org.jetbrains.anko:anko:0.10.8"
 }

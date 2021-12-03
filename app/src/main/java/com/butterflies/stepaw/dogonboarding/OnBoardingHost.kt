@@ -141,7 +141,7 @@ class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
             if (it.isSuccessful) {
                 it.result!!.addOnSuccessListener { task ->
                     val myUri = task.toString()
-                    imageURL=myUri
+                    imageURL = myUri
                 }
             }
 
@@ -170,7 +170,8 @@ class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
             }
         }
         if (!this@OnBoardingHost::imageURL.isInitialized) {
-            imageURL = "https://firebasestorage.googleapis.com/v0/b/spherical-rune-330820.appspot.com/o/images%2Fdog_placeholder_image.png?alt=media&token=e5cda1d2-b987-4901-9a2e-34d2a437f856"
+            imageURL =
+                "https://firebasestorage.googleapis.com/v0/b/spherical-rune-330820.appspot.com/o/images%2Fdog_placeholder_image.png?alt=media&token=e5cda1d2-b987-4901-9a2e-34d2a437f856"
         }
         if (this::idToken.isInitialized && userId !== "invalid" && this::userId.isInitialized) {
             val petmodel = PetModel(
