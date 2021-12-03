@@ -78,7 +78,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
     private String petId = "";
     private Boolean connected = null;
     private BluetoothLeService bluetoothService = null;
-    private String token;
+    private String token, petName;
     private final Handler handler = new Handler();
 
     @Override
@@ -130,7 +130,8 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
         Intent intent = getIntent();
         String petId = intent.getStringExtra("petId");
-        petId = "BsFHEoXIBEgJKXKVSJWU7MYriEo1";
+        petName = intent.getStringExtra("petName");
+
         deviceAddress = intent.getStringExtra("address");
         retrofit = new Retrofit.Builder()
                 .baseUrl(ApiService.BASE_URL)
@@ -332,9 +333,11 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                 System.out.println("Dog data");
                 System.out.println(obj);
                 ArrayList<PetGetModel> petList = (ArrayList<PetGetModel>) response.body();
-                TextView petName = findViewById(R.id.petName);
+                TextView petNameTxtView = findViewById(R.id.petName);
                 ImageView petImage = findViewById(R.id.petImage);
                 TextView petAge = findViewById(R.id.petAge);
+
+                petList = (ArrayList<PetGetModel>) petList.stream().filter(x -> x.getPetName().equals(petName));
 
                 if (petList != null) {
                     petObj = petList.get(0);
@@ -493,7 +496,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                 if (petObj != null) {
 
                     if (!petObj.getPetName().equals("")) {
-                        petName.setText(petObj.getPetName());
+                        petNameTxtView.setText(petObj.getPetName());
                         String petAgeWeight = petObj.getAge() + "y / " + petObj.getWeight() + " kg";
                         petAge.setText(petAgeWeight);
 

@@ -19,8 +19,10 @@ class BleConnectionScreen : AppCompatActivity() {
         button.setOnClickListener {
 //            Toast.makeText(applicationContext, "hii there", Toast.LENGTH_SHORT).show()
             val petId = intent.getStringExtra("petId");
+            val petName = intent.getStringExtra("petName");
             val newIntent = Intent(this, BleConnectionScreen2::class.java).apply {
                 putExtra("petId", petId)
+                putExtra("petName", petName)
             }
             startActivity(newIntent)
             //startActivity(Intent(this@BleConnectionScreen, BleConnectionScreen3::class.java))

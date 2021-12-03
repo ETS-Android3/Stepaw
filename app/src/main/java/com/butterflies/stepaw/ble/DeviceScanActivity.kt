@@ -115,8 +115,12 @@ class DeviceScanActivity : AppCompatActivity() {
 
         devicesListView.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
             val value = devicesListView.getItemAtPosition(position).toString()
+            val petId = intent.getStringExtra("petId")
+            val petName = intent.getStringExtra("petName")
             val intent = Intent(this@DeviceScanActivity, ChartReport::class.java)
             intent.putExtra("address", value)
+            intent.putExtra("petId", petId)
+            intent.putExtra("petName", petName)
             startActivity(intent)
         })
     }

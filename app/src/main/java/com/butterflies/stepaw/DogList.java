@@ -108,7 +108,7 @@ public class DogList extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), BleConnectionScreen.class);
                         //intent.putExtra("petId", item.getPetID());
                         intent.putExtra("petId", item.getUserID());
-
+                        intent.putExtra("petName", item.getPetName());
                         startActivity(intent);
 
                     }
