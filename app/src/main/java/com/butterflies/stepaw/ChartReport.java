@@ -10,6 +10,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -21,12 +22,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.FragmentKt;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.room.Room;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
@@ -38,9 +41,13 @@ import com.butterflies.stepaw.network.RetrofitObservable;
 import com.butterflies.stepaw.network.models.PetGetModel;
 import com.butterflies.stepaw.reminder.FragmentReminder;
 import com.butterflies.stepaw.reminder.NotificationPublisher;
+import com.butterflies.stepaw.roomORM.ReminderDB;
+import com.butterflies.stepaw.roomORM.ReminderDao;
+import com.butterflies.stepaw.roomORM.ReminderEntity;
 import com.butterflies.stepaw.userActions.AccountActivity;
 import com.butterflies.stepaw.userActions.ContactUsActivity;
 import com.butterflies.stepaw.userActions.NotificationsActivity;
+import com.butterflies.stepaw.utils.StepawUtils;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -59,6 +66,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
+
 import kotlin.jvm.internal.Intrinsics;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -81,11 +89,27 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
     private String token;
     private final Handler handler = new Handler();
 
+
+ReminderDB db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityChartReportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        db = Room.databaseBuilder(this,
+                ReminderDB.class, "remindersDB").build();
+
+
+//
+        AsyncTask.execute(()->{
+            ReminderDao r=db.reminderdao();
+            Log.d("reminders", String.valueOf(r.getAll().size()));
+        });
+
+
+
+//
 
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
@@ -108,6 +132,8 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                 ChartReport.super.onBackPressed();
 //                }
             }
+
+
         });
 
 
@@ -213,7 +239,8 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        Intent i = new Intent(this, DogList.class);
+        startActivity(i);
     }
 
     @Override
@@ -235,8 +262,22 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 //        calendar.set(Calendar.DAY_OF_WEEK,Calendar.TUESDAY);
 //        calendar.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
 //        calendar.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+
+        StepawUtils a = new StepawUtils();
+
+
+        int unique = a.getUniqueID();
+        ReminderDao rdao = db.reminderdao();
+
+//        Insert reminder data into sqlite db
+        AsyncTask.execute(() -> {
+            rdao.insertAll(new ReminderEntity(unique, hour, minute, label));
+            Log.d("reminders",rdao.getById(unique).getMinute());
+        });
+//
+
         updateTimeText(calendar);
-        startAlarm(calendar, label);
+        startAlarm(calendar, label, unique);
     }
 
     private void updateTimeText(Calendar c) {
@@ -244,19 +285,18 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         timeText += DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
     }
 
-    private void startAlarm(Calendar c, String label) {
+    private void startAlarm(Calendar c, String label, int uniqueCode) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, NotificationPublisher.class);
-        Log.d("reminderAlarm",label);
-        intent.putExtra("reminderlabel",label);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+        intent.putExtra("reminderlabel", label);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, uniqueCode, intent, 0);
         if (c.before(Calendar.getInstance())) {
             c.add(Calendar.DATE, 1);
         }
 //        Objects.requireNonNull(alarmManager).setRepeating(AlarmManager.RTC_WAKEUP, AlarmManager.INTERVAL_DAY ,
 //                c.getTimeInMillis(), pendingIntent);
 
-        Objects.requireNonNull(alarmManager).setExact(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),pendingIntent);
+        Objects.requireNonNull(alarmManager).setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
 
     //Implementing observable interface for update of data from network callback
@@ -264,9 +304,8 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
     public void update(Observable o, Object arg) {
 
     }
-//Handle menu click
 
-
+    //Handle menu click
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_drawer, menu);
@@ -309,7 +348,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                 //weekly chart variables
                 ArrayList<PetGetModel> weekArray = new ArrayList<>();
                 ArrayList<String> daysArray = new ArrayList<>(
-                        Arrays.asList( "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"));
+                        Arrays.asList("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"));
                 String[] days = new String[7];
 
                 double[] weekDistance = new double[7];
@@ -328,7 +367,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                 double[] time = new double[6];
                 int[] steps = new int[6];
                 String[] months = new String[6];
-                ArrayList<String> monthArray = new ArrayList<>(Arrays.asList("Jan", "Feb", "Mar","Apr", "May",
+                ArrayList<String> monthArray = new ArrayList<>(Arrays.asList("Jan", "Feb", "Mar", "Apr", "May",
                         "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"));
                 Object obj = response.body();
                 System.out.println("Dog data");
@@ -351,40 +390,40 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
                         Date today30 = cal.getTime();
 
-                        cal.set(Calendar.MONTH , today30.getMonth() - 1);
+                        cal.set(Calendar.MONTH, today30.getMonth() - 1);
                         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
                         Date today60 = cal.getTime();
 
-                        cal.set(Calendar.MONTH , today60.getMonth() - 1);
+                        cal.set(Calendar.MONTH, today60.getMonth() - 1);
                         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
                         Date today90 = cal.getTime();
 
-                        cal.set(Calendar.MONTH , today90.getMonth() - 1);
+                        cal.set(Calendar.MONTH, today90.getMonth() - 1);
                         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
                         Date today120 = cal.getTime();
 
-                        cal.set(Calendar.MONTH , today120.getMonth() - 1);
+                        cal.set(Calendar.MONTH, today120.getMonth() - 1);
                         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
                         Date today150 = cal.getTime();
 
-                        cal.set(Calendar.MONTH , today150.getMonth() - 1);
+                        cal.set(Calendar.MONTH, today150.getMonth() - 1);
                         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
                         Date today180 = cal.getTime();
 
                         for (int k = 0; k < 7; k++) {
                             cal = Calendar.getInstance();
-                            cal.add(Calendar.DATE, - k);
+                            cal.add(Calendar.DATE, -k);
                             Date weekDays = cal.getTime();
                             days[k] = daysArray.get(weekDays.getDay());
                         }
 
                         for (int i = 0; i < petList.size(); i++) {
-                            Date date =   new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").
+                            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").
                                     parse(petList.get(i).getDate());
 
                             //filter last week data //set weekly data array
                             assert date != null;
-                            if(date.compareTo(week) >= 0 && date.compareTo(today) <= 0){
+                            if (date.compareTo(week) >= 0 && date.compareTo(today) <= 0) {
                                 weekArray.add(petList.get(i));
                                 weekDistance[i] = Double.parseDouble(petList.get(i).getDistance());
                                 weekSteps[i] = Integer.parseInt(petList.get(i).getNumberOfSteps());
@@ -393,7 +432,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                                 SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy");
                                 weekDates[i] = formatter.format(date);
 
-                            } else if(i <= 6){
+                            } else if (i <= 6) {
                                 weekDistance[i] = 0;
                                 weekSteps[i] = 0;
                                 weekTime[i] = 0;
@@ -403,36 +442,30 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                             }
 
                             //filter data based on month
-                            if(date.compareTo(today30) >= 0 && date.compareTo(today) <= 0){
+                            if (date.compareTo(today30) >= 0 && date.compareTo(today) <= 0) {
                                 month1.add(petList.get(i));
                                 int monthCounter = date.getMonth();
-                                if(months[0] == null){
+                                if (months[0] == null) {
                                     for (int j = 0; j < 6; j++) {
-                                        if(monthCounter >= 0){
+                                        if (monthCounter >= 0) {
                                             months[j] = monthArray.get(monthCounter);
                                             monthCounter--;
-                                        }
-                                        else{
+                                        } else {
                                             monthCounter = 11;
                                             months[j] = monthArray.get(monthCounter);
                                             monthCounter--;
                                         }
                                     }
                                 }
-                            }
-                            else if(date.compareTo(today60) >= 0 && date.compareTo(today30) < 0) {
+                            } else if (date.compareTo(today60) >= 0 && date.compareTo(today30) < 0) {
                                 month2.add(petList.get(i));
-                            }
-                            else if(date.compareTo(today90) >= 0 && date.compareTo(today60) < 0) {
+                            } else if (date.compareTo(today90) >= 0 && date.compareTo(today60) < 0) {
                                 month3.add(petList.get(i));
-                            }
-                            else if(date.compareTo(today120) >= 0 && date.compareTo(today90) <= 0) {
+                            } else if (date.compareTo(today120) >= 0 && date.compareTo(today90) <= 0) {
                                 month4.add(petList.get(i));
-                            }
-                            else if(date.compareTo(today150) >= 0 && date.compareTo(today120) < 0) {
+                            } else if (date.compareTo(today150) >= 0 && date.compareTo(today120) < 0) {
                                 month5.add(petList.get(i));
-                            }
-                            else if(date.compareTo(today180) >= 0 && date.compareTo(today150) < 0) {
+                            } else if (date.compareTo(today180) >= 0 && date.compareTo(today150) < 0) {
                                 month6.add(petList.get(i));
                             }
                         }
@@ -444,45 +477,46 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 //                        System.out.println("Last 5 month Array " + month5);
 //                        System.out.println("Last 6 month Array " + month6);
 
-                        double distanceSum, timeSum; int stepSum;
-                        distanceSum =  month1.stream().mapToDouble(p -> Float.parseFloat(p.getDistance())).sum();
-                        timeSum =  month1.stream().mapToDouble(p -> Float.parseFloat(p.getDuration())).sum();
-                        stepSum =  month1.stream().mapToInt(p -> Integer.parseInt(p.getNumberOfSteps())).sum();
+                        double distanceSum, timeSum;
+                        int stepSum;
+                        distanceSum = month1.stream().mapToDouble(p -> Float.parseFloat(p.getDistance())).sum();
+                        timeSum = month1.stream().mapToDouble(p -> Float.parseFloat(p.getDuration())).sum();
+                        stepSum = month1.stream().mapToInt(p -> Integer.parseInt(p.getNumberOfSteps())).sum();
                         distance[0] = distanceSum;
                         time[0] = timeSum;
                         steps[0] = stepSum;
 
-                        distanceSum =  month2.stream().mapToDouble(p -> Float.parseFloat(p.getDistance())).sum();
-                        timeSum =  month2.stream().mapToDouble(p -> Float.parseFloat(p.getDuration())).sum();
-                        stepSum =  month2.stream().mapToInt(p -> Integer.parseInt(p.getNumberOfSteps())).sum();
+                        distanceSum = month2.stream().mapToDouble(p -> Float.parseFloat(p.getDistance())).sum();
+                        timeSum = month2.stream().mapToDouble(p -> Float.parseFloat(p.getDuration())).sum();
+                        stepSum = month2.stream().mapToInt(p -> Integer.parseInt(p.getNumberOfSteps())).sum();
                         distance[1] = distanceSum;
                         time[1] = timeSum;
                         steps[1] = stepSum;
 
-                        distanceSum =  month3.stream().mapToDouble(p -> Float.parseFloat(p.getDistance())).sum();
-                        timeSum =  month3.stream().mapToDouble(p -> Float.parseFloat(p.getDuration())).sum();
-                        stepSum =  month3.stream().mapToInt(p -> Integer.parseInt(p.getNumberOfSteps())).sum();
+                        distanceSum = month3.stream().mapToDouble(p -> Float.parseFloat(p.getDistance())).sum();
+                        timeSum = month3.stream().mapToDouble(p -> Float.parseFloat(p.getDuration())).sum();
+                        stepSum = month3.stream().mapToInt(p -> Integer.parseInt(p.getNumberOfSteps())).sum();
                         distance[2] = distanceSum;
                         time[2] = timeSum;
                         steps[2] = stepSum;
 
-                        distanceSum =  month4.stream().mapToDouble(p -> Float.parseFloat(p.getDistance())).sum();
-                        timeSum =  month4.stream().mapToDouble(p -> Float.parseFloat(p.getDuration())).sum();
-                        stepSum =  month4.stream().mapToInt(p -> Integer.parseInt(p.getNumberOfSteps())).sum();
+                        distanceSum = month4.stream().mapToDouble(p -> Float.parseFloat(p.getDistance())).sum();
+                        timeSum = month4.stream().mapToDouble(p -> Float.parseFloat(p.getDuration())).sum();
+                        stepSum = month4.stream().mapToInt(p -> Integer.parseInt(p.getNumberOfSteps())).sum();
                         distance[3] = distanceSum;
                         time[3] = timeSum;
                         steps[3] = stepSum;
 
-                        distanceSum =  month5.stream().mapToDouble(p -> Float.parseFloat(p.getDistance())).sum();
-                        timeSum =  month5.stream().mapToDouble(p -> Float.parseFloat(p.getDuration())).sum();
-                        stepSum =  month5.stream().mapToInt(p -> Integer.parseInt(p.getNumberOfSteps())).sum();
+                        distanceSum = month5.stream().mapToDouble(p -> Float.parseFloat(p.getDistance())).sum();
+                        timeSum = month5.stream().mapToDouble(p -> Float.parseFloat(p.getDuration())).sum();
+                        stepSum = month5.stream().mapToInt(p -> Integer.parseInt(p.getNumberOfSteps())).sum();
                         distance[4] = distanceSum;
                         time[4] = timeSum;
                         steps[4] = stepSum;
 
-                        distanceSum =  month6.stream().mapToDouble(p -> Float.parseFloat(p.getDistance())).sum();
-                        timeSum =  month6.stream().mapToDouble(p -> Float.parseFloat(p.getDuration())).sum();
-                        stepSum =  month6.stream().mapToInt(p -> Integer.parseInt(p.getNumberOfSteps())).sum();
+                        distanceSum = month6.stream().mapToDouble(p -> Float.parseFloat(p.getDistance())).sum();
+                        timeSum = month6.stream().mapToDouble(p -> Float.parseFloat(p.getDuration())).sum();
+                        stepSum = month6.stream().mapToInt(p -> Integer.parseInt(p.getNumberOfSteps())).sum();
                         distance[5] = distanceSum;
                         time[5] = timeSum;
                         steps[5] = stepSum;
@@ -499,11 +533,9 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                         String petAgeWeight = petObj.getAge() + "y / " + petObj.getWeight() + " kg";
                         petAge.setText(petAgeWeight);
 
-                        if(petObj.getPicture() != null){
+                        if (petObj.getPicture() != null) {
                             Glide.with(getApplicationContext()).load(petObj.getPicture()).into(petImage);
-                        }
-                        else
-                        {
+                        } else {
                             Glide.with(getApplicationContext()).load("https://images.dog.ceo/breeds/shiba/shiba-15.jpg").into(petImage);
                         }
 
@@ -557,6 +589,12 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                 Log.e("Get pet by id:", t.getMessage());
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        db.close();
     }
 }
 

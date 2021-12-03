@@ -1,10 +1,11 @@
 package com.butterflies.stepaw.utils
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import com.butterflies.stepaw.network.models.UserModel
 import com.google.gson.Gson
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.regex.Pattern
 
 class StepawUtils {
@@ -44,5 +45,9 @@ class StepawUtils {
         }
     }
 
+    fun getUniqueID(): Int {
+        val now = Date()
+        return SimpleDateFormat("ddHHmmss", Locale.US).format(now).toInt()
+    }
 
 }

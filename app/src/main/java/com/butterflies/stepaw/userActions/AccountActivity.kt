@@ -1,15 +1,18 @@
 package com.butterflies.stepaw.userActions
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.util.Log
 import android.widget.TextView
-import androidx.appcompat.widget.Toolbar
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.room.Room
 import com.butterflies.stepaw.R
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.toolbar.view.*
+import com.butterflies.stepaw.roomORM.ReminderDB
+import com.butterflies.stepaw.roomORM.ReminderDao
+import com.butterflies.stepaw.roomORM.ReminderEntity
+import kotlinx.coroutines.*
+
 
 class AccountActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,9 +23,10 @@ class AccountActivity : AppCompatActivity() {
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.custom_back_button)
-        val toolbarTitle=findViewById<TextView>(R.id.toolbar_title)
+        val toolbarTitle = findViewById<TextView>(R.id.toolbar_title)
         toolbarTitle.text = "Account"
     }
+
     override fun onSupportNavigateUp(): Boolean {
         super.onBackPressed()
         return true
