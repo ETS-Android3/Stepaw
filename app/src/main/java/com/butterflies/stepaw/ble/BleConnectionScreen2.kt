@@ -50,8 +50,10 @@ class BleConnectionScreen2 : AppCompatActivity() {
         Handler().postDelayed(Runnable {
             val mainIntent = Intent(this@BleConnectionScreen2, DeviceScanActivity::class.java)
             val petId = intent.getStringExtra("petId")
+            val petName = intent.getStringExtra("petName")
             this@BleConnectionScreen2.startActivity(mainIntent)
             mainIntent.putExtra("petId", petId)
+            mainIntent.putExtra("petName", petName)
             this@BleConnectionScreen2.finish()
         }, 2000)
     }
