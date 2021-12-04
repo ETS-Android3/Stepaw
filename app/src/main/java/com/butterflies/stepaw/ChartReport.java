@@ -142,13 +142,12 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         });
 
         Intent intent = getIntent();
-//        String petId = intent.getStringExtra("petId");
-        petId = "BsFHEoXIBEgJKXKVSJWU7MYriEo1";
+        String petId = intent.getStringExtra("petId");
+//        petId = "BsFHEoXIBEgJKXKVSJWU7MYriEo1";
 
         petName = intent.getStringExtra("petName");
 
-
-        deviceAddress = intent.getStringExtra("address");
+//        deviceAddress = intent.getStringExtra("address");
         retrofit = new Retrofit.Builder()
                 .baseUrl(ApiService.BASE_URL)
                 .addConverterFactory(MoshiConverterFactory.create())
@@ -158,7 +157,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         SharedPreferences pref = getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE);
         token = pref.getString("com.butterflies.stepaw.idToken", "invalid");
         if (token != null) {
-            getPetById(token, petId, 0, 0L);
+//            getPetById(token, petId, 0, 0L);
         }
 //        if(!isMyServiceRunning(BluetoothLeService.class)) {
 //            Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
