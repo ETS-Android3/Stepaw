@@ -90,26 +90,13 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
     private final Handler handler = new Handler();
 
 
-ReminderDB db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityChartReportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        db = Room.databaseBuilder(this,
-                ReminderDB.class, "remindersDB").build();
 
-
-//
-        AsyncTask.execute(()->{
-            ReminderDao r=db.reminderdao();
-            Log.d("reminders", String.valueOf(r.getAll().size()));
-        });
-
-
-
-//
 
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
@@ -155,8 +142,11 @@ ReminderDB db;
         });
 
         Intent intent = getIntent();
-        String petId = intent.getStringExtra("petId");
+//        String petId = intent.getStringExtra("petId");
+        petId = "BsFHEoXIBEgJKXKVSJWU7MYriEo1";
+
         petName = intent.getStringExtra("petName");
+
 
         deviceAddress = intent.getStringExtra("address");
         retrofit = new Retrofit.Builder()
@@ -266,7 +256,8 @@ ReminderDB db;
 
         StepawUtils a = new StepawUtils();
 
-
+      ReminderDB db = Room.databaseBuilder(this,
+                ReminderDB.class, "remindersDB").build();
         int unique = a.getUniqueID();
         ReminderDao rdao = db.reminderdao();
 
@@ -345,8 +336,8 @@ ReminderDB db;
             @Override
             public void onResponse(Call wcall, Response response) {
 //            petObj = (PetGetModel) response.body()
-
                 //weekly chart variables
+                Log.d("pets",response.message());
                 ArrayList<PetGetModel> weekArray = new ArrayList<>();
                 ArrayList<String> daysArray = new ArrayList<>(
                         Arrays.asList("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"));
@@ -589,15 +580,10 @@ ReminderDB db;
 
             @Override
             public void onFailure(Call call, Throwable t) {
-                Log.e("Get pet by id:", t.getMessage());
+                Log.e("pets", t.getMessage());
             }
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        db.close();
-    }
 }
 
