@@ -153,11 +153,10 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build();
         service = retrofit.create(ApiService.class);
-        token = "ya29.a0ARrdaM_u23mjkQ1IUdyYgvzgbOGHYnaXEBCnSNgimBn9r_oP2u6QS7F3uNDYD83guUwHTHuhYxuydOQkJS4gJeqo-6Z_QbuKW8BQaBv1dzhPRTDE0fcy8Zr73JNf3F4uuVIQuuw2DpzowYDJlB-LayFmMskJ";
         SharedPreferences pref = getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE);
         token = pref.getString("com.butterflies.stepaw.idToken", "invalid");
         if (token != null) {
-//            getPetById(token, petId, 0, 0L);
+            getPetById(token, petId, 0, 0L);
         }
 //        if(!isMyServiceRunning(BluetoothLeService.class)) {
 //            Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
@@ -368,7 +367,9 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                 ImageView petImage = findViewById(R.id.petImage);
                 TextView petAge = findViewById(R.id.petAge);
 
-                petList = (ArrayList<PetGetModel>) petList.stream().filter(x -> x.getPetName().equals(petName));
+                if(petName != null && !petName.equals("")){
+                    petList = (ArrayList<PetGetModel>) petList.stream().filter(x -> x.getPetName().equals(petName));
+                }
 
                 if (petList != null) {
                     petObj = petList.get(0);

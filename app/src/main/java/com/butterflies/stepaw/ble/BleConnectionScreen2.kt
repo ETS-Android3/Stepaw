@@ -21,6 +21,8 @@ import com.butterflies.stepaw.databinding.ActivityBleConnectionScreen2Binding
 private const val ENABLE_BLUETOOTH_REQUEST_CODE = 1
 
 class BleConnectionScreen2 : AppCompatActivity() {
+
+    private var petId = ""; private var petName = "";
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityBleConnectionScreen2Binding.inflate(layoutInflater)
@@ -28,6 +30,9 @@ class BleConnectionScreen2 : AppCompatActivity() {
         setContentView(view)
         val imageViewTarget = DrawableImageViewTarget(binding.bleStatusGif)
         Glide.with(this).load(R.raw.bluetooth_status).into<Target<Drawable>>(imageViewTarget)
+
+        petId = intent.getStringExtra("petId").toString()
+        petName = intent.getStringExtra("petName").toString()
     }
 
     override fun onResume() {
@@ -49,11 +54,9 @@ class BleConnectionScreen2 : AppCompatActivity() {
     private fun NextActivity() {
         Handler().postDelayed(Runnable {
             val mainIntent = Intent(this@BleConnectionScreen2, DeviceScanActivity::class.java)
-            val petId = intent.getStringExtra("petId")
-            val petName = intent.getStringExtra("petName")
-            this@BleConnectionScreen2.startActivity(mainIntent)
             mainIntent.putExtra("petId", petId)
             mainIntent.putExtra("petName", petName)
+            this@BleConnectionScreen2.startActivity(mainIntent)
             this@BleConnectionScreen2.finish()
         }, 2000)
     }
