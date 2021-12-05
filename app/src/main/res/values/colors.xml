@@ -13,5 +13,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="color_gray">#4c000000</color>
     <color name="tab_not_Selected">#E6EEF5</color>
-    <color name="color_red">#FF0000</color>
+    <color name="color_red">#F35555</color>
+    <color name="color_success">#5bba2e</color>
+    <color name="notifications_alternate">#f3f3f3</color>
+
 </resources>

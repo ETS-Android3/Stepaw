@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.butterflies.stepaw.ChartReport
 import com.butterflies.stepaw.DogList
 import com.butterflies.stepaw.R
 import com.butterflies.stepaw.dogonboarding.OnBoardingHost

@@ -8,7 +8,7 @@ import androidx.room.Query
 @Dao
 interface ReminderDao {
     @Query("select * from remindersTable")
-    fun getAll():List<ReminderEntity>
+    fun getAll():MutableList<ReminderEntity>
 
     @Insert
     fun insertAll(vararg reminder:ReminderEntity)
@@ -16,7 +16,7 @@ interface ReminderDao {
     @Query("select * from remindersTable where id = :uid")
     fun getById(uid:Int):ReminderEntity
 
-    @Query("DELETE from remindersTable where id = :uid")
+    @Query("DELETE from remindersTable where id LIKE :uid")
     fun deleteByID(uid:Int):Int
 
 }

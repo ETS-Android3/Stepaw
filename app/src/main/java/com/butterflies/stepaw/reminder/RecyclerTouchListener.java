@@ -99,7 +99,7 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener, 
         this.act = a;
         ViewConfiguration vc = ViewConfiguration.get(recyclerView.getContext());
         touchSlop = vc.getScaledTouchSlop();
-        minFlingVel = vc.getScaledMinimumFlingVelocity() * 16;
+        minFlingVel = vc.getScaledMinimumFlingVelocity() * 12;
         maxFlingVel = vc.getScaledMaximumFlingVelocity();
         rView = recyclerView;
         bgVisible = false;
