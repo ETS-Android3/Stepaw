@@ -350,7 +350,7 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
                         ) {
                             storeUser(response)
                             if (response.code() == 200) {
-                                Intent(this@AuthUIHost, ChartReport::class.java).run {
+                                Intent(this@AuthUIHost, DogList::class.java).run {
                                     startActivity(
                                         this
                                     )
