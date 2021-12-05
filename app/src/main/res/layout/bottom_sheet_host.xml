@@ -14,7 +14,7 @@
     app:behavior_peekHeight="50dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
@@ -25,6 +25,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:defaultNavHost="true" />
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

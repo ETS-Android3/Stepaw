@@ -9,6 +9,6 @@ data class ReminderEntity(
     @PrimaryKey val id:Int,
     @ColumnInfo(name="hour") val hour:String,
     @ColumnInfo(name="minute") val minute:String,
-    @ColumnInfo(name="label") val label:String
-
+    @ColumnInfo(name="label") val label:String,
+    @ColumnInfo(name="date") val date:String
 )

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.butterflies.stepaw.ChartReport
 import com.butterflies.stepaw.DogList
 import com.butterflies.stepaw.R
 import com.butterflies.stepaw.dogonboarding.OnBoardingHost
@@ -349,7 +350,7 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
                         ) {
                             storeUser(response)
                             if (response.code() == 200) {
-                                Intent(this@AuthUIHost, DogList::class.java).run {
+                                Intent(this@AuthUIHost, ChartReport::class.java).run {
                                     startActivity(
                                         this
                                     )

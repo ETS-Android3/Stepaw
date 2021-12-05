@@ -19,9 +19,8 @@
         <RelativeLayout
             android:id="@+id/edit_task"
             android:layout_width="70dp"
+            android:clickable="false"
             android:layout_height="70dp"
-            android:clickable="true"
-            android:focusable="true"
             android:orientation="vertical">
 
             <LinearLayout
@@ -29,7 +28,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:background="@color/color_primary"
+                android:background="@color/color_gray"
                 android:orientation="vertical">
 
                 <ImageView
@@ -48,7 +47,7 @@
             android:layout_height="70dp"
             android:clickable="true"
             android:focusable="true"
-            android:background="@color/color_gray"
+            android:background="@color/color_red"
             android:orientation="vertical">
 
             <LinearLayout
@@ -74,10 +73,7 @@
         android:id="@+id/rowFG"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@android:color/white"
-        android:clickable="true"
-        android:elevation="4dp"
-        android:focusable="true"
+        android:background="@color/color_primary_variant_1"
         android:orientation="horizontal"
         android:layout_margin="10dp"
         android:visibility="visible">
@@ -89,15 +85,15 @@
 
             <TextView
                 android:id="@+id/task_name"
-                style="@style/TextAppearance.AppCompat.Headline"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
+                android:fontFamily="@font/lato_regular"
                 app:layout_constraintBottom_toTopOf="@+id/task_desc"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/timeText"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@tools:sample/first_names" />
 
@@ -105,18 +101,28 @@
                 android:id="@+id/task_desc"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginStart="8dp"
-                tools:text="@tools:sample/cities"
-                android:lines="1"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="5dp"
-                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/lato_regular"
+                android:lines="1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/task_name"
-                app:layout_constraintTop_toBottomOf="@+id/task_name" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/timeText"
+                app:layout_constraintTop_toBottomOf="@+id/task_name"
+                tools:text="@tools:sample/cities" />
+
+            <TextView
+                android:id="@+id/timeText"
+                android:fontFamily="@font/dosis_semi_bold"
+                style="@style/TextAppearance.MaterialComponents.Headline4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

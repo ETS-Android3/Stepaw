@@ -33,6 +33,7 @@ import androidx.room.Room;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.butterflies.stepaw.adapters.ItemAdapter;
 import com.butterflies.stepaw.authentication.AuthUIHost;
 import com.butterflies.stepaw.ble.BluetoothLeService;
 import com.butterflies.stepaw.databinding.ActivityChartReportBinding;
@@ -95,7 +96,6 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         super.onCreate(savedInstanceState);
         binding = ActivityChartReportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
 
 
         Toolbar toolbar = findViewById(R.id.my_toolbar);
@@ -182,7 +182,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 //Handling bottom sheet
         BottomSheetBehavior<View> standardBottomSheetBehavior =
                 BottomSheetBehavior.from(findViewById(R.id.bottom_sheet_reminder));
-        standardBottomSheetBehavior.setPeekHeight(170);
+        standardBottomSheetBehavior.setPeekHeight(175);
         standardBottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -255,15 +255,15 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
         StepawUtils a = new StepawUtils();
 
-      ReminderDB db = Room.databaseBuilder(this,
+
+        ReminderDB db = Room.databaseBuilder(this,
                 ReminderDB.class, "remindersDB").build();
         int unique = a.getUniqueID();
         ReminderDao rdao = db.reminderdao();
 
 //        Insert reminder data into sqlite db
         AsyncTask.execute(() -> {
-            rdao.insertAll(new ReminderEntity(unique, hour, minute, label));
-            Log.d("reminders",rdao.getById(unique).getMinute());
+            rdao.insertAll(new ReminderEntity(unique, hour, minute, label, a.getDate()));
         });
 //
 
@@ -336,7 +336,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
             public void onResponse(Call wcall, Response response) {
 //            petObj = (PetGetModel) response.body()
                 //weekly chart variables
-                Log.d("pets",response.message());
+                Log.d("pets", response.message());
                 ArrayList<PetGetModel> weekArray = new ArrayList<>();
                 ArrayList<String> daysArray = new ArrayList<>(
                         Arrays.asList("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"));

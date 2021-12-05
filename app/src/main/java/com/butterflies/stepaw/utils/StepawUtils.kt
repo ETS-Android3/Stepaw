@@ -1,7 +1,6 @@
 package com.butterflies.stepaw.utils
 
 import android.content.Context
-import android.widget.Toast
 import com.butterflies.stepaw.network.models.UserModel
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
@@ -26,19 +25,17 @@ class StepawUtils {
     fun validatePassword(): Boolean = true
 
 
-    fun extractUser(context:Context): UserModel? {
+    fun extractUser(context: Context): UserModel? {
         val p = context.getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE)
         val u = p.getString("com.butterflies.stepaw.user", "invalid")
         val j = Gson()
-        val d = j.fromJson(u, UserModel::class.java)
-      Toast.makeText(context, d.FirstName, Toast.LENGTH_SHORT).show()
-        return d
+        return j.fromJson(u, UserModel::class.java)
     }
 
 
-
-    fun storePreferences(context:Context,key: String, token: String) {
-        val sharedPreferences = context.getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE)
+    fun storePreferences(context: Context, key: String, token: String) {
+        val sharedPreferences =
+            context.getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
             putString(key, token)
             apply()
@@ -48,6 +45,16 @@ class StepawUtils {
     fun getUniqueID(): Int {
         val now = Date()
         return SimpleDateFormat("ddHHmmss", Locale.US).format(now).toInt()
+    }
+
+    fun getDate(): String {
+        val d = Calendar.getInstance()
+
+        val day = d.get(Calendar.DAY_OF_MONTH)
+        val month = d.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()).take(3)
+        val year = d.get(Calendar.YEAR)
+
+        return "${day}-${month}-${year}"
     }
 
 }
