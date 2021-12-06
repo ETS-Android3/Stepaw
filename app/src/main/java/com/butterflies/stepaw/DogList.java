@@ -105,6 +105,12 @@ public class DogList extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         PetGetModel item = (PetGetModel) listView.getItemAtPosition(position);
+                        SharedPreferences pref = getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("petId", item.getUserID());
+                        editor.putString("petName", item.getPetName());
+                        editor.apply();
+
                         Intent intent = new Intent(getApplicationContext(), BleConnectionScreen.class);
                         //intent.putExtra("petId", item.getPetID());
                         intent.putExtra("petId", item.getUserID());

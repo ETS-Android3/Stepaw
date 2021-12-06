@@ -154,6 +154,10 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         service = retrofit.create(ApiService.class);
         SharedPreferences pref = getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE);
         token = pref.getString("com.butterflies.stepaw.idToken", "invalid");
+        if(petId == null || petId == "" || petName == null || petName == ""){
+            petId = pref.getString("petId", "");
+            petName = pref.getString("petName", "");
+        }
         if (token != null) {
             getPetById(token, petId, 0, 0L);
         }
