@@ -82,6 +82,7 @@ public class DogListAdapter extends BaseAdapter {
             intent.putExtra("age", pet.getAge());
             intent.putExtra("weight", pet.getWeight());
             intent.putExtra("gender", pet.getGender());
+            intent.putExtra("picture", pet.getPicture());
 
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
