@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_custom_drawable"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="60dp"
+        android:maxLines="2"
+        android:text="@string/delete_dog_confirmation"
+     />
+
+    <Button
+        android:id="@+id/custom_dog_save"
+        style="@style/RoundedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_button"
+        android:text="@string/dog_save"
+      />
+
+    <Button
+        android:id="@+id/custom_dog_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:width="188dp"
+        android:background="@drawable/rounded_button_white_background"
+        android:fontFamily="@font/dosis_semi_bold"
+        android:letterSpacing="0.1"
+        android:text="@string/delete"
+        android:textAllCaps="false"
+        android:textColor="@color/color_primary"
+        android:textSize="18sp"
+        android:layout_marginBottom="48dp"
+      />
+
+</LinearLayout>

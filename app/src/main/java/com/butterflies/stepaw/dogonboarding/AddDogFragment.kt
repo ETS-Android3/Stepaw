@@ -9,12 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.butterflies.stepaw.databinding.FragmentAddDogFragmentBinding
+import com.butterflies.stepaw.R
+import com.butterflies.stepaw.databinding.FragmentAddDogBinding
 
 
 class AddDogFragment : Fragment() {
-    private lateinit var binding: FragmentAddDogFragmentBinding
+    private lateinit var binding: FragmentAddDogBinding
     private lateinit var onboard: OnBoardingService
 
     interface OnBoardingService {
@@ -31,22 +33,22 @@ class AddDogFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = FragmentAddDogFragmentBinding.inflate(layoutInflater, container, false)
+        binding = FragmentAddDogBinding.inflate(layoutInflater, container, false)
         binding.dogSave.setOnClickListener {
-            val colorlist = ColorStateList.valueOf(Color.RED)
+
 //            Checking for empty text fields
             when {
                 TextUtils.isEmpty(binding.dogNameEdit.text) -> {
-                    binding.dogNameEdit.backgroundTintList = colorlist
+                    binding.dogNameEdit.background=ContextCompat.getDrawable(requireContext(), R.drawable.rounded_edittext_error)
                 }
                 TextUtils.isEmpty(binding.dogAgeEdit.text) -> {
                     with(binding.dogAgeEdit) {
-                        backgroundTintList = colorlist
+                      background=ContextCompat.getDrawable(requireContext(), R.drawable.rounded_edittext_error)
                     }
                 }
                 TextUtils.isEmpty(binding.dogWeightEdit.text) -> {
                     with(binding.dogAgeEdit) {
-                        backgroundTintList = colorlist
+                        background=ContextCompat.getDrawable(requireContext(), R.drawable.rounded_edittext_error)
                     }
                 }
                 else -> {

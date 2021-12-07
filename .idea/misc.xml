@@ -48,6 +48,7 @@
         <entry key="..\:/Users/thout/Downloads/Android/Stepaw/app/src/main/res/layout/toolbar.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/thout/Downloads/Android/Stepaw/app/src/main/res/menu/menu.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/cursor_color.xml" value="0.19166666666666668" />
+        <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/dialog_custom_drawable.xml" value="0.1527777777777778" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/edittext_states.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/fade_blue.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/ic_appicon.xml" value="0.19166666666666668" />
@@ -55,8 +56,13 @@
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/ic_launcher_background.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/ic_menu_camera.xml" value="0.1" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/rounded_button.xml" value="0.1" />
+        <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/rounded_button_white_background.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/rounded_edittext.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/rounded_edittext_active.xml" value="0.19166666666666668" />
+        <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/rounded_edittext_error.xml" value="0.16944444444444445" />
+        <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/rounded_edittext_normal.xml" value="0.19166666666666668" />
+        <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/semi_rounded_edittext.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/semi_rounded_edittext_states.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/side_nav_bar.xml" value="0.1" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/viewpager_not_selected.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/drawable/viewpager_selected.xml" value="0.19166666666666668" />
@@ -85,10 +91,13 @@
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/bottom_sheet_signin.xml" value="0.22" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/content_main.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/content_navigation.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/custom_delete_dialog.xml" value="0.22" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/fragment_11.xml" value="0.3617269544924154" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/fragment_12.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/fragment_account_fragment.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/fragment_add__dog.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/fragment_add__dog_fragment.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/fragment_edit_dog.xml" value="0.22" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/fragment_password_reset.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/fragment_reminder.xml" value="0.1" />
         <entry key="..\:/Users/thout/OneDrive/Desktop/Projects/Android/Stepaw/app/src/main/res/layout/fragment_signin.xml" value="0.3333333333333333" />

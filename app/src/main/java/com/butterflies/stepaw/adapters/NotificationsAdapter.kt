@@ -54,8 +54,5 @@ class NotificationsAdapter(
     override fun getItemCount(): Int {
         return dataset.size
     }
-fun updateData(dataset:MutableList<NotificationsDataModel>){
-    this.dataset=dataset
-    notifyDataSetChanged()
-}
+
 }

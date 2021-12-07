@@ -9,5 +9,14 @@
         android:id="@+id/add_Dog_fragment"
         android:name="com.butterflies.stepaw.dogonboarding.AddDogFragment"
         android:label="fragment_add__dog_fragment"
-        tools:layout="@layout/fragment_add__dog_fragment" />
+        tools:layout="@layout/fragment_add_dog" >
+        <action
+            android:id="@+id/action_add_Dog_fragment_to_editDogFragment"
+            app:destination="@id/editDogFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/editDogFragment"
+        android:name="com.butterflies.stepaw.dogonboarding.EditDogFragment"
+        android:label="EditDogFragment" />
 </navigation>

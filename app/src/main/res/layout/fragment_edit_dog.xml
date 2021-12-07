@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/dog_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/lato_bold"
+        android:paddingTop="33dp"
+        android:text="@string/dog_name"
+        android:textSize="18sp" />
+
+
+    <EditText
+        android:id="@+id/dog_name_edit"
+        style="@style/CustomEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:autofillHints="name"
+        android:hint="@string/dog_name_hint"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/dog_age"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/lato_bold"
+        android:text="@string/dog_age"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/dog_age_edit"
+        style="@style/CustomEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:hint="@string/dog_age_hint"
+        android:inputType="numberDecimal"
+        android:minHeight="48dp" />
+
+    <TextView
+        android:id="@+id/dog_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/lato_bold"
+        android:text="@string/dog_weight"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/dog_weight_edit"
+        style="@style/CustomEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:hint="@string/dog_weight_hint"
+        android:inputType="numberDecimal"
+        android:minHeight="48dp" />
+
+    <TextView
+        android:id="@+id/dog_gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/lato_bold"
+        android:text="@string/dog_gender"
+        android:textSize="18sp" />
+
+    <RadioGroup
+        android:id="@+id/dog_gender_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/dog_male"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:buttonTint="@color/color_primary"
+            android:checked="true"
+            android:text="@string/dog_male" />
+
+        <RadioButton
+            android:id="@+id/dog_female"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:buttonTint="@color/color_primary"
+            android:text="@string/dog_female" />
+
+        <RadioButton
+            android:id="@+id/dog_others"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:buttonTint="@color/color_primary"
+            android:text="@string/dog_others" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/dog_save"
+        style="@style/RoundedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="37dp"
+        android:background="@drawable/rounded_button"
+        android:text="@string/dog_save" />
+
+    <Button
+        android:id="@+id/dog_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:width="188dp"
+        android:background="@drawable/rounded_button_white_background"
+        android:fontFamily="@font/dosis_semi_bold"
+        android:letterSpacing="0.1"
+        android:text="@string/delete"
+        android:textAllCaps="false"
+        android:textColor="@color/color_primary"
+        android:textSize="18sp" />
+
+</LinearLayout>

@@ -19,7 +19,7 @@ class FragmentSignup : Fragment() {
     private lateinit var signupInWithActivity:SignUpService
     private lateinit var binding:FragmentSignupBinding
     interface SignUpService{
-        fun Signup(email:String,password:String)
+        fun Signup(email:String,password:String,signupusername:String)
         fun googlesignin()
     }
     override fun onAttach(context: Context) {
@@ -46,7 +46,7 @@ class FragmentSignup : Fragment() {
            if(!TextUtils.isEmpty(email)&&!TextUtils.isEmpty(password)&&!TextUtils.isEmpty(confirmPassword)&&!TextUtils.isEmpty(userName)){
                val utils=StepawUtils().validateEmail(email.toString())
                if(utils&&(password.toString()==confirmPassword.toString())){
-                   signupInWithActivity.Signup(email.toString(), password = password.toString())
+                   signupInWithActivity.Signup(email.toString(), password = password.toString(), signupusername = userName.toString())
                }
            }else{
                Toast.makeText(context,"Email/Password/Username empty",Toast.LENGTH_SHORT).show()

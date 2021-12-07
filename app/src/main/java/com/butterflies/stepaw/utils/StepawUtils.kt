@@ -57,4 +57,10 @@ class StepawUtils {
         return "${day}-${month}-${year}"
     }
 
+    fun getIdToken(context: Context): String {
+        val sharedData =
+            context.getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE)
+        return sharedData.getString("com.butterflies.stepaw.idToken", "invalid")!!
+    }
+
 }

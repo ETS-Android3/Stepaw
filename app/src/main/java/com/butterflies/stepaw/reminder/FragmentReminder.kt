@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
@@ -18,8 +19,11 @@ import com.butterflies.stepaw.reminder.RecyclerTouchListener.OnSwipeOptionsClick
 import com.butterflies.stepaw.roomORM.ReminderDB
 import com.butterflies.stepaw.roomORM.ReminderDao
 import com.butterflies.stepaw.roomORM.ReminderEntity
+import com.butterflies.stepaw.utils.StepawUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import org.jetbrains.anko.support.v4.runOnUiThread
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class FragmentReminder : Fragment() {
@@ -31,7 +35,13 @@ class FragmentReminder : Fragment() {
     private lateinit var recycleradapter: ItemAdapter
 
     interface ReminderService {
-        fun setReminder(hour: String, minute: String, extraData: String, vararg days: Int)
+        fun setReminder(
+            hour: String,
+            minute: String,
+            extraData: String,
+            unique: Int,
+            vararg days: Int
+        )
     }
 
     override fun onAttach(context: Context) {
@@ -44,6 +54,7 @@ class FragmentReminder : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentReminderBinding.inflate(layoutInflater, container, false)
+        db = Room.databaseBuilder(requireContext(), ReminderDB::class.java, "remindersDB").build()
         val standardBottomSheetBehavior =
             BottomSheetBehavior.from(requireActivity().findViewById(com.butterflies.stepaw.R.id.bottom_sheet_reminder))
         binding.imageView2.setOnClickListener {
@@ -54,27 +65,83 @@ class FragmentReminder : Fragment() {
         }
         binding.saveReminder.setOnClickListener {
             val timePicker = binding.timepicker
-            val d = binding.reminderLabel.text.toString()
+            var labelText = "Stepaw"
+            if (binding.reminderLabel.text.isNotEmpty()) {
+                labelText = binding.reminderLabel.text.toString()
+            }
+
+            val utils = StepawUtils()
+
             reminder.setReminder(
                 timePicker.hour.toString(),
                 timePicker.minute.toString(),
-                extraData = d,
-                days = *intArrayOf(1, 2, 3)
+                extraData = labelText,
+                unique = utils.getUniqueID(),
+                days = intArrayOf(1, 2, 3)
             )
+            val unique = utils.getUniqueID()
+///            Write data to database
+            val job = lifecycleScope.launch(Dispatchers.IO) {
+                addDataDB(
+                    unique,
+                    timePicker.hour.toString(),
+                    timePicker.minute.toString(),
+                    label = labelText,
+                    utils.getDate()
+                )
+            }
+            job.start()
+//
+            if (this::dataset.isInitialized) {
+
+                requireActivity().runOnUiThread {
+
+                    dataset.add(
+                        ReminderEntity(
+                            unique,
+                            timePicker.hour.toString(),
+                            timePicker.minute.toString(),
+                            labelText,
+                            utils.getDate()
+                        )
+                    )
+                    recycleradapter.updateData(dataset)
+
+                }
+
+            }
+            //
             binding.newreminder.visibility = View.GONE
+            binding.recyclerReminder.visibility = View.VISIBLE
             standardBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
         binding.cancelReminder.setOnClickListener {
             binding.newreminder.visibility = View.GONE
             standardBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
-        db = Room.databaseBuilder(requireContext(), ReminderDB::class.java, "remindersDB").build()
+
         return binding.root
+    }
+
+
+    private suspend fun addDataDB(
+        unique: Int,
+        hour: String,
+        minute: String,
+        label: String,
+        date: String
+    ) {
+        withContext(Dispatchers.IO) {
+            val dao = db.reminderdao()
+            dao.insertAll(ReminderEntity(unique, hour, minute, label, date))
+        }
+
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("redrawn", "Redrawing")
         val root = FragmentReminderBinding.bind(binding.root)
         val recyclerView = root.recyclerReminder
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -107,14 +174,14 @@ class FragmentReminder : Fragment() {
                 OnSwipeOptionsClickListener { viewID, position ->
                     when (viewID) {
                         com.butterflies.stepaw.R.id.delete_task -> {
-                            val removeID=dataset.removeAt(position)
+                            val removeID = dataset.removeAt(position)
                             recycleradapter.updateData(dataset)
                             Thread {
                                 dao.deleteByID(removeID.id)
                             }.start()
                         }
                         com.butterflies.stepaw.R.id.edit_task -> {
-
+                            addReminder()
                         }
                     }
                 })
@@ -132,4 +199,7 @@ class FragmentReminder : Fragment() {
         }
 
     }
+
+
+
 }

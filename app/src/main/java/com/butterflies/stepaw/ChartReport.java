@@ -239,7 +239,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
 
     @Override
-    public void setReminder(@NonNull String hour, @NonNull String minute, @NonNull String label, @NonNull int... days) {
+    public void setReminder(@NonNull String hour, @NonNull String minute, @NonNull String label, int unique,@NonNull int... days) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour));
         calendar.set(Calendar.MINUTE, Integer.parseInt(minute));
@@ -252,18 +252,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 //        calendar.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
 //        calendar.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
 
-        StepawUtils a = new StepawUtils();
 
-
-        ReminderDB db = Room.databaseBuilder(this,
-                ReminderDB.class, "remindersDB").build();
-        int unique = a.getUniqueID();
-        ReminderDao rdao = db.reminderdao();
-
-//        Insert reminder data into sqlite db
-        AsyncTask.execute(() -> {
-            rdao.insertAll(new ReminderEntity(unique, hour, minute, label, a.getDate()));
-        });
 //
 
         updateTimeText(calendar);
