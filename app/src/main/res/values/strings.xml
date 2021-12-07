@@ -62,5 +62,7 @@
     <string name="toolbar_account">Account</string>
     <string name="upload_picture">Upload picture</string>
     <string name="notifications_title">Notifications</string>
+    <string name="delete">Delete</string>
+    <string name="delete_dog_confirmation">Do you really want to delete this dog\'s information ?</string>
 
 </resources>

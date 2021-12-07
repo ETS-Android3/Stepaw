@@ -162,9 +162,15 @@
 
         <Button
             android:id="@+id/cancel_reminder"
-            style="@style/RoundedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:width="188dp"
+            android:background="@drawable/rounded_button_white_background"
+            android:fontFamily="@font/dosis_semi_bold"
+            android:letterSpacing="0.1"
+            android:textAllCaps="false"
+            android:textColor="@color/color_primary"
+            android:textSize="18sp"
             android:text="Cancel" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

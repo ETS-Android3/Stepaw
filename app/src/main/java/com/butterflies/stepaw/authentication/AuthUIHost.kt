@@ -45,6 +45,7 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
     private lateinit var firstName: String
     private lateinit var lastName: String
     private lateinit var email: String
+    private lateinit var signupName: String
 
     //    Build retrofit instance
     private val retrofit: Retrofit = Retrofit.Builder()
@@ -152,7 +153,6 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
                     val idToken = token.result?.token
                     if (idToken != null) {
                         storePreferences("com.butterflies.stepaw.idToken", idToken)
-                        Toast.makeText(this, "Got id token", Toast.LENGTH_SHORT).show()
                         taskSuccessCreateNewUser(idToken)
                     }
 
@@ -205,23 +205,31 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
     }
 
     private fun taskSuccessCreateNewUser(idToken: String) {
+        Log.d("idtoken", idToken)
         val user = auth.currentUser
         if (user?.uid !== null) {
             id = user.uid
         }
         if (user?.displayName !== null) {
-
             userName = user.displayName!!
-        } else storePreferences("com.butterflies.stepaw.displayName", "invalid")
+        } else {
+            userName = user!!.email.toString()
+            storePreferences("com.butterflies.stepaw.displayName", userName)
+        }
 
         if (user?.displayName !== null) {
 
             firstName = user.displayName!!
-        } else storePreferences("com.butterflies.stepaw.firstName", "invalid")
+        } else {
+            firstName = user.email.toString()
+            storePreferences("com.butterflies.stepaw.firstName", firstName)
+        }
         if (user?.displayName !== null) {
-
             lastName = user.displayName!!
-        } else storePreferences("com.butterflies.stepaw.lastName", "invalid")
+        } else {
+            lastName = user.email.toString()
+            storePreferences("com.butterflies.stepaw.lastName", lastName)
+        }
 
         if (user?.email !== null) {
 
@@ -243,12 +251,12 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
         currentUser?.displayName?.let { Log.d("onStart", it) }
     }
 
-    private fun signUp(email: String, password: String) {
+    private fun signUp(email: String, password: String, signupusername: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-
+                    signupName = signupusername
                     val user = auth.currentUser
                     taskSuccessGetIdToken(user)
 
@@ -284,8 +292,8 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
         signinWithPassword(email, password)
     }
 
-    override fun Signup(email: String, password: String) {
-        signUp(email, password)
+    override fun Signup(email: String, password: String, signupusername: String) {
+        signUp(email, password, signupusername)
     }
 
     override fun googlesignin() {
@@ -329,8 +337,10 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
         BluetoothID: String,
         token: String
     ) {
-
-        val usermodel = UserModel(UserID, UserName, FirstName, LastName, EmailID, BluetoothID)
+        var usermodel = UserModel(UserID, UserName, FirstName, LastName, EmailID, BluetoothID)
+        if(this@AuthUIHost::signupName.isInitialized){
+            usermodel= UserModel(UserID,signupName,signupName,signupName,EmailID, BluetoothID)
+        }
         val newUserRequest = service.createUser(token = " Bearer $token", usermodel)
         newUserRequest.enqueue(object : Callback<UserModel> {
             @SuppressLint("LogNotTimber")
@@ -338,7 +348,6 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
 //                Checking response status
                 if (response.code() == 200) {
                     storeUser(response)
-                    Log.d("authUI", response.message())
                     Intent(this@AuthUIHost, DogList::class.java).run { startActivity(this) }
                 }
                 if (response.code() == 500) {
@@ -357,11 +366,13 @@ class AuthUIHost : AppCompatActivity(), FragmentSignin.SigninService, FragmentSi
                                 }
                             } else {
                                 Log.d("authUI", response.message())
+
                             }
                         }
 
                         override fun onFailure(call: Call<UserModel>, t: Throwable) {
                             Log.d("authUI", "We don't know what's happening around here.")
+
                         }
 
                     })

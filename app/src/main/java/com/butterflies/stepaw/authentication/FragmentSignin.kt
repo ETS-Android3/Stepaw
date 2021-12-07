@@ -13,9 +13,7 @@ import com.butterflies.stepaw.databinding.FragmentSigninBinding
 import android.text.style.UnderlineSpan
 
 import android.text.SpannableString
-
-
-
+import androidx.core.content.ContextCompat
 
 
 class FragmentSignin : Fragment() {
@@ -65,10 +63,19 @@ class FragmentSignin : Fragment() {
 //        Call Activity's signinwith email and password method
 
         binding.signin.setOnClickListener {
-            val email = root.email.text.toString()
-            val password = root.password.text.toString()
+            val email = root.email.text
+            val password = root.password.text
+            if(email.isEmpty()){
+                binding.email.background = ContextCompat.getDrawable(requireContext(),R.drawable.rounded_edittext_error)
+            }
+            if(password.isEmpty()){
+                binding.password.background = ContextCompat.getDrawable(requireContext(),R.drawable.rounded_edittext_error)
+            }
 //            Validate
-            signinwithactivity.signin(email, password)
+            if(email.isNotEmpty()&&password.isNotEmpty()){
+                signinwithactivity.signin(email.toString(), password.toString())
+            }
+
         }
 
     }

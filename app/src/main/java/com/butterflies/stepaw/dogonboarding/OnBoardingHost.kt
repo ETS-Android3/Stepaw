@@ -2,14 +2,17 @@ package com.butterflies.stepaw.dogonboarding
 
 import android.R.attr
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -34,7 +37,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
+class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService,EditDogFragment.OnBoardingService {
     private val PICK_IMAGE_REQUEST = 22
     private lateinit var filePath: Uri
     private lateinit var storage: FirebaseStorage
@@ -59,16 +62,19 @@ class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.reference;
 
-//
-
-//        setSupportActionBar(findViewById(R.id.my_toolbar))
-////        supportActionBar?.setHomeButtonEnabled(true)
-////        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setSupportActionBar(findViewById(R.id.my_toolbar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+//        supportActionBar?.setHomeAsUpIndicator(R.drawable.custom_back_button)
+        val toolbarTitle = findViewById<TextView>(R.id.toolbar_title)
+        toolbarTitle.text = "Edit"
 ////        Bottom sheet settings
 
 
         val standardBottomSheetBehavior =
             BottomSheetBehavior.from(findViewById(R.id.bottom_sheet_onboard))
+        standardBottomSheetBehavior.halfExpandedRatio=.7F
         standardBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
         standardBottomSheetBehavior.isDraggable = false
 
@@ -78,6 +84,17 @@ class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
             .findFragmentById(R.id.nav_host) as NavHostFragment
         navHostFragment.findNavController().setGraph(R.navigation.dogonboarding_nav)
 
+
+        val bundle = intent.extras
+
+        if (bundle?.containsKey("petId") == true) {
+//
+            // findNavController(R.id.nav_host).navigate(R.id.action_add_Dog_fragment_to_editDogFragment)
+            val bundle1 = Bundle();
+            bundle1.putString("petId", bundle.getString("petId"))
+            navHostFragment.findNavController().navigate(R.id.editDogFragment, bundle1)
+
+        }
 
     }
 
@@ -210,5 +227,41 @@ class OnBoardingHost : AppCompatActivity(), AddDogFragment.OnBoardingService {
             Log.d("newpet", token!!)
         }
 
+    }
+
+    override fun editDog(name: String, age: Float, weight: Float, gender: String) {
+        val p = getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE)
+        val token = p.getString("com.butterflies.stepaw.idToken", "invalid")
+        var userData = p.getString("com.butterflies.stepaw.user", "invalid")
+        if (userData !== "invalid") {
+            val gson = Gson()
+            val j = gson.fromJson(userData, UserModel::class.java)
+            userId = j.UserID
+        }
+        if (token !== "invalid") {
+            if (token != null) {
+                idToken = token
+            }
+        }
+        if (!this@OnBoardingHost::imageURL.isInitialized) {
+            imageURL =
+                "https://firebasestorage.googleapis.com/v0/b/spherical-rune-330820.appspot.com/o/images%2Fdog_placeholder_image.png?alt=media&token=e5cda1d2-b987-4901-9a2e-34d2a437f856"
+        }
+        if (this::idToken.isInitialized && userId !== "invalid" && this::userId.isInitialized) {
+            val petmodel = PetModel(
+                "invalid",
+                Age = age.toString(),
+                Weight = weight.toString(),
+                Gender = gender,
+                Picture = imageURL,
+                NumberOfSteps = "0",
+                Distance = "0",
+                Duration = "0",
+                UserID = userId,
+                PetName = name,
+                Date = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.CANADA).format(Date())
+            )
+//           Update data to backend here.
+        }
     }
 }

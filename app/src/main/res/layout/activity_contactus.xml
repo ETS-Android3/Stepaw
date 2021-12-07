@@ -94,7 +94,8 @@
 
         <EditText
             android:id="@+id/contact_body"
-            style="@style/CustomEditText"
+       android:padding="10dp"
+            android:background="@drawable/semi_rounded_edittext_states"
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:layout_marginBottom="16dp"
