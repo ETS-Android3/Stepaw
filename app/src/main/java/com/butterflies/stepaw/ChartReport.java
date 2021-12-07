@@ -22,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -33,7 +32,6 @@ import androidx.room.Room;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
-import com.butterflies.stepaw.adapters.ItemAdapter;
 import com.butterflies.stepaw.authentication.AuthUIHost;
 import com.butterflies.stepaw.ble.BluetoothLeService;
 import com.butterflies.stepaw.databinding.ActivityChartReportBinding;
@@ -146,6 +144,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 //        petId = "BsFHEoXIBEgJKXKVSJWU7MYriEo1";
 
         petName = intent.getStringExtra("petName");
+//        petName = "Puppy";
 
 //        deviceAddress = intent.getStringExtra("address");
         retrofit = new Retrofit.Builder()
@@ -155,6 +154,10 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         service = retrofit.create(ApiService.class);
         SharedPreferences pref = getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE);
         token = pref.getString("com.butterflies.stepaw.idToken", "invalid");
+        if(petId == null || petId == "" || petName == null || petName == ""){
+            petId = pref.getString("petId", "");
+            petName = pref.getString("petName", "");
+        }
         if (token != null) {
             getPetById(token, petId, 0, 0L);
         }
@@ -355,9 +358,14 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                 TextView petNameTxtView = findViewById(R.id.petName);
                 ImageView petImage = findViewById(R.id.petImage);
                 TextView petAge = findViewById(R.id.petAge);
-
+                ArrayList<PetGetModel> data = new ArrayList<>();
                 if(petName != null && !petName.equals("")){
-                    petList = (ArrayList<PetGetModel>) petList.stream().filter(x -> x.getPetName().equals(petName));
+                    for (int k = 0; k < petList.size(); k++) {
+                        if(petList.get(k).getPetName().equals(petName)){
+                            data.add(petList.get(k));
+                        }
+                    }
+                    petList = data;
                 }
 
                 if (petList != null) {

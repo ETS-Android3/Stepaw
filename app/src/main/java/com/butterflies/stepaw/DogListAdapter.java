@@ -78,10 +78,7 @@ public class DogListAdapter extends BaseAdapter {
         editPet.setOnClickListener(v -> {
             Intent intent = new Intent(context, OnBoardingHost.class);
             intent.putExtra("petId", pet.getPetID());
-            intent.putExtra("name", pet.getPetName());
-            intent.putExtra("age", pet.getAge());
-            intent.putExtra("weight", pet.getWeight());
-            intent.putExtra("gender", pet.getGender());
+            
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             context.startActivity(intent);
