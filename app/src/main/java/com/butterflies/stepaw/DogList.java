@@ -58,10 +58,11 @@ public class DogList extends AppCompatActivity {
 
         StepawUtils u=new StepawUtils();
         UserModel user=u.extractUser(getApplicationContext());
-        
+
         if(user != null){
+            String fname = user.getFirstName().split(" ")[0];
             TextView txtUserName = findViewById(R.id.txtUserName);
-            txtUserName.setText(user.getFirstName());
+            txtUserName.setText(fname);
         }
 
 
