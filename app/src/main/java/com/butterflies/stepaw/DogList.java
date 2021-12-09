@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.butterflies.stepaw.dogonboarding.OnBoardingHost;
 import com.butterflies.stepaw.network.ApiService;
@@ -48,10 +49,15 @@ public class DogList extends AppCompatActivity {
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build();
         service = retrofit.create(ApiService.class);
-        String token = "ya29.a0ARrdaM_u23mjkQ1IUdyYgvzgbOGHYnaXEBCnSNgimBn9r_oP2u6QS7F3uNDYD83guUwHTHuhYxuydOQkJS4gJeqo-6Z_QbuKW8BQaBv1dzhPRTDE0fcy8Zr73JNf3F4uuVIQuuw2DpzowYDJlB-LayFmMskJ";
+        String token;
         SharedPreferences pref = getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE);
         token = pref.getString("com.butterflies.stepaw.idToken", "invalid");
         System.out.println("Token " + token );
+        String userName = pref.getString("com.butterflies.stepaw.firstName", "Maneesh1");
+
+        TextView txtUserName = findViewById(R.id.txtUserName);
+        txtUserName.setText(userName);
+
         if (token != null) {
             getAllPets(token);
         }
