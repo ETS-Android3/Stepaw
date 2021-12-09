@@ -19,7 +19,9 @@ import com.butterflies.stepaw.dogonboarding.OnBoardingHost;
 import com.butterflies.stepaw.network.ApiService;
 import com.butterflies.stepaw.network.models.PetGetModel;
 import com.butterflies.stepaw.network.models.PetModel;
+import com.butterflies.stepaw.network.models.UserModel;
 import com.butterflies.stepaw.scanner.BleConnectionScreen;
+import com.butterflies.stepaw.utils.StepawUtils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -53,10 +55,15 @@ public class DogList extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE);
         token = pref.getString("com.butterflies.stepaw.idToken", "invalid");
         System.out.println("Token " + token );
-        String userName = pref.getString("com.butterflies.stepaw.firstName", "Maneesh1");
 
-        TextView txtUserName = findViewById(R.id.txtUserName);
-        txtUserName.setText(userName);
+        StepawUtils u=new StepawUtils();
+        UserModel user=u.extractUser(getApplicationContext());
+        
+        if(user != null){
+            TextView txtUserName = findViewById(R.id.txtUserName);
+            txtUserName.setText(user.getFirstName());
+        }
+
 
         if (token != null) {
             getAllPets(token);
