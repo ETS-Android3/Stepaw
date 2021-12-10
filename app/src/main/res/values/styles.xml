@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="ModalBottomSheet" parent="Widget.MaterialComponents.BottomSheet">
-        <item name="backgroundTint">@color/white</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.App.LargeComponent</item>
+    </style>
+
+    <style name="CardBottomsheet" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="android:backgroundTint">#f3f3f3</item>
         <item name="shapeAppearance">@style/ShapeAppearance.App.LargeComponent</item>
     </style>
 

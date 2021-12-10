@@ -12,7 +12,7 @@
         android:layout_height="4dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
-        android:background="@color/black"
+        android:background="#797979"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -88,7 +88,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Label" />
+            android:layout_gravity="start"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="Label"
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/reminderLabel"
@@ -102,12 +108,20 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Repeat" />
+            android:layout_gravity="start"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="Repeat"
+            android:textSize="18sp" />
 
         <CheckBox
             android:id="@+id/monday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
             android:layoutDirection="rtl"
             android:text="Every Monday" />
 
@@ -115,6 +129,8 @@
             android:id="@+id/tuesday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
             android:layoutDirection="rtl"
             android:text="Every Tuesday" />
 
@@ -122,6 +138,8 @@
             android:id="@+id/wednesday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
             android:layoutDirection="rtl"
             android:text="Every Wednesday" />
 
@@ -129,6 +147,8 @@
             android:id="@+id/thursday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
             android:layoutDirection="rtl"
             android:text="Every Thursday" />
 
@@ -137,6 +157,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layoutDirection="rtl"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
             android:text="Every Friday" />
 
         <CheckBox
@@ -144,6 +166,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layoutDirection="rtl"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
             android:text="Every Saturday" />
 
         <CheckBox
@@ -151,6 +175,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layoutDirection="rtl"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
             android:text="Every Sunday" />
 
         <Button

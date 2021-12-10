@@ -10,6 +10,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,8 +25,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.FragmentKt;
@@ -83,6 +88,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
     DrawerLayout drawer;
     private String deviceAddress = "";
     private String petId = "";
+    private Boolean flag = false;
     private Boolean connected = null;
     private BluetoothLeService bluetoothService = null;
     private String token, petName;
@@ -94,11 +100,10 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         super.onCreate(savedInstanceState);
         binding = ActivityChartReportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+
 //        Drawer Toggle
         drawer = binding.drawerLayout;
         toggle = new ActionBarDrawerToggle(this,
@@ -154,7 +159,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
         service = retrofit.create(ApiService.class);
         SharedPreferences pref = getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE);
         token = pref.getString("com.butterflies.stepaw.idToken", "invalid");
-        if(petId == null || petId == "" || petName == null || petName == ""){
+        if (petId == null || petId == "" || petName == null || petName == "") {
             petId = pref.getString("petId", "");
             petName = pref.getString("petName", "");
         }
@@ -172,7 +177,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 //        }
 
 //Setting nav graph for bottom sheet reminder programatically
-        Fragment fr = this.getSupportFragmentManager().findFragmentById(R.id.nav_host);
+        Fragment fr = this.getSupportFragmentManager().findFragmentById(R.id.nav_host_reminder);
         if (fr == null) {
             throw new NullPointerException("null cannot be cast to non-null type androidx.navigation.fragment.NavHostFragment");
         } else {
@@ -184,7 +189,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 //Handling bottom sheet
         BottomSheetBehavior<View> standardBottomSheetBehavior =
                 BottomSheetBehavior.from(findViewById(R.id.bottom_sheet_reminder));
-        standardBottomSheetBehavior.setPeekHeight(175);
+        standardBottomSheetBehavior.setPeekHeight(180);
         standardBottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -242,7 +247,7 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
 
 
     @Override
-    public void setReminder(@NonNull String hour, @NonNull String minute, @NonNull String label, int unique,@NonNull int... days) {
+    public void setReminder(@NonNull String hour, @NonNull String minute, @NonNull String label, int unique, @NonNull int... days) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour));
         calendar.set(Calendar.MINUTE, Integer.parseInt(minute));
@@ -359,9 +364,9 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                 ImageView petImage = findViewById(R.id.petImage);
                 TextView petAge = findViewById(R.id.petAge);
                 ArrayList<PetGetModel> data = new ArrayList<>();
-                if(petName != null && !petName.equals("")){
+                if (petName != null && !petName.equals("")) {
                     for (int k = 0; k < petList.size(); k++) {
-                        if(petList.get(k).getPetName().equals(petName)){
+                        if (petList.get(k).getPetName().equals(petName)) {
                             data.add(petList.get(k));
                         }
                     }
@@ -570,7 +575,34 @@ public class ChartReport extends AppCompatActivity implements FragmentReminder.R
                         viewPager.setAdapter(sectionsPagerAdapter);
 
                         TabLayout tabs = binding.chartTabLayout;
+
                         tabs.setupWithViewPager(viewPager);
+                        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                            @Override
+                            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                            }
+
+                            @Override
+                            public void onPageSelected(int position) {
+
+                                BottomSheetBehavior<View> standardBottomSheetBehavior =
+                                BottomSheetBehavior.from(findViewById(R.id.bottom_sheet_reminder));
+                                if (position != 0) {
+                                    standardBottomSheetBehavior.setPeekHeight(0);
+                                    standardBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                                }
+                                else {
+                                    standardBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                                    standardBottomSheetBehavior.setPeekHeight(180);
+                                }
+                            }
+
+                            @Override
+                            public void onPageScrollStateChanged(int state) {
+
+                            }
+                        });
                     }
                 }
             }

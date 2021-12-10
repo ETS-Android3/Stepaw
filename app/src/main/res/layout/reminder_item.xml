@@ -13,7 +13,6 @@
         android:layout_height="70dp"
         android:layout_alignParentRight="true"
         android:gravity="right"
-        android:layout_margin="10dp"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -75,7 +74,6 @@
         android:layout_height="70dp"
         android:background="@color/color_primary_variant_1"
         android:orientation="horizontal"
-        android:layout_margin="10dp"
         android:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
