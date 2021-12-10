@@ -1,6 +1,7 @@
 package com.butterflies.stepaw.adapters
 
 import android.content.Context
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -42,8 +43,7 @@ class NotificationsAdapter(
         holder.text2.text = item.text2
 
         if (position % 2 != 0) {
-            holder.card.backgroundColor =
-                ContextCompat.getColor(context, R.color.notifications_alternate)
+            holder.card.backgroundColor =ContextCompat.getColor(context,R.color.white)
         } else {
             holder.card.backgroundColor =
                 ContextCompat.getColor(context, R.color.color_primary_variant_2)

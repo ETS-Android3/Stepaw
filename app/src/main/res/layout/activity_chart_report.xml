@@ -156,7 +156,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <include layout="@layout/bottom_sheet_host" android:id="@+id/bottom_sheet_reminder" />
+    <include layout="@layout/bottom_sheet_host_reminder" android:id="@+id/bottom_sheet_reminder"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
     <com.google.android.material.navigation.NavigationView

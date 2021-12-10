@@ -6,12 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-
+import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import android.widget.RemoteViews;
 import android.widget.TextView;
 
 import com.butterflies.stepaw.ble.BluetoothLeService;
+import com.butterflies.stepaw.utils.StepawUtils;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -86,7 +88,7 @@ public class DailyFragment extends Fragment {
     private Float initialKm;
     private Float initialMin;
     private int initialSteps;
-
+    private SharedPreferences share;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -136,6 +138,9 @@ public class DailyFragment extends Fragment {
             e.printStackTrace();
         }
 
+
+//        StepawUtils stepawUtil = new StepawUtils();
+//        share = this.getActivity().getSharedPreferences("com.butterflies.stepaw", Context.MODE_PRIVATE);
         initialKm = Float.parseFloat(strKM);
         initialMin = Float.parseFloat(strMin);
         initialSteps = Integer.parseInt(steps);
@@ -167,6 +172,30 @@ public class DailyFragment extends Fragment {
 
         TextView dateTextView = view.findViewById(R.id.dateTextView);
         dateTextView.setText(dateStr);
+//        if(share.getString("com.butterflies.stepaw.flag", "false") == "false") {
+//            String stepCounts = stepCount.getText().toString();
+//            String distance = kmValue.getText().toString();
+//            String minute = minValue.getText().toString();
+//            stepawUtil.storePreferences(getActivity(),
+//                    "com.butterflies.stepaw.stepCounter", stepCounts);
+//            stepawUtil.storePreferences(getActivity(),
+//                    "com.butterflies.stepaw.distanceCounter", distance);
+//            stepawUtil.storePreferences(getActivity(),
+//                    "com.butterflies.stepaw.minuteCounter", minute);
+//            stepawUtil.storePreferences(getActivity(),
+//                    "com.butterflies.stepaw.flag", "true");
+//
+//        }
+//
+//        if(share.getString("com.butterflies.stepaw.stepCounter", "") != "") {
+//            stepCount.setText(share.getString("com.butterflies.stepaw.stepCounter", "150"));
+//        }
+//        if(share.getString("com.butterflies.stepaw.distanceCounter", "") != "") {
+//            minValue.setText(share.getString("com.butterflies.stepaw.distanceCounter", "1.0"));
+//        }
+//        if(share.getString("com.butterflies.stepaw.minuteCounter", "") != "") {
+//            kmValue.setText(share.getString("com.butterflies.stepaw.distanceCounter", "15"));
+//        }
         this.mView = view;
         return view;
     }
